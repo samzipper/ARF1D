@@ -3,3 +3,4 @@
 
 ## ignore in geotop folder only
 geotop/output*
+geotop/_*
