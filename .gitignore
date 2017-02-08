@@ -1,0 +1,5 @@
+## ignore in all folders
+*.png
+
+## ignore in geotop folder only
+geotop/output*
