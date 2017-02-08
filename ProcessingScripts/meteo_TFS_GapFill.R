@@ -421,6 +421,49 @@ for (i.missing in i.missing.rad.W_m2){
 # check for missing data
 i.missing.rad.W_m2 <- which(is.na(df.met$rad.W_m2))
 
+# Pressure and vapor pressure ----------------------------------------------------------
+
+## no data from TFS - use flux tower
+df.ARFlux$Year <- year(df.ARFlux$Date)
+df.ARFlux$DOY <- yday(df.ARFlux$Date)
+
+# average all 3 towers
+df.ARFlux.avg <- summarize(group_by(df.ARFlux, Year, DOY),
+                           P.kPa = mean(P.kPa, na.rm=T),
+                           ea.kPa = mean(ea.kPa, na.rm=T))
+
+# join existing data
+df.met <- merge(df.met, df.ARFlux.avg[is.finite(df.ARFlux.avg$P.kPa) & is.finite(df.ARFlux.avg$ea.kPa), ], by=c("Year", "DOY"), all.x=T)
+
+# summarize to mean for each DOY
+df.DOY <- summarize(group_by(df.ARFlux, DOY),
+                    ea.kPa = mean(ea.kPa, na.rm=T),
+                    P.kPa = mean(P.kPa, na.rm=T))
+
+# get indices of temperature that is still missing
+i.missing.P.kPa <- which(is.na(df.met$P.kPa))
+i.missing.ea.kPa <- which(is.na(df.met$ea.kPa))
+
+# scroll through missing dates
+for (i.missing in i.missing.P.kPa){
+
+  # find DOY
+  DOY.missing <- df.met$DOY[i.missing]
+  
+  # fill in df.met
+  df.met$P.kPa[i.missing] <- df.DOY$P.kPa[DOY.missing]
+}
+
+for (i.missing in i.missing.ea.kPa){
+  
+  # find DOY
+  DOY.missing <- df.met$DOY[i.missing]
+  
+  # fill in df.met
+  df.met$ea.kPa[i.missing] <- df.DOY$ea.kPa[DOY.missing]
+}
+
+
 # Save output data --------------------------------------------------------
 
 # save gap-filled
