@@ -1,9 +1,9 @@
 !*******************************
 !******* CONFIGURATION *********
 !*******************************
-TimeStepEnergyAndWater = 3600
-InitDateDDMMYYYYhhmm = 17/06/2014 13:00
-EndDateDDMMYYYYhhmm = 27/07/2014 11:00
+TimeStepEnergyAndWater = 86400
+InitDateDDMMYYYYhhmm = 17/06/2010 00:00
+EndDateDDMMYYYYhhmm = 27/06/2010 00:00
 EnergyBalance =1
 WaterBalance = 1
 PointSim = 1
@@ -32,6 +32,7 @@ HeaderIPrec = "Iprec"
 HeaderWindVelocity = "WindSp"
 HeaderWindDirection = "WindDir"
 HeaderRH = "RH"
+HeaderAirPress = "P"
 HeaderAirTemp = "AirT"
 HeaderSWglobal = "Swglob"
 HeaderCloudSWTransmissivity = "CloudTrans"
@@ -63,7 +64,7 @@ HeaderPointBedrockDepth="bedrock"
 !*******************************
 !******* INPUT  ************
 !*******************************
-MeteoFile = "meteo/meteotrenchhour"
+MeteoFile = "meteo/meteoTFSdaily"
 
 !*******************************
 !******** LAND COVER  **********
@@ -118,7 +119,7 @@ RichardInitForc = 0.01
 !******* OUTPUT TIME SERIES **********
 !*************************************
 DtPlotDischarge = 0.5
-DtPlotPoint = 1
+DtPlotPoint = 24
 SoilTempProfileFile="output-tabs/soiltemp"
 SoilLiqContentProfileFile="output-tabs/thetaliq"
 SoilLiqWaterPressProfileFile="output-tabs/soilpsi"
