@@ -28,7 +28,9 @@ for (fire in c("Moderate", "Severe", "Unburned")){
   df.d <- summarize(group_by(df, Date),
                     fire = fire,
                     P.kPa = mean(Pressure, na.rm=T),
-                    Tair.C = mean(Air.Temperature, na.rm=T),
+                    Tair.C.mean = mean(Air.Temperature, na.rm=T),
+                    Tair.C.min = min(Air.Temperature, na.rm=T),
+                    Tair.C.max = max(Air.Temperature, na.rm=T),
                     Tsurf.K = mean(Surface.Temperature..Apogee., na.rm=T),
                     Tsoil.C = mean(Soil.Temperature, na.rm=T),
                     Tsoil.C.min = min(Soil.Temperature, na.rm=T),
@@ -49,7 +51,7 @@ for (fire in c("Moderate", "Severe", "Unburned")){
 
   # make some plots
   p.Tair.C <- 
-    ggplot(df.d, aes(x=Date, y=Tair.C)) +
+    ggplot(df.d, aes(x=Date, y=Tair.C.mean)) +
     geom_hline(yintercept=0, color="gray65") +
     geom_point() +
     scale_y_continuous(limits=c(-35,20), breaks=seq(-30,20,10)) +
