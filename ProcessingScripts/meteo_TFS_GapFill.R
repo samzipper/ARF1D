@@ -5,6 +5,8 @@
 #  2. If there are <= 3 consecutive days missing, gap-fill via linear interpolation
 #       -This never ends up being used
 #  3. If there are > 3 consecutive days missing, use the long-term mean for that DOY.
+#
+# For anything that is still missing, use the long-term average for that month
 
 rm(list=ls())
 
@@ -421,6 +423,16 @@ for (i.missing in i.missing.rad.W_m2){
 # check for missing data
 i.missing.rad.W_m2 <- which(is.na(df.met$rad.W_m2))
 
+## finally: use mean for that month
+df.mo <- summarize(group_by(df.met, month(Date)),
+                   var = mean(rad.W_m2, na.rm=T))
+colnames(df.mo) <- c("month", "var")
+
+df.met$rad.W_m2[i.missing.rad.W_m2] <- df.mo$var[match(month(df.met$Date[i.missing.rad.W_m2]), df.mo$month)]
+
+# check for missing data
+i.missing.rad.W_m2 <- which(is.na(df.met$rad.W_m2))
+
 # Pressure and vapor pressure ----------------------------------------------------------
 
 ## no data from TFS - use flux tower
@@ -463,6 +475,18 @@ for (i.missing in i.missing.ea.kPa){
   df.met$ea.kPa[i.missing] <- df.DOY$ea.kPa[DOY.missing]
 }
 
+## finally: use mean for that month
+df.mo <- summarize(group_by(df.met, month(Date)),
+                   ea.kPa = mean(ea.kPa, na.rm=T),
+                   P.kPa = mean(P.kPa, na.rm=T))
+colnames(df.mo)[1] <- "month"
+
+df.met$ea.kPa[i.missing.ea.kPa] <- df.mo$ea.kPa[match(month(df.met$Date[i.missing.ea.kPa]), df.mo$month)]
+df.met$P.kPa[i.missing.P.kPa] <- df.mo$P.kPa[match(month(df.met$Date[i.missing.P.kPa]), df.mo$month)]
+
+# check for missing data
+i.missing.ea.kPa <- which(is.na(df.met$ea.kPa))
+i.missing.P.kPa <- which(is.na(df.met$P.kPa))
 
 # Save output data --------------------------------------------------------
 
