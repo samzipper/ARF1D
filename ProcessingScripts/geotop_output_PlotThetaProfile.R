@@ -13,7 +13,7 @@ require(dplyr)
 require(gridExtra)
 
 # version name
-version <- "20170210-1mo-NoFlow"
+version <- "20170210-Liq+Ice"
 
 ## paths
 # modeled data path
@@ -55,7 +55,7 @@ df.long <- subset(df.long, TimeFromStart>0)
 
 ## plots for temperature profiles at different timesteps
 p.sat.depth.year <- 
-  ggplot(df.long, aes(y=sat, x=depth.mm/1000, color=factor(round(TimeFromStart)))) +
+  ggplot(df.long, aes(y=sat, x=depth.mm/1000, color=factor(round(TimeFromStart/365.25)))) +
   geom_line(alpha=0.5) +
   scale_y_continuous(name="Liquid + Ice Content [m3/m3]") +
   scale_x_reverse(name="Depth [m]", expand=c(0,0)) +

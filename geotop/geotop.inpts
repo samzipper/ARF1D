@@ -3,7 +3,7 @@
 !*******************************
 TimeStepEnergyAndWater = 86400
 InitDateDDMMYYYYhhmm   = 02/01/1889 00:00
-EndDateDDMMYYYYhhmm    = 31/01/1889 00:00
+EndDateDDMMYYYYhhmm    = 31/12/1988 00:00
 EnergyBalance = 1
 WaterBalance  = 1
 PointSim      = 1
@@ -118,7 +118,7 @@ RichardInitForc = 0.01
 !*************************************
 !******* OUTPUT TIME SERIES **********
 !*************************************
-DtPlotPoint = 24
+DtPlotPoint = 8760
 SoilTempProfileFile="output-tabs/soiltemp"
 SoilIceContentProfileFile="output-tabs/thetaice"
 SoilLiqContentProfileFile="output-tabs/thetaliq"

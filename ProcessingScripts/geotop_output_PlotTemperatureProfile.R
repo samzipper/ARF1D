@@ -13,7 +13,7 @@ require(dplyr)
 require(gridExtra)
 
 # version name
-version <- "20170210-1mo-NoFlow"
+version <- "20170210-Liq+Ice"
 
 ## paths
 # modeled data path
@@ -43,7 +43,7 @@ df.mod.long <- subset(df.mod.long, TimeFromStart>0)
 
 ## plots for temperature profiles at different timesteps
 p.Tsoil.depth.year <- 
-  ggplot(df.mod.long, aes(y=Tsoil, x=depth.mm/1000, color=factor(round(TimeFromStart)))) +
+  ggplot(df.mod.long, aes(y=Tsoil, x=depth.mm/1000, color=factor(round(TimeFromStart/365.25)))) +
   geom_line(alpha=0.5) +
   scale_y_continuous(name="Soil Temperature [C]") +
   scale_x_reverse(name="Depth [m]", expand=c(0,0)) +
