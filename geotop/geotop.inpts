@@ -120,8 +120,10 @@ RichardInitForc = 0.01
 !*************************************
 DtPlotPoint = 8760
 SoilTempProfileFile="output-tabs/soiltemp"
+SoilIceContentProfileFile="output-tabs/thetaice"
 SoilLiqContentProfileFile="output-tabs/thetaliq"
-SoilLiqWaterPressProfileFile="output-tabs/soilpsi"
+SoilLiqWaterPressProfileFile="output-tabs/psiliq"
+SoilTotWaterPressProfileFile="output-tabs/psitot"
 SoilAll=1
 
 !*************************************
