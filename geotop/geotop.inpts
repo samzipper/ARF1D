@@ -2,39 +2,39 @@
 !******* CONFIGURATION *********
 !*******************************
 TimeStepEnergyAndWater = 86400
-InitDateDDMMYYYYhhmm = 17/06/2010 00:00
-EndDateDDMMYYYYhhmm = 27/06/2010 00:00
-EnergyBalance =1
-WaterBalance = 1
-PointSim = 1
+InitDateDDMMYYYYhhmm   = 02/01/1889 00:00
+EndDateDDMMYYYYhhmm    = 31/12/1988 00:00
+EnergyBalance = 1
+WaterBalance  = 1
+PointSim      = 1
 
 !*******************************
 !********* GEOGRAPHY ***********
 !*******************************
-Latitude = 40.25
+Latitude  = 40.25
 Longitude = 16.31
-StandardTimeSimulation=1.0
+StandardTimeSimulation = 1.0
 
 !*******************************
 !****** METEO STATIONS *********
 !*******************************
-NumberOfMeteoStations=1
-MeteoStationCoordinateX=609904.1
-MeteoStationCoordinateY=4345653.1
-MeteoStationLatitude=40.25
-MeteoStationLongitude=16.31
-MeteoStationElevation=300
+NumberOfMeteoStation=    1
+MeteoStationCoordinateX= 609904.1
+MeteoStationCoordinateY= 4345653.1
+MeteoStationLatitude=    40.25
+MeteoStationLongitude=   16.31
+MeteoStationElevation=   300
 MeteoStationStandardTime=1.0
 
 HeaderDateDDMMYYYYhhmmMeteo = "POSIX"
-HeaderJulianDayfrom0Meteo = "JD"
-HeaderIPrec = "Iprec"
-HeaderWindVelocity = "WindSp"
-HeaderWindDirection = "WindDir"
-HeaderRH = "RH"
-HeaderAirPress = "P"
-HeaderAirTemp = "AirT"
-HeaderSWglobal = "Swglob"
+HeaderJulianDayfrom0Meteo   = "JD"
+HeaderIPrec                 = "Iprec"
+HeaderWindVelocity          = "WindSp"
+HeaderWindDirection         = "WindDir"
+HeaderRH                    = "RH"
+HeaderAirPress              = "P"
+HeaderAirTemp               = "AirT"
+HeaderSWglobal              = "Swglob"
 HeaderCloudSWTransmissivity = "CloudTrans"
 
 
@@ -42,24 +42,26 @@ HeaderCloudSWTransmissivity = "CloudTrans"
 !****** INIT AND BOUNDARY CONDITIONS ********
 !********************************************
 
-InitSoilPressure = -1.0E+5
-FreeDrainageAtLateralBorder=0
-FreeDrainageAtBottom=1
+InitSoilTemp                = -5.0
+InitSoilTempBedrock         = -5.0
+InitWaterTableDepth         = 3000
+FreeDrainageAtLateralBorder = 0
+FreeDrainageAtBottom        = 1
 
 !************************************
 !******* POINTS OF INTEREST *********
 !************************************
-PointFile = "listpoints"
-HeaderPointID = "ID"
-HeaderCoordinatePointX = "xcoord"
-HeaderCoordinatePointY = "ycoord"
-HeaderPointElevation="zcoord"
-HeaderPointLandCoverType="landcover"
-HeaderPointSoilType="soiltype"
-HeaderPointSlope="slope"
-HeaderPointAspect="aspect"
-HeaderPointSkyViewFactor="sky"
-HeaderPointBedrockDepth="bedrock"
+PointFile               = "listpoints"
+HeaderPointID           = "ID"
+HeaderCoordinatePointX  = "xcoord"
+HeaderCoordinatePointY  = "ycoord"
+HeaderPointElevation    = "zcoord"
+HeaderPointLandCoverType= "landcover"
+HeaderPointSoilType     = "soiltype"
+HeaderPointSlope        = "slope"
+HeaderPointAspect       = "aspect"
+HeaderPointSkyViewFactor= "sky"
+HeaderPointBedrockDepth = "bedrock"
 
 !*******************************
 !******* INPUT  ************
@@ -93,8 +95,6 @@ SoilParFile = "soil/soil"
 
 SoilLayerNumber = 100
 SoilLayerTypes = 1
-InitSoilTemp = 14.0
-InitSoilTempBedrock = 14.0
 ThermalConductivitySoilSolids = 2.5
 ThermalCapacitySoilSolids = 2300000.0
 
@@ -118,18 +118,20 @@ RichardInitForc = 0.01
 !*************************************
 !******* OUTPUT TIME SERIES **********
 !*************************************
-DtPlotDischarge = 0.5
-DtPlotPoint = 24
+DtPlotPoint = 8760
 SoilTempProfileFile="output-tabs/soiltemp"
 SoilLiqContentProfileFile="output-tabs/thetaliq"
 SoilLiqWaterPressProfileFile="output-tabs/soilpsi"
-PointOutputFile="output-tabs/point"
-PointAll=1
 SoilAll=1
 
-!*******************************
-!********* RECOVERY ************
-!*******************************
-!SubfolderRecoveryFiles="rec"
-!ContinuousRecovery=0.0208333333333333
-
+!*************************************
+!******** POINT OUTPUT FILE **********
+!*************************************
+PointOutputFile="output-tabs/point"
+!PointAll=1
+DatePoint=1
+PrainPoint=2
+PsnowPoint=3
+SnowDepthPoint=4
+SWEPoint=5
+AirTempPoint=6
