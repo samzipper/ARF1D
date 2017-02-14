@@ -91,7 +91,7 @@ VegTransNIR = 0.25
 !*******************************
 !*******  SOIL TYPE ************
 !*******************************
-SoilParFile = "soil/soil"
+SoilParFile = "soil/soil_ARF_unburned"
 
 SoilLayerNumber = 100
 SoilLayerTypes = 1
