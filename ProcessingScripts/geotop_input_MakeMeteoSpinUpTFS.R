@@ -16,15 +16,17 @@ es <- function(Tair.C){
 
 # filename of baseline met data
 fname.in <- paste0(git.dir, "data/meteo/Daily_1989-2013_TFS_GapFill.csv")
-fname.out <- paste0(git.dir, "geotop/meteo/meteoTFSdailySpinUp0001.txt")
+fname.out <- paste0(git.dir, "geotop/meteo/meteoTFSdailyWithSpinUp0001.txt")
 
-# number of years and starting years for spin-up period
+# number of spin-up years
 yr.n <- 100
-yr.start <- 1889
 
 # read in met data
 df.in <- read.csv(fname.in)
 df.in$Date <- ymd(df.in$Date)
+
+# figure out start year
+yr.start <- min(df.in$Year)-yr.n
 
 # calculate RH
 df.in$RH <- 100*df.in$ea.kPa/((es(df.in$Tair.C.min)+es(df.in$Tair.C.max))/2)
@@ -62,5 +64,17 @@ for (yr in yr.start:(yr.start+yr.n-1)){
   
 }
 
+# now, get df.in into the same format
+df.in.syn <- data.frame(POSIX=format(df.in$Date, "%d/%m/%Y %H:%M"),
+                        Iprec = df.in$precip.mm/24,
+                        WindSp = df.in$wind.m_s,
+                        AirT = df.in$Tair.C.mean,
+                        RH = df.in$RH,
+                        P = df.in$P.kPa*10,
+                        Swglob = df.in$rad.W_m2)
+
+# combin df.in and df.out
+df.out.combo <- rbind(df.out, df.in.syn)
+
 # write output
-write.table(df.out, file=fname.out, quote=F, sep=",", na="-9999.0", row.names=F)
+write.table(df.out.combo, file=fname.out, quote=F, sep=",", na="-9999.0", row.names=F)
