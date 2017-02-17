@@ -44,10 +44,10 @@ for (fire in c("Moderate", "Severe", "Unburned")){
                     frictionVeloc.m2.s = mean(Friction.Velocity, na.rm=T),
                     windDir.deg = mean(Wind.Direction, na.rm=T),
                     windSpeed.m2.s = mean(Wind.Speed, na.rm=T),
-                    LE.W.m2 = mean(Latent.Heat.Flux, na.rm=T),
-                    H.W.m2 = mean(Sensible.Heat.Flux, na.rm=T),
-                    G.W.m2 = mean(Ground.Heat.Flux, na.rm=T),
-                    NEE.mm.m2.s = mean(Net.Ecosystem.Exchange.of.CO2, na.rm=T))
+                    LE.W.m2 = mean(Latent.Heat.Flux),
+                    H.W.m2 = mean(Sensible.Heat.Flux),
+                    G.W.m2 = mean(Ground.Heat.Flux),
+                    NEE.mm.m2.s = mean(Net.Ecosystem.Exchange.of.CO2))
 
   # make some plots
   p.Tair.C <- 
