@@ -95,8 +95,6 @@ SoilParFile = "soil/soil_ARF_unburned"
 
 SoilLayerNumber = 100
 SoilLayerTypes = 1
-ThermalConductivitySoilSolids = 2.5
-ThermalCapacitySoilSolids = 2300000.0
 
 HeaderSoilDz = "Dz"
 HeaderLateralHydrConductivity = "Kh"
@@ -107,6 +105,8 @@ HeaderThetaSat = "vwc_s"
 HeaderAlpha = "VG_alpha"
 HeaderN = "VG_n"
 HeaderSpecificStorativity = "SS"
+HeaderKthSoilSolids = "thermcond"
+HeaderCthSoilSolids = "thermcap"
 
 !*******************************
 !******* NUMERICS **********

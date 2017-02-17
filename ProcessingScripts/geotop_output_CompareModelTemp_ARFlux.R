@@ -16,7 +16,7 @@ require(gridExtra)
 source(paste0(git.dir, "ProcessingScripts/FitMetrics.R"))
 
 # version name
-version <- "20170214-10yrSpinUp-5mWTD"
+version <- "20170216-SoilThermalProps"
 fire <- "Unburned"  # options are: Unburned, Moderate, Severe
 
 ## paths
