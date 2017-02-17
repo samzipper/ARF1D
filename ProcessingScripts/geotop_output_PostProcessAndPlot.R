@@ -16,7 +16,7 @@ require(gridExtra)
 source(paste0(git.dir, "ProcessingScripts/FitMetrics.R"))
 
 # version name
-version <- "20170217-ValidationTest"
+version <- "20170217-NARRmet-NoUndercatch"
 fire <- "Unburned"  # options are: Unburned, Moderate, Severe
 
 ## paths
@@ -211,17 +211,17 @@ df.fit.VWC$VWC.mod <- df.mod.day$VWC.mean[match(df.fit.VWC$Date, df.mod.day$Date
 df.fit.table <- data.frame(RMSE=numeric(4), NRMSE=numeric(4), NSE=numeric(4), R2=numeric(4),
                            row.names=c("Thaw Depth","Tower Soil Temp", "Nest Soil Temp", "Nest VWC"))
 df.fit.table["Tower Soil Temp",] <- c(RMSE(df.fit.temp.ARFlux$Temp.mod, df.fit.temp.ARFlux$Tsoil.C),
-                               NRMSE(df.fit.temp.ARFlux$Temp.mod, df.fit.temp.ARFlux$Tsoil.C),
-                               NashSutcliffe(df.fit.temp.ARFlux$Temp.mod, df.fit.temp.ARFlux$Tsoil.C),
-                               R2(df.fit.temp.ARFlux$Temp.mod, df.fit.temp.ARFlux$Tsoil.C))
+                                      NRMSE(df.fit.temp.ARFlux$Temp.mod, df.fit.temp.ARFlux$Tsoil.C),
+                                      NashSutcliffe(df.fit.temp.ARFlux$Temp.mod, df.fit.temp.ARFlux$Tsoil.C),
+                                      R2(df.fit.temp.ARFlux$Temp.mod, df.fit.temp.ARFlux$Tsoil.C))
 df.fit.table["Thaw Depth",] <- c(RMSE(df.thaw.day$thaw.mod, df.thaw.day$ThawDepth.mm.mean),
-                                NRMSE(df.thaw.day$thaw.mod, df.thaw.day$ThawDepth.mm.mean),
-                                NashSutcliffe(df.thaw.day$thaw.mod, df.thaw.day$ThawDepth.mm.mean),
-                                R2(df.thaw.day$thaw.mod, df.thaw.day$ThawDepth.mm.mean))
+                                 NRMSE(df.thaw.day$thaw.mod, df.thaw.day$ThawDepth.mm.mean),
+                                 NashSutcliffe(df.thaw.day$thaw.mod, df.thaw.day$ThawDepth.mm.mean),
+                                 R2(df.thaw.day$thaw.mod, df.thaw.day$ThawDepth.mm.mean))
 df.fit.table["Nest Soil Temp",] <- c(RMSE(df.fit.temp$Temp.mod, df.fit.temp$Temp.mean),
-                               NRMSE(df.fit.temp$Temp.mod, df.fit.temp$Temp.mean),
-                               NashSutcliffe(df.fit.temp$Temp.mod, df.fit.temp$Temp.mean),
-                               R2(df.fit.temp$Temp.mod, df.fit.temp$Temp.mean))
+                                     NRMSE(df.fit.temp$Temp.mod, df.fit.temp$Temp.mean),
+                                     NashSutcliffe(df.fit.temp$Temp.mod, df.fit.temp$Temp.mean),
+                                     R2(df.fit.temp$Temp.mod, df.fit.temp$Temp.mean))
 df.fit.table["Nest VWC",] <- c(RMSE(df.fit.VWC$VWC.mod, df.fit.VWC$VWC.mean),
                                NRMSE(df.fit.VWC$VWC.mod, df.fit.VWC$VWC.mean),
                                NashSutcliffe(df.fit.VWC$VWC.mod, df.fit.VWC$VWC.mean),
@@ -252,6 +252,7 @@ p.temp.compare.ARFlux <-
 
 p.temp.compare <-
   ggplot() +
+  geom_hline(yintercept=0, color="gray65") +
   geom_line(data=df.mod.day, aes(x=Date, y=Temp.mean), color="red") +
   geom_point(data=df.obs.day, aes(x=Date, y=Temp.mean)) +
   scale_y_continuous(name=paste0("Nest Soil Temp [C]: ", depth.min, "-", depth.max, " mm")) +
@@ -269,7 +270,7 @@ p.VWC.compare <-
   theme(panel.grid=element_blank())
 
 ggsave(path.plot.val, arrangeGrob(p.thaw.compare.ARFlux, p.temp.compare.ARFlux, p.temp.compare, p.VWC.compare, tableGrob(round(df.fit.table, 3)), 
-                              ncol=1, heights=c(1,1,1,1,0.5)),
+                                  ncol=1, heights=c(1,1,1,1,0.5)),
        width=12, height=12, units="in")
 
 p.precip.mm <- 
@@ -300,5 +301,5 @@ p.Tair.C <-
   theme(panel.grid=element_blank())
 
 ggsave(path.plot.met, arrangeGrob(p.Tair.C, p.precip.mm, p.snow.depth.mm, p.temp.compare.ARFlux, 
-                              ncol=1, heights=c(1,1,1,1)),
+                                  ncol=1, heights=c(1,1,1,1)),
        width=12, height=12, units="in")
