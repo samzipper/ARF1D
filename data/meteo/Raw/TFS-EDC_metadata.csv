@@ -2,27 +2,23 @@
 "End Date:","2015-12-31"
 
 "Selected Fields","Field Label","Time Step","Units","Dec. Places"
-"snow_depth","Snow Depth","3-hour data","cm","2"
-"soil1_moss","Soil Temp(1) 000cm","3-hour data","C","0"
-"soil1_5cm","Soil Temp(1) 005cm","3-hour data","C","0"
-"soil1_10cm","Soil Temp(1) 010cm","3-hour data","C","0"
-"soil1_20cm","Soil Temp(1) 020cm","3-hour data","C","0"
-"soil1_50cm","Soil Temp(1) 050cm","3-hour data","C","0"
-"soil1_100cm","Soil Temp(1) 100cm","3-hour data","C","0"
-"soil1_150cm","Soil Temp(1) 150cm","3-hour data","C","0"
-"soil2_moss","Soil Temp(2) 000cm","3-hour data","C","0"
-"soil2_5cm","Soil Temp(2) 005cm","3-hour data","C","0"
-"soil2_10cm","Soil Temp(2) 010cm","3-hour data","C","0"
-"soil2_20cm","Soil Temp(2) 020cm","3-hour data","C","0"
-"soil2_50cm","Soil Temp(2) 050cm","3-hour data","C","0"
-"soil2_100cm","Soil Temp(2) 100cm","3-hour data","C","0"
-"soil2_150cm","Soil Temp(2) 150cm","3-hour data","C","0"
+"air_temp_1m","Air Temp 1m","1-hour data","C","1"
 "air_temp_3m","Air Temp 3m","1-hour data","C","1"
+"air_temp_5m","Air Temp 5m","1-hour data","C","1"
 "barometer_mbar","Barometric Pressure","1-hour data","mbar","1"
+"lw_dn_avg","Longwave looking down (1hr)","1-hour data","W/m2","3"
+"lw_up_avg","Longwave looking up (1hr)","1-hour data","W/m2","3"
+"rh_1m","Relative Humidity 1m","1-hour data","%","0"
 "rh_3m","Relative Humidity 3m","1-hour data","%","0"
+"rh_5m","Relative Humidity 5m","1-hour data","%","0"
+"sw_dn_avg","Shortwave looking down (1hr)","1-hour data","W/m2","3"
+"sw_up_avg","Shortwave looking up (1hr)","1-hour data","W/m2","3"
+"pyranometer","Solar Radiation","1-hour data","kW/m2","3"
+"wind_sp_1m","Wind Speed 1m","1-hour data","m/s","3"
+"wind_sp_5m","Wind Speed 5m","1-hour data","m/s","3"
 "rain","Year-round Precipitation","1-hour data","mm","3"
 
-"Timestamp: 2017-02-17 19:15:51 UTC"
+"Timestamp: 2017-02-17 19:49:54 UTC"
 "Data obtained from Toolik Field Station Weather Station Data Query (http://toolik.alaska.edu/edc/abiotic_monitoring/data_query.php)"
 "Additional metadata available from Arctic LTER (http://ecosystems.mbl.edu/arc/weather/tl/index.shtml)"
 
@@ -33,23 +29,6 @@
 "http://toolik.alaska.edu/edc/abiotic_monitoring/data_query.php"
 
 "INSTRUMENTATION METADATA (Instrumentation histories are accurate to the best of our knowledge, but not necessarily complete.)"
-** Precipitation **
-Current:
-
-* OTT Pluvio 2 measures "year round precipitation" (http://www.ott.com/en-us/products/meteorological-sensors/ott-pluvio2-l-weighing-rain-gauge/). Surrounded by a double fence Wyoming wind shield.
-performed guided accuracy test: 8/23/16
-not working: to 6/8/16-8/23/16
-Installed: 08/18/10 
-
-* TE525WS measures "rainfall- tipping bucket" (https://www.campbellsci.com/te525ws-l). Surrounded by a single alter shield&nbsp; 
-Calibrated: 06/09/16
-
-Past:
-
-* OTT Pluvio 250 mm with ring heater removed: 08/18/10
-
-** Soil Temperature **
-AM25T Thermocouple multiplexer (https://www.campbellsci.com/am25t) with 18 connected omega engeinnering thermocouples
 ** Air Temperature and RH **
 Current:
 
@@ -92,6 +71,44 @@ Past:
 06/09/16: removed
 
 * CS105 Vaisala PTB101B measures Barometric Pressure (https://www.campbellsci.com/cs105)
+
+** Other Radiation **
+Current:
+
+* Kipp &amp; Zonen CMP6 measures "solar radiation" (http://www.kippzonen.com/Product/12/CMP6-Pyranometer#.VvxyPnrAbMs). With CVP2 power adapter (?).&nbsp; 
+08/19/08: Installed
+
+* Kipp &amp; Zonen CNR4 measures longwave and shortwave looking up and looking down (http://www.kippzonen.com/Product/85/CNR-4-Net-Radiometer#.Vv27LXrAaio)
+06/09/16: swapped with calibrated sensor 
+05/13/13: Installed
+
+Past:
+
+* LICOR Pyranometer LI-200SA measures "Solar Radiation" (https://www.licor.com/env/pdf/light/200.pdf)
+08/19/08: removed
+04/30/07: installed 
+
+** Wind **
+Current:
+
+* R.M. Young 5106 measures wind speed and direction. (http://www.youngusa.com/products/7/8.html)
+Height: 5 m
+06/08/16: swapped new 5108-45 for the 5106. crossarm was out of level, now level and more secure 
+Installed: 06/02/15 new.&nbsp; (an R.M. Young 5103 was installed at the same time also at 5 m. Its data is available upon request but not output through this website)
+
+Past:
+
+* Met One 024A measures wind direction and Met One 014A measures wind speed (http://www.metone.com/meteorology.php)
+Height: 5m
+06/02/2015: both removed
+08/28/14: WS and direction sensors swapped with calibrated sensors 
+08/28/13: WS and direction swapped with calibrated sensors
+07/23/13: moved WS and direction sensors to new tower
+05/2013: WS and direction sensor swapped with calibrated sensors
+08/08/11: WS and direction sensors swapped with calibrated sensors 
+08/19/08: WS and direction sensors swapped with calibrated sensors 
+
+* 1m WS removed 08/19/08
 
 ** Precipitation **
 Current:
