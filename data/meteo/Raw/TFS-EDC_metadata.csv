@@ -1,0 +1,110 @@
+"Start Date:","1988-06-01"
+"End Date:","2015-12-31"
+
+"Selected Fields","Field Label","Time Step","Units","Dec. Places"
+"snow_depth","Snow Depth","3-hour data","cm","2"
+"soil1_moss","Soil Temp(1) 000cm","3-hour data","C","0"
+"soil1_5cm","Soil Temp(1) 005cm","3-hour data","C","0"
+"soil1_10cm","Soil Temp(1) 010cm","3-hour data","C","0"
+"soil1_20cm","Soil Temp(1) 020cm","3-hour data","C","0"
+"soil1_50cm","Soil Temp(1) 050cm","3-hour data","C","0"
+"soil1_100cm","Soil Temp(1) 100cm","3-hour data","C","0"
+"soil1_150cm","Soil Temp(1) 150cm","3-hour data","C","0"
+"soil2_moss","Soil Temp(2) 000cm","3-hour data","C","0"
+"soil2_5cm","Soil Temp(2) 005cm","3-hour data","C","0"
+"soil2_10cm","Soil Temp(2) 010cm","3-hour data","C","0"
+"soil2_20cm","Soil Temp(2) 020cm","3-hour data","C","0"
+"soil2_50cm","Soil Temp(2) 050cm","3-hour data","C","0"
+"soil2_100cm","Soil Temp(2) 100cm","3-hour data","C","0"
+"soil2_150cm","Soil Temp(2) 150cm","3-hour data","C","0"
+"air_temp_3m","Air Temp 3m","1-hour data","C","1"
+"barometer_mbar","Barometric Pressure","1-hour data","mbar","1"
+"rh_3m","Relative Humidity 3m","1-hour data","%","0"
+"rain","Year-round Precipitation","1-hour data","mm","3"
+
+"Timestamp: 2017-02-17 19:15:51 UTC"
+"Data obtained from Toolik Field Station Weather Station Data Query (http://toolik.alaska.edu/edc/abiotic_monitoring/data_query.php)"
+"Additional metadata available from Arctic LTER (http://ecosystems.mbl.edu/arc/weather/tl/index.shtml)"
+
+"CITING DATA"
+"If you use data from the EDC, please cite the data according to following format:"
+"Environmental Data Center Team. Year of data retrieval. Meteorological monitoring program at Toolik, Alaska."
+"Toolik Field Station, Institute of Arctic Biology, University of Alaska Fairbanks, Fairbanks, AK 99775."
+"http://toolik.alaska.edu/edc/abiotic_monitoring/data_query.php"
+
+"INSTRUMENTATION METADATA (Instrumentation histories are accurate to the best of our knowledge, but not necessarily complete.)"
+** Precipitation **
+Current:
+
+* OTT Pluvio 2 measures "year round precipitation" (http://www.ott.com/en-us/products/meteorological-sensors/ott-pluvio2-l-weighing-rain-gauge/). Surrounded by a double fence Wyoming wind shield.
+performed guided accuracy test: 8/23/16
+not working: to 6/8/16-8/23/16
+Installed: 08/18/10 
+
+* TE525WS measures "rainfall- tipping bucket" (https://www.campbellsci.com/te525ws-l). Surrounded by a single alter shield&nbsp; 
+Calibrated: 06/09/16
+
+Past:
+
+* OTT Pluvio 250 mm with ring heater removed: 08/18/10
+
+** Soil Temperature **
+AM25T Thermocouple multiplexer (https://www.campbellsci.com/am25t) with 18 connected omega engeinnering thermocouples
+** Air Temperature and RH **
+Current:
+
+*  Vaisala HMP155A measures air temperature and relative humidity (https://www.campbellsci.com/hmp155a). With a 41005-5 14 plate radiation shield (https://www.campbellsci.com/h41005-5)
+Height: 3 and 5 m
+06/08/16: swapped with calibrated sensors 
+08/28/14.Installed: 3m and 5m 
+
+Past:
+
+* Vaisala HMP45C measured air temperature and relative humidity (https://www.campbellsci.com/hmp45c-l).
+Height: 5m
+08/28/15 swapped with calibrates sensor
+05/2013: swapped with calibrated sensor
+08/08/11: swapped with calibrated sensor 
+08/28/09: swapped with calibrated sensor
+08/19/08: Installed 
+
+* R.M. Young 41382VC measured air temperature and relative humidity (http://www.youngusa.com/products/2/15.html)
+Height 3m
+04/18/12: Swapped with calibrated sensor&nbsp; (measures in Celsius)
+08/08/11: Swapped 3m with calibrated sensor (measures in Fahrenheit- converted to C in logger program) 
+08/19/08: Installed
+
+* CS500 measured air temperature and relative humidity (https://www.campbellsci.com/cs500-l)
+Height 5m
+08/19/08: removed
+
+* 1m Temp/RH removed 08/19/08
+
+** Pressure **
+Current:
+
+* CS106 Vaisala PTB110 measures Barometric Pressue (https://www.campbellsci.com/cs106)
+06/09/16: Installed. This is uncorrected for sea level. Add 85 millibar to correct for sea level. 
+
+Past:
+
+* CS100 Serta 278 measures Barometric Pressure (https://www.campbellsci.com/cs100)
+06/09/16: removed
+
+* CS105 Vaisala PTB101B measures Barometric Pressure (https://www.campbellsci.com/cs105)
+
+** Precipitation **
+Current:
+
+* OTT Pluvio 2 measures "year round precipitation" (http://www.ott.com/en-us/products/meteorological-sensors/ott-pluvio2-l-weighing-rain-gauge/). Surrounded by a double fence Wyoming wind shield.
+performed guided accuracy test: 8/23/16
+not working: to 6/8/16-8/23/16
+Installed: 08/18/10 
+
+* TE525WS measures "rainfall- tipping bucket" (https://www.campbellsci.com/te525ws-l). Surrounded by a single alter shield&nbsp; 
+Calibrated: 06/09/16
+
+Past:
+
+* OTT Pluvio 250 mm with ring heater removed: 08/18/10
+
