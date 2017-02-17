@@ -40,14 +40,14 @@ for (fire in c("Moderate", "Severe", "Unburned")){
                     SWout.W.m2 = mean(Outgoing.Shortwave, na.rm=T),
                     LWin.mm.m2.s = mean(Incoming.Longwave, na.rm=T),
                     LWout.mm.m2.s = mean(Outgoing.Longwave, na.rm=T),
-                    Rnet.W.m2 = mean(Net.Radiation, na.rm=T),
+                    Rnet.W.m2 = mean(Net.Radiation),
                     frictionVeloc.m2.s = mean(Friction.Velocity, na.rm=T),
                     windDir.deg = mean(Wind.Direction, na.rm=T),
                     windSpeed.m2.s = mean(Wind.Speed, na.rm=T),
-                    LE.W.m2 = mean(Latent.Heat.Flux, na.rm=T),
-                    H.W.m2 = mean(Sensible.Heat.Flux, na.rm=T),
-                    G.W.m2 = mean(Ground.Heat.Flux, na.rm=T),
-                    NEE.mm.m2.s = mean(Net.Ecosystem.Exchange.of.CO2, na.rm=T))
+                    LE.W.m2 = mean(Latent.Heat.Flux),
+                    H.W.m2 = mean(Sensible.Heat.Flux),
+                    G.W.m2 = mean(Ground.Heat.Flux),
+                    NEE.mm.m2.s = mean(Net.Ecosystem.Exchange.of.CO2))
 
   # make some plots
   p.Tair.C <- 
@@ -69,6 +69,8 @@ for (fire in c("Moderate", "Severe", "Unburned")){
   ggsave(paste0("p.Tair.Tsoil_", fire, ".png"),
          arrangeGrob(p.Tair.C, p.Tsoil.C, ncol=1),
          width=12, height=8, units="in")
+  
+  df.energy <- df.d[,c("Date", "Rnet.W.m2", "LE.W.m2", "H.W.m2", "G.W.m2")]
   
   if (exists("df.d.all")){
     df.d.all <- rbind(df.d.all, df.d)
