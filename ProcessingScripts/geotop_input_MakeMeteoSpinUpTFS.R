@@ -10,10 +10,6 @@ git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
 
 require(lubridate)
 
-es <- function(Tair.C){
-  0.6108*exp((Tair.C*17.27)/(Tair.C+237.3))
-}
-
 # filename of baseline met data
 fname.in <- paste0(git.dir, "data/meteo/Daily_1989-2013_TFS_GapFill.csv")
 fname.out <- paste0(git.dir, "geotop/meteo/meteoTFSdailyWithSpinUp0001.txt")
@@ -27,11 +23,6 @@ df.in$Date <- ymd(df.in$Date)
 
 # figure out start year
 yr.start <- min(df.in$Year)-yr.n
-
-# calculate RH
-df.in$RH <- 100*df.in$ea.kPa/((es(df.in$Tair.C.min)+es(df.in$Tair.C.max))/2)
-df.in$RH[df.in$RH>100] <- 100
-df.in$RH[df.in$RH<0] <- 0
 
 # list of years that exist
 yrs.exist.leap <- unique(df.in$Year[leap_year(df.in$Year)])
