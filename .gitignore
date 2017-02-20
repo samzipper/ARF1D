@@ -1,6 +1,7 @@
 ## ignore in all folders
 *.png
 *.Rhistory
+*.swp
 
 ## ignore in geotop folder only
 geotop/output*

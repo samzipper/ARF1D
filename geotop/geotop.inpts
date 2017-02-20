@@ -11,9 +11,9 @@ PointSim      = 1
 !*******************************
 !********* GEOGRAPHY ***********
 !*******************************
-Latitude  = 40.25
-Longitude = 16.31
-StandardTimeSimulation = 1.0
+Latitude  = 68.93
+Longitude = -150.27
+StandardTimeSimulation = -9.0
 
 !*******************************
 !****** METEO STATIONS *********
@@ -21,10 +21,10 @@ StandardTimeSimulation = 1.0
 NumberOfMeteoStation=    1
 MeteoStationCoordinateX= 609904.1
 MeteoStationCoordinateY= 4345653.1
-MeteoStationLatitude=    40.25
-MeteoStationLongitude=   16.31
-MeteoStationElevation=   300
-MeteoStationStandardTime=1.0
+MeteoStationLatitude=    68.93
+MeteoStationLongitude=   -150.27
+MeteoStationElevation=   760
+MeteoStationStandardTime=-9.0
 
 HeaderDateDDMMYYYYhhmmMeteo = "POSIX"
 HeaderJulianDayfrom0Meteo   = "JD"

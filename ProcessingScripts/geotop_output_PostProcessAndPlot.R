@@ -16,7 +16,7 @@ require(gridExtra)
 source(paste0(git.dir, "ProcessingScripts/FitMetrics.R"))
 
 # version name
-version <- "20170217-NARRmet-NoUndercatch"
+version <- "20170220-NARRmet-FixCoord-FixDEM"
 fire <- "Unburned"  # options are: Unburned, Moderate, Severe
 
 ## paths
