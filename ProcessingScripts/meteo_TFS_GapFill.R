@@ -39,8 +39,8 @@ df.ARFlux$Date <- ymd(df.ARFlux$Date)
 df.EDC$date <- ymd(df.EDC$date)
 colnames(df.EDC)[colnames(df.EDC)=="date"] <- "Date"  # capitalize to match other datasets
 
-# data starts in June 1988 and precip data only exists until end of 2013; trim to start January 1 1989 and end December 31 2013
-df <- subset(df, Year>=1989 & Year<=2013)
+# data starts in June 1988, trim to start January 1 1989
+df <- subset(df, Year>=1989 & Year<=2015)
 
 # convert date column
 df$Date <- dmy(df$Date)
@@ -639,7 +639,7 @@ df.met$RH[df.met$RH>100] <- 100
 # Save output data --------------------------------------------------------
 
 # save gap-filled
-write.csv(df.met, paste0(git.dir, "data/meteo/Daily_1989-2013_TFS_GapFill.csv"), row.names=F)
+write.csv(df.met, paste0(git.dir, "data/meteo/Daily_1989-2015_TFS_GapFill.csv"), row.names=F)
 
 ## make some plots
 df.met.long <- melt(df.met, id.vars=c("Date", "Year", "DOY", "Station", "Comments"))
@@ -652,5 +652,5 @@ p.met <-
   theme(panel.grid=element_blank(),
         legend.position="bottom")
 
-ggsave(paste0(git.dir, "data/meteo/Daily_1989-2013_TFS_GapFill.png"), 
+ggsave(paste0(git.dir, "data/meteo/Daily_1989-2015_TFS_GapFill.png"), 
        p.met, width=8, height=6, units="in")
