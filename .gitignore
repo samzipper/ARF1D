@@ -6,3 +6,4 @@
 ## ignore in geotop folder only
 geotop/output*
 geotop/_*
+geotop/SnowDepthCalibration/*_geotop.inpts
