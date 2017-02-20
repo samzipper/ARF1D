@@ -26,7 +26,7 @@ site.lat <- 68.93      # unburned=68.93, moderate=68.95, severe=68.99
 site.lon <- -150.27    # unburned=-150.27, moderate=-150.21, severe=-150.28
 
 # First, build NARR input dataset for 1979-2015 ---------------------------
-yr.list <- seq(1979,2013)
+yr.list <- seq(1979,2015)
 
 # get some metadata that will be needed for all stations and shouldn't change between data products or years
 NARR.nc <- nc_open(paste0(NARR.dir, "air.2m.1979.nc"))
@@ -89,7 +89,7 @@ for (yr in yr.list){
                         wind.v = ncvar_get(vwnd.10m.nc, start=c(i.NARR, 1), count=c(1, 1, yr.days)))
 
   # bind to overall data frame
-  df.out <- rbind(df.year, df.out)
+  df.out <- rbind(df.out, df.year)
 
   # close NetCDFs
   nc_close(air.2m.nc)
@@ -169,6 +169,9 @@ df.in.syn <- data.frame(POSIX=format(df.in$Date, "%d/%m/%Y %H:%M"),
 
 # combin df.in and df.out
 df.out.combo <- rbind(df.out, df.in.syn)
+
+# order
+df.out.combo <- df.out.combo[order(dmy_hm(df.out.combo$POSIX)), ]
 
 # write output
 write.table(df.out.combo, file=fname.out, quote=F, sep=",", na="-9999.0", row.names=F)
