@@ -1,6 +1,7 @@
-## geotop_SnowDepthCalibration_CreateGeotopInputFiles.R
+## geotop_SnowDepthCalibration_CreateGeotopInputFiles_Uniform.R
 #' This is intended to create a bunch of Geotop input files that will
-#' be used for snow depth calibration.
+#' be used for snow depth calibration. Parameters varied for calibration 
+#' are drawn from a uniform distribution with user-defined intervals.
 
 rm(list=ls())
 
