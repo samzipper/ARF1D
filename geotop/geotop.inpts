@@ -2,7 +2,7 @@
 !******* CONFIGURATION *********
 !*******************************
 TimeStepEnergyAndWater = 86400
-InitDateDDMMYYYYhhmm   = 01/01/2000 00:00
+InitDateDDMMYYYYhhmm   = 01/01/2014 00:00
 EndDateDDMMYYYYhhmm    = 31/12/2015 00:00
 EnergyBalance = 1
 WaterBalance  = 1
@@ -35,6 +35,7 @@ HeaderRH                    = "RH"
 HeaderAirPress              = "P"
 HeaderAirTemp               = "AirT"
 HeaderSWglobal              = "Swglob"
+HeaderLWin                  = "LWin"
 HeaderCloudSWTransmissivity = "CloudTrans"
 
 
@@ -66,7 +67,7 @@ HeaderPointBedrockDepth = "bedrock"
 !*******************************
 !******* INPUT  ************
 !*******************************
-MeteoFile = "meteo/meteoTFSdailyWithSpinUpUnburned"
+MeteoFile = "meteo/meteoNARRdailyWithSpinUp"
 
 !*******************************
 !******** LAND COVER  **********
