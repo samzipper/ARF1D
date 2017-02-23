@@ -145,7 +145,8 @@ for (yr in yr.start:(yr.start+yr.n-1)){
                            AirT = subset(df.in, Year==yr.syn)$Tmean.C,
                            RH = subset(df.in, Year==yr.syn)$RH,
                            P = subset(df.in, Year==yr.syn)$P/1000,  # convert Pa to kPa
-                           Swglob = subset(df.in, Year==yr.syn)$SWin)
+                           Swglob = subset(df.in, Year==yr.syn)$SWin,
+                           LWin = subset(df.in, Year==yr.syn)$LWin)
   
   if (yr==yr.start){
     df.out <- df.out.syn
@@ -165,7 +166,8 @@ df.in.syn <- data.frame(POSIX=format(df.in$Date, "%d/%m/%Y %H:%M"),
                         AirT = df.in$Tmean.C,
                         RH = df.in$RH,
                         P = df.in$P/1000,
-                        Swglob = df.in$SWin)
+                        Swglob = df.in$SWin,
+                        LWin = df.in$LWin)
 
 # combin df.in and df.out
 df.out.combo <- rbind(df.out, df.in.syn)
