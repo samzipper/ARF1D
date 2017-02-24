@@ -10,3 +10,4 @@ geotop/_*
 ## folders to ignore
 geotop/SnowDepthCalibration/*
 geotop/SoilPropertyCalibration/*_SoilARF*
+geotop/SoilPropertyCalibration/output_*

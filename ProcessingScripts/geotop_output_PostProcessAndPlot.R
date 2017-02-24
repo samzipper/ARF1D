@@ -16,7 +16,7 @@ require(gridExtra)
 source(paste0(git.dir, "ProcessingScripts/FitMetrics.R"))
 
 # version name
-version <- "20170220-TFSmet-FixCoord-FixDEM"
+version <- "20170224-NARRmet-VaryVeg"
 fire <- "Unburned"  # options are: Unburned, Moderate, Severe
 
 ## paths
