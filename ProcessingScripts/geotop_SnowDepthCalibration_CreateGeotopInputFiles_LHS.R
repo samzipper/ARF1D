@@ -3,6 +3,9 @@
 #' be used for snow depth calibration. Parameters varied for calibration 
 #' are generated using Latin Hypercube Sampling (package lhs).
 
+# set seed
+set.seed(1)
+
 rm(list=ls())
 
 require(lhs)
