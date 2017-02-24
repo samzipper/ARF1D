@@ -4,7 +4,7 @@
 rm(list=ls())
 
 # git directory for relative paths
-git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
+git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
 
 require(lubridate)
 require(dplyr)
@@ -21,7 +21,7 @@ RootDepth.max <- 500  # [mm] - max root depth; defined based on ~annual thaw dep
 days.ramp <- 30
 
 # filename to save output
-fname.out <- paste0(git.dir, "geotop/veg/VegParams.txt")
+fname.out <- paste0(git.dir, "geotop/veg/VegParams0001.txt")
 
 # filename of meteo
 fname.meteo <- paste0(git.dir, "geotop/meteo/meteoNARRdailyWithSpinUp0001.txt")
@@ -87,9 +87,14 @@ for (yr in df.meteo.gs$year){
 # make output data frame
 df.out.combo <- data.frame(POSIX = df.meteo$POSIX,
                            VegHeight = df.yr.all$VegHeight,
+                           ThresVeg1 = 0,
+                           ThresVeg2 = 0,
                            LSAI = df.yr.all$LSAI,
                            CanopyFraction = df.yr.all$CanopyFraction,
-                           RootDepth = df.yr.all$RootDepth)
+                           DecayCoeff=2.5,
+                           SnowBurialCoeff=1,
+                           RootDepth = df.yr.all$RootDepth,
+                           MinStomatalRes=60)
 
 # write output
 write.table(df.out.combo, file=fname.out, quote=F, sep=",", na="-9999.0", row.names=F)

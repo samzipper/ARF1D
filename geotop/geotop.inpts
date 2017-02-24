@@ -3,7 +3,7 @@
 !*******************************
 TimeStepEnergyAndWater = 86400
 InitDateDDMMYYYYhhmm   = 01/01/2014 00:00
-EndDateDDMMYYYYhhmm    = 31/12/2015 00:00
+EndDateDDMMYYYYhhmm    = 31/12/2014 00:00
 EnergyBalance = 1
 WaterBalance  = 1
 PointSim      = 1
@@ -16,7 +16,7 @@ Longitude = -150.27
 StandardTimeSimulation = -9.0
 
 !*******************************
-!****** METEO STATIONS *********
+!******** METEO DATA ***********
 !*******************************
 NumberOfMeteoStation=    1
 MeteoStationCoordinateX= 609904.1
@@ -89,6 +89,8 @@ VegReflNIR = 0.58
 VegTransVis = 0.05
 VegTransNIR = 0.25
 
+TimeDependentVegetationParameterFile="veg/VegParams"
+
 !*******************************
 !*******  SOIL TYPE ************
 !*******************************
@@ -133,8 +135,12 @@ SoilAll=1
 PointOutputFile="output-tabs/point"
 !PointAll=1
 DatePoint=1
-PrainPoint=2
-PsnowPoint=3
-SnowDepthPoint=4
-SWEPoint=5
-AirTempPoint=6
+!PrainPoint=2
+!PsnowPoint=3
+!SnowDepthPoint=4
+!SWEPoint=5
+!AirTempPoint=6
+LSAIPoint=2
+CanopyFractionPoint=3
+z0vegPoint=4
+d0vegPoint=5
