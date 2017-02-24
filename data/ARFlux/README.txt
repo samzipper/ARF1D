@@ -7,3 +7,5 @@ ARFlux_2008-2012_Hourly.csv files are hourly means derived from the half-hourly 
 ARFlux_ThawDepths_2008-2014.csv is the thaw depth at each site for multiple points during the year [cm]. http://arc-lter.ecosystems.mbl.edu/2008-2014arfthawdepths
 
 ARFlux_SoilTemp-Moisture_(Severity)_2010-2013.csv files are soil moisture and temperature from different sites. http://arc-lter.ecosystems.mbl.edu/arfmoderate-soiltemp-moisture
+
+ARFlux_2008-2014_BurnSpectra.csv are reflectances on different days for ARFlux sites http://arc-lter.ecosystems.mbl.edu/2008-2014arburnspectra
