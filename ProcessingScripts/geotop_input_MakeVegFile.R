@@ -14,7 +14,6 @@ VegHeight.min <- 50   # [mm] - min veg height (50 mm is min allowed in GEOtop)
 VegHeight.max <- 500  # [mm] - max veg height (based on Google Image Search for Anaktuvuk River Fire, looked like it was ~knee high at flowering)
 LSAI.min <- 0.05  # [m2/m2] - min LAI+SAI used in non-growing season
 LSAI.max <- 2.0   # [m2/m2] - max LAI+SAI, based on Rocha & Shaver (2009) AFM
-CanopyFraction.max <- 0.5   # [0-1] - fraction of pixel covered by canopy
 RootDepth.max <- 500  # [mm] - max root depth; defined based on ~annual thaw depth (Iversen et al., 2015, NP)
 
 # time to ramp up/down after SOS and before EOS
@@ -72,8 +71,8 @@ for (yr in df.meteo.gs$year){
   df.yr$LSAI[df.yr$DOY>=(EOS-days.ramp) & df.yr$DOY<EOS] <- LSAI.max - (LSAI.max-LSAI.min)*
     (df.yr$DOY[df.yr$DOY>=(EOS-days.ramp) & df.yr$DOY<EOS]-(EOS-days.ramp))/days.ramp
   
-  # for canopy fraction, use Norman et al. (1995) AFM Eq. 3
-  df.yr$CanopyFraction <- 1-exp(-0.5*df.yr$LSAI)
+# for canopy fraction, use Norman et al. (1995) AFM Eq. 3
+df.yr$CanopyFraction <- 1-exp(-0.5*df.yr$LSAI)
   
   # make output data frame
   if (exists("df.yr.all")){
@@ -90,7 +89,11 @@ df.out.combo <- data.frame(POSIX = df.meteo$POSIX,
                            ThresVeg1 = 0,
                            ThresVeg2 = 0,
                            LSAI = df.yr.all$LSAI,
-                           CanopyFraction = df.yr.all$CanopyFraction,
+                           ## 2/24/2017: Canopy fraction causing model to randomly stop under
+                           ##    some scenarios; I think I may be misinterpreting its meaning. 
+                           ##    Setting to 0 at all times, which is default.
+                           ##CanopyFraction = df.yr.all$CanopyFraction,
+                           CanopyFraction = 0.0,
                            DecayCoeff=2.5,
                            SnowBurialCoeff=1,
                            RootDepth = df.yr.all$RootDepth,

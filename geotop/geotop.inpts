@@ -2,8 +2,8 @@
 !******* CONFIGURATION *********
 !*******************************
 TimeStepEnergyAndWater = 86400
-InitDateDDMMYYYYhhmm   = 01/01/2014 00:00
-EndDateDDMMYYYYhhmm    = 31/12/2014 00:00
+InitDateDDMMYYYYhhmm   = 01/01/2001 00:00
+EndDateDDMMYYYYhhmm    = 31/12/2013 00:00
 EnergyBalance = 1
 WaterBalance  = 1
 PointSim      = 1
@@ -85,12 +85,13 @@ MeteoFile = "meteo/meteoNARRdailyWithSpinUp"
 !******** LAND COVER  **********
 !*******************************
 NumLandCoverTypes = 1
+PointLandCoverType = 1
 SoilRoughness = 100.0
 SurFlowResLand = 0.5
-VegHeight =1800.0
-LSAI = 0.6
-CanopyFraction = 0.0
-RootDepth =1000.0
+!VegHeight =1800.0
+!LSAI = 0.6
+!CanopyFraction = 0.0
+!RootDepth =1000.0
 
 TimeDependentVegetationParameterFile="veg/VegParams"
 
@@ -117,10 +118,11 @@ VegTransNIR = 0.45
 !*******************************
 !*******  SOIL TYPE ************
 !*******************************
-SoilParFile = "soil/soil_ARF_unburned"
+SoilParFile = "soil/SoilARF"
 
 SoilLayerNumber = 100
 SoilLayerTypes = 1
+PointSoilType = 1
 
 HeaderSoilDz = "Dz"
 HeaderLateralHydrConductivity = "Kh"
@@ -137,9 +139,10 @@ HeaderCthSoilSolids = "thermcap"
 !*******************************
 !******* NUMERICS **********
 !*******************************
-HeatEqTol = 1.0E-6
-RichardMaxIter = 1500
-RichardInitForc = 0.01
+HeatEqTol = 1.0E-09
+!RichardMaxIter = 1500
+!RichardInitForc = 0.01
+RichardTol = 1.0E-09
 
 !*************************************
 !******* OUTPUT TIME SERIES **********
@@ -148,22 +151,22 @@ DtPlotPoint = 24
 SoilTempProfileFile="output-tabs/soiltemp"
 SoilIceContentProfileFile="output-tabs/thetaice"
 SoilLiqContentProfileFile="output-tabs/thetaliq"
-SoilLiqWaterPressProfileFile="output-tabs/psiliq"
-SoilTotWaterPressProfileFile="output-tabs/psitot"
+!SoilLiqWaterPressProfileFile="output-tabs/psiliq"
+!SoilTotWaterPressProfileFile="output-tabs/psitot"
 SoilAll=1
 
 !*************************************
 !******** POINT OUTPUT FILE **********
 !*************************************
-PointOutputFile="output-tabs/point"
+!PointOutputFile="output-tabs/point"
 !PointAll=1
-DatePoint=1
+!DatePoint=1
 !PrainPoint=2
 !PsnowPoint=3
 !SnowDepthPoint=4
 !SWEPoint=5
 !AirTempPoint=6
-LSAIPoint=2
-CanopyFractionPoint=3
-z0vegPoint=4
-d0vegPoint=5
+!LSAIPoint=2
+!CanopyFractionPoint=3
+!z0vegPoint=4
+!d0vegPoint=5
