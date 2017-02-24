@@ -1,5 +1,5 @@
 #!/bin/bash
-for i in {1..3179}
+for i in {1..1000}
 do
 	# define the prefix
 	num=`printf %04d $i`

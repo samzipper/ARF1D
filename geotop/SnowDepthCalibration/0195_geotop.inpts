@@ -35,20 +35,21 @@ HeaderRH                    = "RH"
 HeaderAirPress              = "P"
 HeaderAirTemp               = "AirT"
 HeaderSWglobal              = "Swglob"
+HeaderLWin                  = "LWin"
 HeaderCloudSWTransmissivity = "CloudTrans"
 
 !********************************************
 !****************** SNOW ********************
 !********************************************
 
-ThresTempRain = 2.75
-ThresTempSnow = -2.25
+ThresTempRain = 3.44075739917252
+ThresTempSnow = -0.242545332267881
 
-IrriducibleWatSatSnow = 0.02
-SnowCorrFactor = 0.5
+IrriducibleWatSatSnow = 0.04
+SnowCorrFactor = 0.968759375577094
 
-SnowAgingCoeffVis = 0.2
-SnowAgingCoeffNIR = 0.5
+SnowAgingCoeffVis = 0.25
+SnowAgingCoeffNIR = 0.45
 
 !********************************************
 !****** INIT AND BOUNDARY CONDITIONS ********
