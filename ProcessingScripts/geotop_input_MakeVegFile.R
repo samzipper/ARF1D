@@ -92,12 +92,13 @@ df.out.combo <- data.frame(POSIX = df.meteo$POSIX,
                            ## 2/24/2017: Canopy fraction causing model to randomly stop under
                            ##    some scenarios; I think I may be misinterpreting its meaning. 
                            ##    Setting to 0 at all times, which is default.
-                           ##CanopyFraction = df.yr.all$CanopyFraction,
-                           CanopyFraction = 0.0,
+                           CanopyFraction = df.yr.all$CanopyFraction,
+                           #CanopyFraction = 0.05,
                            DecayCoeff=2.5,
                            SnowBurialCoeff=1,
                            RootDepth = df.yr.all$RootDepth,
                            MinStomatalRes=60)
+df.out.combo$CanopyFraction[df.out.combo$LSAI<0.4] <- 0
 
 # write output
 write.table(df.out.combo, file=fname.out, quote=F, sep=",", na="-9999.0", row.names=F)

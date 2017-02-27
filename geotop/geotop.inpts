@@ -57,7 +57,7 @@ SnowAgingCoeffNIR = 0.45
 
 InitSoilTemp                = -5.0
 InitSoilTempBedrock         = -5.0
-InitWaterTableDepth         = 5000
+!InitWaterTableDepth         = 10000
 FreeDrainageAtLateralBorder = 0
 FreeDrainageAtBottom        = 1
 
@@ -160,8 +160,8 @@ SoilAll=1
 !*************************************
 !******** POINT OUTPUT FILE **********
 !*************************************
-!PointOutputFile="output-tabs/point"
-!PointAll=1
+PointOutputFile="output-tabs/point"
+PointAll=1
 !DatePoint=1
 !PrainPoint=2
 !PsnowPoint=3

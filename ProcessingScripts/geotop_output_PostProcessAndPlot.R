@@ -1,4 +1,4 @@
-## geotop_output_CompareModelTempVWC.R
+## geotop_output_PostProcessAndPlot.R
 #' This is intended to compare modeled and measured temperature at different
 #' depths from a set of soil moisture/temperature sensors.
 #' 
@@ -16,7 +16,7 @@ require(gridExtra)
 source(paste0(git.dir, "ProcessingScripts/FitMetrics.R"))
 
 # version name
-version <- "20170224-NARRmet-VaryVeg"
+version <- "20170227-Baseline"
 fire <- "Unburned"  # options are: Unburned, Moderate, Severe
 
 ## paths
