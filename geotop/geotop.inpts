@@ -57,9 +57,12 @@ SnowAgingCoeffNIR = 0.45
 
 InitSoilTemp                = -5.0
 InitSoilTempBedrock         = -5.0
+InitSoilPressure            = -1000
 !InitWaterTableDepth         = 10000
 FreeDrainageAtLateralBorder = 0
 FreeDrainageAtBottom        = 1
+ZeroTempAmplitDepth         = 20000
+ZeroTempAmplitTemp          = -4.8
 
 !************************************
 !******* POINTS OF INTEREST *********
