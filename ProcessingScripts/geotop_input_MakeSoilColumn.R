@@ -14,7 +14,7 @@ rm(list=ls())
 git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
 
 # path to save output soil file
-out.path <- paste0(git.dir, "geotop/soil/soil_ARF_unburned0001.txt")
+out.path <- paste0(git.dir, "geotop/soil/SoilARF0001.txt")
 
 # define soil layer properties
 min.Dz <- 10       # [mm] - thickness of organic soil layers
