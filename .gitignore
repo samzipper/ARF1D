@@ -2,6 +2,7 @@
 *.png
 *.Rhistory
 *.swp
+*.xlsx
 
 ## ignore in geotop folder only
 geotop/output*
