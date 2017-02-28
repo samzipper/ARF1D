@@ -54,7 +54,7 @@ for (fire in c("Moderate", "Severe", "Unburned")){
   df$Pressure <- na.approx(df$PA, na.rm=F, maxgap=max.gap.pts)
   df$Air.Temperature <- na.approx(df$TA, na.rm=F, maxgap=max.gap.pts)
   df$Soil.Temperature <- na.approx(df$TS_1, na.rm=F, maxgap=max.gap.pts)
-  df$VWC <- na.approx(df$SWC_1, na.rm=F, maxgap=max.gap.pts)
+  df$SWC <- na.approx(df$SWC_1, na.rm=F, maxgap=max.gap.pts)
   df$RH <- na.approx(df$RH, na.rm=F, maxgap=max.gap.pts)
   df$Incoming.Shortwave <- na.approx(df$SW_IN, na.rm=F, maxgap=max.gap.pts)
   df$Outgoing.Shortwave <- na.approx(df$SW_OUT, na.rm=F, maxgap=max.gap.pts)
@@ -83,9 +83,9 @@ for (fire in c("Moderate", "Severe", "Unburned")){
                     Tsoil.C = mean(Soil.Temperature),
                     Tsoil.C.min = min(Soil.Temperature),
                     Tsoil.C.max = max(Soil.Temperature),
-                    VWC = mean(VWC/100),
-                    VWC.min = min(VWC/100),
-                    VWC.max = max(VWC/100),
+                    VWC = mean(SWC/100),
+                    VWC.min = min(SWC/100),
+                    VWC.max = max(SWC/100),
                     RH = mean(RH),
                     es.kPa = mean(Saturation.Vapor.Pressure),
                     ea.kPa = mean(Ambient.Vapor.Pressure),
