@@ -53,10 +53,8 @@ for (fire in c("Moderate", "Severe", "Unburned")){
   # data downloaded from ARC LTER so you don't have to mess with rest of script
   df$Pressure <- na.approx(df$PA, na.rm=F, maxgap=max.gap.pts)
   df$Air.Temperature <- na.approx(df$TA, na.rm=F, maxgap=max.gap.pts)
-  df$Soil.Temperature.1 <- na.approx(df$TS_1, na.rm=F, maxgap=max.gap.pts)
-  df$Soil.Temperature.2 <- na.approx(df$TS_2, na.rm=F, maxgap=max.gap.pts)
-  df$VWC.1 <- na.approx(df$SWC_1, na.rm=F, maxgap=max.gap.pts)
-  df$VWC.2 <- na.approx(df$SWC_2, na.rm=F, maxgap=max.gap.pts)
+  df$Soil.Temperature <- na.approx(df$TS_1, na.rm=F, maxgap=max.gap.pts)
+  df$VWC <- na.approx(df$SWC_1, na.rm=F, maxgap=max.gap.pts)
   df$RH <- na.approx(df$RH, na.rm=F, maxgap=max.gap.pts)
   df$Incoming.Shortwave <- na.approx(df$SW_IN, na.rm=F, maxgap=max.gap.pts)
   df$Outgoing.Shortwave <- na.approx(df$SW_OUT, na.rm=F, maxgap=max.gap.pts)
@@ -82,15 +80,12 @@ for (fire in c("Moderate", "Severe", "Unburned")){
                     Tair.C.mean = mean(Air.Temperature),
                     Tair.C.min = min(Air.Temperature),
                     Tair.C.max = max(Air.Temperature),
-                    Tsoil.20mm.C = mean(Soil.Temperature.1),
-                    Tsoil.20mm.C.min = min(Soil.Temperature.1),
-                    Tsoil.20mm.C.max = max(Soil.Temperature.1),
-                    Tsoil.60mm.C = mean(Soil.Temperature.2),
-                    Tsoil.60mm.C.min = min(Soil.Temperature.2),
-                    Tsoil.60mm.C.max = max(Soil.Temperature.2),
-                    VWC.25mm = mean(VWC.1/100),
-                    VWC.25mm.min = min(VWC.1/100),
-                    VWC.25mm.max = max(VWC.1/100),
+                    Tsoil.C = mean(Soil.Temperature),
+                    Tsoil.C.min = min(Soil.Temperature),
+                    Tsoil.C.max = max(Soil.Temperature),
+                    VWC = mean(VWC/100),
+                    VWC.min = min(VWC/100),
+                    VWC.max = max(VWC/100),
                     RH = mean(RH),
                     es.kPa = mean(Saturation.Vapor.Pressure),
                     ea.kPa = mean(Ambient.Vapor.Pressure),
@@ -120,7 +115,7 @@ for (fire in c("Moderate", "Severe", "Unburned")){
     theme(panel.grid=element_blank())
   
   p.Tsoil.C <- 
-    ggplot(df.d, aes(x=Date, y=Tsoil.20mm.C)) +
+    ggplot(df.d, aes(x=Date, y=Tsoil.C)) +
     geom_hline(yintercept=0, color="gray65") +
     geom_point() +
     scale_y_continuous(limits=c(-35,20), breaks=seq(-30,20,10)) +
@@ -128,7 +123,7 @@ for (fire in c("Moderate", "Severe", "Unburned")){
     theme(panel.grid=element_blank())
   
   p.VWC <- 
-    ggplot(df.d, aes(x=Date, y=VWC.25mm)) +
+    ggplot(df.d, aes(x=Date, y=VWC)) +
     #geom_hline(yintercept=0, color="gray65") +
     geom_point() +
     scale_y_continuous() +
