@@ -1,4 +1,4 @@
-"Year","DOY","fire","P.kPa","Tair.C.mean","Tair.C.min","Tair.C.max","Tsoil.C","Tsoil.C.min","Tsoil.C.max","VWC","VWC.min","VWC.max","RH","es.kPa","ea.kPa","SWin.W.m2","SWout.W.m2","LWin.mm.m2.s","LWout.mm.m2.s","Rnet.W.m2","frictionVeloc.m.s","windDir.deg","windSpeed.m.s","LE.W.m2","H.W.m2","G.W.m2","NEE.mm.m2.s","Date"
+"Year","DOY","fire","P.kPa","Tair.C.mean","Tair.C.min","Tair.C.max","Tsoil.C","Tsoil.C.min","Tsoil.C.max","VWC","VWC.min","VWC.max","RH","es.kPa","ea.kPa","SWin.W.m2","SWout.W.m2","LWin.W.m2","LWout.W.m2","Rnet.W.m2","frictionVeloc.m.s","windDir.deg","windSpeed.m.s","LE.W.m2","H.W.m2","G.W.m2","NEE.mm.m2.s","Date"
 2008,1,"Moderate",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2008-01-01
 2008,2,"Moderate",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2008-01-02
 2008,3,"Moderate",NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,2008-01-03

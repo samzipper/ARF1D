@@ -1,5 +1,11 @@
 ## ARFlux_HalfHourlyToDaily.R
 # This aggregates half-hourly ARFlux data to daily means/sums.
+#
+# Note about units:
+# On the ARC LTER repository, LWin and LWout units are listed as umol/m2/s,
+# but on the Ameriflux repository they are listed as W m-2. The values are 
+# the same from the two sites. I am assuming Ameriflux is correct and the
+# units are actually W/m2 for LW fluxes.
 
 rm(list=ls())
 
@@ -74,8 +80,8 @@ for (fire in c("Moderate", "Severe", "Unburned")){
                     RH = mean(RH),
                     SWin.W.m2 = mean(Incoming.Shortwave),
                     SWout.W.m2 = mean(Outgoing.Shortwave),
-                    LWin.mm.m2.s = mean(Incoming.Longwave),
-                    LWout.mm.m2.s = mean(Outgoing.Longwave),
+                    LWin.W.m2 = mean(Incoming.Longwave),
+                    LWout.W.m2 = mean(Outgoing.Longwave),
                     Rnet.W.m2 = mean(Net.Radiation),
                     frictionVeloc.m.s = mean(Friction.Velocity),
                     windDir.deg = mean(Wind.Direction),
