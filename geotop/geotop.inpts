@@ -146,7 +146,7 @@ HeatEqTol = 1.0E-09
 !RichardMaxIter = 1500
 !RichardInitForc = 0.01
 RichardTol = 1.0E-09
-MinTimeStep = 3600
+MinTimeStep = 1800
 MinRatioKactualToKSat = 1.0E-6
 
 !*************************************
