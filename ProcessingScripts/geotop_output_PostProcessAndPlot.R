@@ -36,14 +36,15 @@ which.closest <- function(x, vec){
   return(i)
 }
 
-## start and end year for calibration/validation
-cal.start <- 2008
-cal.end <- 2010
-val.start <- 2011
-val.end <- 2012
+## calibrate with odd years, validate with even
+# this is done because the only winter with observational data
+# is 2008-2009, and I want to have winter in both calibration
+# and validation
+cal <- c(2008, 2010, 2012)
+val <- c(2009, 2011, 2013)
 
-yr.min <- min(c(cal.start, val.start))
-yr.max <- max(c(cal.end, val.end))
+yr.min <- min(c(cal, val))
+yr.max <- max(c(cal, val))
 
 # burn severity site
 fire <- "Severe"  # options are: Unburned, Moderate, Severe
@@ -293,43 +294,43 @@ df.fit.VWC$VWC.mod <- df.mod.day$VWC.mean[match(df.fit.VWC$Date, df.mod.day$Date
 
 # make calibration/validation column
 df.fit.temp.ARFlux$period <- "cal"
-df.fit.temp.ARFlux$period[year(df.fit.temp.ARFlux$Date) >= val.start & year(df.fit.temp.ARFlux$Date) <= val.end] <- "val"
+df.fit.temp.ARFlux$period[year(df.fit.temp.ARFlux$Date) %in% val] <- "val"
 
 df.fit.VWC.ARFlux$period <- "cal"
-df.fit.VWC.ARFlux$period[year(df.fit.VWC.ARFlux$Date) >= val.start & year(df.fit.VWC.ARFlux$Date) <= val.end] <- "val"
+df.fit.VWC.ARFlux$period[year(df.fit.VWC.ARFlux$Date)  %in% val] <- "val"
 
 df.fit.temp$period <- "cal"
-df.fit.temp$period[year(df.fit.temp$Date) >= val.start & year(df.fit.temp$Date) <= val.end] <- "val"
+df.fit.temp$period[year(df.fit.temp$Date)  %in% val] <- "val"
 
 df.fit.VWC$period <- "cal"
-df.fit.VWC$period[year(df.fit.VWC$Date) >= val.start & year(df.fit.VWC$Date) <= val.end] <- "val"
+df.fit.VWC$period[year(df.fit.VWC$Date)  %in% val] <- "val"
 
 df.thaw.day$period <- "cal"
-df.thaw.day$period[year(df.thaw.day$Date) >= val.start & year(df.thaw.day$Date) <= val.end] <- "val"
+df.thaw.day$period[year(df.thaw.day$Date)  %in% val] <- "val"
 
 df.fit.LE$period <- "cal"
-df.fit.LE$period[year(df.fit.LE$Date) >= val.start & year(df.fit.LE$Date) <= val.end] <- "val"
+df.fit.LE$period[year(df.fit.LE$Date)  %in% val] <- "val"
 
 df.fit.H$period <- "cal"
-df.fit.H$period[year(df.fit.H$Date) >= val.start & year(df.fit.H$Date) <= val.end] <- "val"
+df.fit.H$period[year(df.fit.H$Date)  %in% val] <- "val"
 
 df.fit.Rnet$period <- "cal"
-df.fit.Rnet$period[year(df.fit.Rnet$Date) >= val.start & year(df.fit.Rnet$Date) <= val.end] <- "val"
+df.fit.Rnet$period[year(df.fit.Rnet$Date)  %in% val] <- "val"
 
 df.fit.SWin$period <- "cal"
-df.fit.SWin$period[year(df.fit.SWin$Date) >= val.start & year(df.fit.SWin$Date) <= val.end] <- "val"
+df.fit.SWin$period[year(df.fit.SWin$Date)  %in% val] <- "val"
 
 df.fit.LWin$period <- "cal"
-df.fit.LWin$period[year(df.fit.LWin$Date) >= val.start & year(df.fit.LWin$Date) <= val.end] <- "val"
+df.fit.LWin$period[year(df.fit.LWin$Date)  %in% val] <- "val"
 
 df.fit.SWout$period <- "cal"
-df.fit.SWout$period[year(df.fit.SWout$Date) >= val.start & year(df.fit.SWout$Date) <= val.end] <- "val"
+df.fit.SWout$period[year(df.fit.SWout$Date)  %in% val] <- "val"
 
 df.fit.LWout$period <- "cal"
-df.fit.LWout$period[year(df.fit.LWout$Date) >= val.start & year(df.fit.LWout$Date) <= val.end] <- "val"
+df.fit.LWout$period[year(df.fit.LWout$Date)  %in% val] <- "val"
 
 df.fit.G$period <- "cal"
-df.fit.G$period[year(df.fit.G$Date) >= val.start & year(df.fit.G$Date) <= val.end] <- "val"
+df.fit.G$period[year(df.fit.G$Date)  %in% val] <- "val"
 
 # make a matrix with fit statistics
 df.fit.table.cal <- data.frame(RMSE=numeric(5), NRMSE=numeric(5), NSE=numeric(5), R2=numeric(5),
@@ -451,13 +452,13 @@ df.fit.energy.table.val["G",] <- c(RMSE(subset(df.fit.G, period=="val")$G.mod, s
 ## make plots
 # path to save plots
 #path.plot.val <- paste0(git.dir, "geotop/SoilPropertyCalibration/Plot_", number, "_", fire, ".png")
-path.plot.val.sub <- paste0(git.dir, "geotop/output-plots/CalVal_Subsurface_", version, "_", fire, ".png")
-path.plot.val.sur <- paste0(git.dir, "geotop/output-plots/CalVal_Surface_", version, "_", fire, ".png")
+path.plot.val.sub <- paste0(git.dir, "geotop/output-plots/Plots_CalVal_Subsurface_", version, "_", fire, ".png")
+path.plot.val.sur <- paste0(git.dir, "geotop/output-plots/Plots_CalVal_Surface_", version, "_", fire, ".png")
 
 # plot subsurface temperature and VWC
 p.thaw.compare.ARFlux <- 
   ggplot() +
-  geom_ribbon(data=subset(df.mod.day, year(Date)>=cal.start & year(Date)<=cal.end), aes(x=Date, ymin=-Inf, ymax=Inf), fill="gray90") +
+  annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_line(data=subset(df.mod.day, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=ThawDepth.mm), color="brown") +
   geom_segment(data=subset(df.thaw.day, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, xend=Date, y=ThawDepth.mm.mean-ThawDepth.mm.std, yend=ThawDepth.mm.mean+ThawDepth.mm.std)) +
   geom_point(data=subset(df.thaw.day, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=ThawDepth.mm.mean)) +
@@ -468,9 +469,9 @@ p.thaw.compare.ARFlux <-
 
 p.temp.compare.ARFlux <-
   ggplot() +
-  geom_ribbon(data=subset(df.mod.day, year(Date)>=cal.start & year(Date)<=cal.end), aes(x=Date, ymin=-Inf, ymax=Inf), fill="gray90") +
+  annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_hline(yintercept=0, color="gray65") +
-  geom_line(data=subset(df.mod.day, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=Temp.mean), color="red") +
+  geom_line(data=subset(df.mod.day, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=Temp.ARFlux.mean), color="red") +
   geom_point(data=df.obs.ARFlux, aes(x=Date, y=Tsoil.C)) +
   scale_x_date(expand=c(0,0)) +
   scale_y_continuous(name=paste0("Tower Soil Temp [C]: ", depth.ARFlux.min, "-", depth.ARFlux.max, " mm")) +
@@ -479,7 +480,7 @@ p.temp.compare.ARFlux <-
 
 p.VWC.compare.ARFlux <-
   ggplot() +
-  geom_ribbon(data=subset(df.mod.day, year(Date)>=cal.start & year(Date)<=cal.end), aes(x=Date, ymin=-Inf, ymax=Inf), fill="gray90") +
+  annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_hline(yintercept=0, color="gray65") +
   geom_line(data=subset(df.mod.day, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=VWC.ARFlux.mean), color="blue") +
   geom_point(data=df.obs.ARFlux, aes(x=Date, y=VWC)) +
@@ -490,7 +491,7 @@ p.VWC.compare.ARFlux <-
 
 p.temp.compare <-
   ggplot() +
-  geom_ribbon(data=subset(df.mod.day, year(Date)>=cal.start & year(Date)<=cal.end), aes(x=Date, ymin=-Inf, ymax=Inf), fill="gray90") +
+  annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_hline(yintercept=0, color="gray65") +
   geom_line(data=subset(df.mod.day, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=Temp.mean), color="red") +
   geom_point(data=df.obs.day, aes(x=Date, y=Temp.mean)) +
@@ -501,7 +502,7 @@ p.temp.compare <-
 
 p.VWC.compare <-
   ggplot() +
-  geom_ribbon(data=subset(df.mod.day, year(Date)>=cal.start & year(Date)<=cal.end), aes(x=Date, ymin=-Inf, ymax=Inf), fill="gray90") +
+  annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_line(data=subset(df.mod.day, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=VWC.mean), color="blue") +
   geom_point(data=df.obs.day, aes(x=Date, y=VWC.mean)) +
   scale_y_continuous(name=paste0("Nest VWC [m3/m3]: ", depth.min, "-", depth.max, " mm")) +
@@ -517,7 +518,7 @@ ggsave(path.plot.val.sub, arrangeGrob(p.thaw.compare.ARFlux, p.temp.compare.ARFl
 # surface fluxes
 p.LE.compare <-
   ggplot() +
-  geom_ribbon(data=subset(df.mod.point, year(Date)>=cal.start & year(Date)<=cal.end), aes(x=Date, ymin=-Inf, ymax=Inf), fill="gray90") +
+  annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=LE.W.m2.), color="green") +
   geom_point(data=df.fit.LE, aes(x=Date, y=LE.W.m2)) +
   scale_y_continuous(name="Tower LE Flux [W m-2]") +
@@ -527,7 +528,7 @@ p.LE.compare <-
 
 p.H.compare <-
   ggplot() +
-  geom_ribbon(data=subset(df.mod.point, year(Date)>=cal.start & year(Date)<=cal.end), aes(x=Date, ymin=-Inf, ymax=Inf), fill="gray90") +
+  annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=H.W.m2.), color="red") +
   geom_point(data=df.fit.H, aes(x=Date, y=H.W.m2)) +
   scale_y_continuous(name="Tower H Flux [W m-2]") +
@@ -537,7 +538,7 @@ p.H.compare <-
 
 p.G.compare <-
   ggplot() +
-  geom_ribbon(data=subset(df.mod.point, year(Date)>=cal.start & year(Date)<=cal.end), aes(x=Date, ymin=-Inf, ymax=Inf), fill="gray90") +
+  annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=Soil_heat_flux.W.m2.), color="brown") +
   geom_point(data=df.fit.G, aes(x=Date, y=G.W.m2)) +
   scale_y_continuous(name="Tower G Flux [W m-2]") +
@@ -547,7 +548,7 @@ p.G.compare <-
 
 p.Rnet.compare <-
   ggplot() +
-  geom_ribbon(data=subset(df.mod.point, year(Date)>=cal.start & year(Date)<=cal.end), aes(x=Date, ymin=-Inf, ymax=Inf), fill="gray90") +
+  annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=SWnet.W.m2.+LWnet.W.m2.), color="brown") +
   geom_point(data=df.fit.Rnet, aes(x=Date, y=Rnet.W.m2)) +
   scale_y_continuous(name="Tower Rnet [W m-2]") +
@@ -557,7 +558,7 @@ p.Rnet.compare <-
 
 p.SWin.compare <-
   ggplot() +
-  geom_ribbon(data=subset(df.mod.point, year(Date)>=cal.start & year(Date)<=cal.end), aes(x=Date, ymin=-Inf, ymax=Inf), fill="gray90") +
+  annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=SWin.W.m2.), color="brown") +
   geom_point(data=df.obs.ARFlux, aes(x=Date, y=SWin.W.m2)) +
   scale_y_continuous(name="Tower SWin [W m-2]") +
@@ -567,7 +568,7 @@ p.SWin.compare <-
 
 p.SWout.compare <-
   ggplot() +
-  geom_ribbon(data=subset(df.mod.point, year(Date)>=cal.start & year(Date)<=cal.end), aes(x=Date, ymin=-Inf, ymax=Inf), fill="gray90") +
+  annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=SWup.W.m2.), color="brown") +
   geom_point(data=df.obs.ARFlux, aes(x=Date, y=SWout.W.m2)) +
   scale_y_continuous(name="Tower SWout [W m-2]") +
@@ -577,7 +578,7 @@ p.SWout.compare <-
 
 p.LWin.compare <-
   ggplot() +
-  geom_ribbon(data=subset(df.mod.point, year(Date)>=cal.start & year(Date)<=cal.end), aes(x=Date, ymin=-Inf, ymax=Inf), fill="gray90") +
+  annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=LWin.W.m2.), color="brown") +
   geom_point(data=df.obs.ARFlux, aes(x=Date, y=LWin.W.m2)) +
   scale_y_continuous(name="Tower LWin [W m-2]") +
@@ -587,7 +588,7 @@ p.LWin.compare <-
 
 p.LWout.compare <-
   ggplot() +
-  geom_ribbon(data=subset(df.mod.point, year(Date)>=cal.start & year(Date)<=cal.end), aes(x=Date, ymin=-Inf, ymax=Inf), fill="gray90") +
+  annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=LWup.W.m2.), color="brown") +
   geom_point(data=df.obs.ARFlux, aes(x=Date, y=LWout.W.m2)) +
   scale_y_continuous(name="Tower LWout [W m-2]") +

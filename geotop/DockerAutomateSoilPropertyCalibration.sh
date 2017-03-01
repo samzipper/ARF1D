@@ -3,7 +3,7 @@
 # declare fire array
 declare -a fires=("Unburned" "Moderate" "Severe")
 
-for i in {1..1000}
+for i in {1..100}
 	do for fire in "${fires[@]}"
 		do
 		# define the prefix
@@ -16,6 +16,7 @@ for i in {1..1000}
 		docker run --rm -v $(pwd):/work omslab/geotop
 
 		# copy output file
+		cp $(pwd)/output-tabs/point0001.txt $(pwd)/SoilPropertyCalibration/output_${num}_${fire}_point0001.txt
 		cp $(pwd)/output-tabs/soiltemp0001.txt $(pwd)/SoilPropertyCalibration/output_${num}_${fire}_soiltemp0001.txt
 		cp $(pwd)/output-tabs/thetaliq0001.txt $(pwd)/SoilPropertyCalibration/output_${num}_${fire}_thetaliq0001.txt
 		cp $(pwd)/output-tabs/thetaice0001.txt $(pwd)/SoilPropertyCalibration/output_${num}_${fire}_thetaice0001.txt

@@ -45,26 +45,38 @@ min.thermcap <- 2.0E+6   # [J/m3/K] - thermal capacity of soil solids
 
 ## make LHS sample
 # define number of variables and number of samples
-n.var <- 14
-n.sample <- 1000
+n.var <- 5
+n.sample <- 100
 
 # create latin hypercube sample
 LHS.sample <- improvedLHS(n.sample, n.var)   # sample parameter space
 df.all <- data.frame(number = sprintf("%04d", seq(1,n.sample)),
+                     #org.Ks = qunif(LHS.sample[,1], min=4.75E-06, max=8.18E-01),                               # min/max of lit review for peat hydraulic properties
                      org.Ks = qunif(LHS.sample[,1], min=org.Ks/10, max=org.Ks*10),                             # +/- 1 order of magnitude
-                     org.vwc_s = qunif(LHS.sample[,2], min=org.vwc_s-0.1, max=org.vwc_s+0.1),                  # +/- 0.1
-                     org.vwc_r = qunif(LHS.sample[,3], min=max(c(0.01, org.vwc_r-0.05)), max=org.vwc_r+0.05),  # +/- 0.05, but can't be <0.01
-                     org.VG_alpha = qunif(LHS.sample[,4], min=org.VG_alpha*0.9, max=org.VG_alpha*1.1),         # +/- 10%
-                     org.VG_n = qunif(LHS.sample[,5], min=org.VG_n*0.9, max=org.VG_n*1.1),                     # +/- 10%
-                     org.thermcond = qunif(LHS.sample[,6], min=org.thermcond*0.75, max=org.thermcond*1.25),    # +/- 25%
-                     org.thermcap = qunif(LHS.sample[,7], min=org.thermcap*0.75, max=org.thermcap*1.25),       # +/- 25%
-                     min.Ks = qunif(LHS.sample[,8], min=min.Ks/10, max=min.Ks*10),                             # +/- 1 order of magnitude
-                     min.vwc_s = qunif(LHS.sample[,9], min=min.vwc_s-0.1, max=min.vwc_s+0.1),                  # +/- 0.1
-                     min.vwc_r = qunif(LHS.sample[,10], min=max(c(0.01, min.vwc_r-0.05)), max=min.vwc_r+0.05), # +/- 0.05, but can't be <0.01
-                     min.VG_alpha = qunif(LHS.sample[,11], min=min.VG_alpha*0.9, max=min.VG_alpha*1.1),        # +/- 10%
-                     min.VG_n = qunif(LHS.sample[,12], min=min.VG_n*0.9, max=min.VG_n*1.1),                    # +/- 10%
-                     min.thermcond = qunif(LHS.sample[,13], min=min.thermcond*0.75, max=min.thermcond*1.25),   # +/- 25%
-                     min.thermcap = qunif(LHS.sample[,14], min=min.thermcap*0.75, max=min.thermcap*1.25))      # +/- 25%
+                     org.vwc_s = 0.84,                                                                         # max observed VWC from ARFlux-Ameriflux data
+                     org.vwc_r = 0.04,                                                                         # min observed VWC from ARFlux-Ameriflux data
+                     #org.vwc_s = qunif(LHS.sample[,2], min=org.vwc_s-0.1, max=org.vwc_s+0.1),                  # +/- 0.1
+                     #org.vwc_r = qunif(LHS.sample[,3], min=max(c(0.01, org.vwc_r-0.05)), max=org.vwc_r+0.05),  # +/- 0.05, but can't be <0.01
+                     org.VG_alpha = qunif(LHS.sample[,2], min=2.50E-4, max=2.60E-03),                          # min/max of lit review for peat hydraulic properties, excluding max/min values
+                     #org.VG_alpha = qunif(LHS.sample[,2], min=org.VG_alpha*0.9, max=org.VG_alpha*1.1),         # +/- 10%
+                     org.VG_n = qunif(LHS.sample[,3], min=1.11, max=4.8),                                      # min/max of lit review for peat hydraulic properties, excluding max/min values
+                     #org.VG_n = qunif(LHS.sample[,3], min=org.VG_n*0.9, max=org.VG_n*1.1),                     # +/- 10%
+                     org.thermcond = qunif(LHS.sample[,4], min=org.thermcond*0.75, max=org.thermcond*1.25),    # +/- 25%
+                     org.thermcap = qunif(LHS.sample[,5], min=org.thermcap*0.75, max=org.thermcap*1.25),       # +/- 25%
+                     #min.Ks = qunif(LHS.sample[,6], min=min.Ks/10, max=min.Ks*10),                             # +/- 1 order of magnitude
+                     #min.vwc_s = qunif(LHS.sample[,7], min=min.vwc_s-0.1, max=min.vwc_s+0.1),                  # +/- 0.1
+                     #min.vwc_r = qunif(LHS.sample[,8], min=max(c(0.01, min.vwc_r-0.05)), max=min.vwc_r+0.05),  # +/- 0.05, but can't be <0.01
+                     #min.VG_alpha = qunif(LHS.sample[,9], min=min.VG_alpha*0.9, max=min.VG_alpha*1.1),         # +/- 10%
+                     #min.VG_n = qunif(LHS.sample[,10], min=min.VG_n*0.9, max=min.VG_n*1.1),                    # +/- 10%
+                     #min.thermcond = qunif(LHS.sample[,11], min=min.thermcond*0.75, max=min.thermcond*1.25),   # +/- 25%
+                     #min.thermcap = qunif(LHS.sample[,12], min=min.thermcap*0.75, max=min.thermcap*1.25))      # +/- 25%
+                     min.Ks = min.Ks,                   # Jiang et al.
+                     min.vwc_s = min.vwc_s,             # Jiang et al.
+                     min.vwc_r = min.vwc_r,             # Jiang et al.
+                     min.VG_alpha = min.VG_alpha,       # Jiang et al.
+                     min.VG_n = min.VG_n,               # Jiang et al.
+                     min.thermcond = min.thermcond,     # Kurylyk et al.
+                     min.thermcap = min.thermcap)       # Kurylyk et al.
 
 # save output file
 write.csv(df.all, paste0(out.path, "SoilPropertyCalibration_Input.csv"), quote=F, row.names=F)
@@ -151,5 +163,5 @@ for (fire in c("Unburned", "Moderate", "Severe")){
     # status update
     print(paste0(fire, " ", counter, " complete"))
   }
-
+  
 }
