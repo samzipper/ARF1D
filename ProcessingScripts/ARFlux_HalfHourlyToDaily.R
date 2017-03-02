@@ -86,6 +86,7 @@ for (fire in c("Moderate", "Severe", "Unburned")){
                     frictionVeloc.m.s = mean(Friction.Velocity),
                     windDir.deg = mean(Wind.Direction),
                     windSpeed.m.s = mean(Wind.Speed),
+                    windSpeed.m.s.std = sd(Wind.Speed),
                     LE.W.m2 = mean(Latent.Heat.Flux),
                     H.W.m2 = mean(Sensible.Heat.Flux),
                     G.W.m2 = mean(Ground.Heat.Flux),
