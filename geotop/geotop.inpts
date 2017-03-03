@@ -2,8 +2,8 @@
 !******* CONFIGURATION *********
 !*******************************
 TimeStepEnergyAndWater = 86400
-InitDateDDMMYYYYhhmm   = 01/01/2001 00:00
-EndDateDDMMYYYYhhmm    = 31/12/2013 00:00
+InitDateDDMMYYYYhhmm   = 31/12/2009 00:00
+EndDateDDMMYYYYhhmm    = 31/12/2010 00:00
 EnergyBalance = 1
 WaterBalance  = 1
 PointSim      = 1
@@ -30,13 +30,13 @@ HeaderDateDDMMYYYYhhmmMeteo = "POSIX"
 HeaderJulianDayfrom0Meteo   = "JD"
 HeaderIPrec                 = "Iprec"
 HeaderWindVelocity          = "WindSp"
-HeaderWindDirection         = "WindDir"
+!HeaderWindDirection         = "WindDir"
 HeaderRH                    = "RH"
 HeaderAirPress              = "P"
 HeaderAirTemp               = "AirT"
 HeaderSWglobal              = "Swglob"
-HeaderLWin                  = "LWin"
-HeaderCloudSWTransmissivity = "CloudTrans"
+!HeaderLWin                  = "LWin"
+!HeaderCloudSWTransmissivity = "CloudTrans"
 
 !********************************************
 !****************** SNOW ********************
@@ -83,6 +83,7 @@ HeaderPointBedrockDepth = "bedrock"
 !******* INPUT  ************
 !*******************************
 MeteoFile = "meteo/meteoNARRdailyWithSpinUp"
+!MeteoFile = "meteo/meteoNARRhourlyWithSpinUp"
 
 !*******************************
 !******** LAND COVER  **********
@@ -142,10 +143,10 @@ HeaderCthSoilSolids = "thermcap"
 !*******************************
 !******* NUMERICS **********
 !*******************************
-HeatEqTol = 1.0E-09
+!HeatEqTol = 1.0E-09
 !RichardMaxIter = 1500
 !RichardInitForc = 0.01
-RichardTol = 1.0E-09
+!RichardTol = 1.0E-09
 MinTimeStep = 1800
 MinRatioKactualToKSat = 1.0E-6
 
