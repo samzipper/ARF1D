@@ -20,6 +20,9 @@ fname.out <- paste0(git.dir, "geotop/meteo/meteoNARRdailyWithSpinUp0001.txt")
 fname.TFS <- paste0(git.dir, "data/meteo/Raw/Daily_1988_currentTFSDaily.csv")
 fname.ARFlux <- paste0(git.dir, "data/ARFlux/ARFlux_2008-2012_Daily.csv")
 
+# hour of day to say that the measurement is taken
+hr.of.day <- 13
+
 # do an empirical shortwave correction via comparison with ARFlux data?
 SW.corr <- F
 SW.corr.source <- "ARFlux"   # options are ARFlux or TFS
@@ -201,7 +204,7 @@ for (yr in yr.start:(yr.start+yr.n-1)){
   }
   
   # assemble output data frame for that year
-  df.out.syn <- data.frame(POSIX=format((ymd(paste0(yr, "-01-01")) + days(subset(df.in, Year==yr.syn)$DOY - 1)) + hours(0), "%d/%m/%Y %H:%M"),
+  df.out.syn <- data.frame(POSIX=format((ymd(paste0(yr, "-01-01")) + days(subset(df.in, Year==yr.syn)$DOY - 1)) + hours(hr.of.day), "%d/%m/%Y %H:%M"),
                            Iprec = subset(df.in, Year==yr.syn)$precip.mm/24,  # convert to mm/hr
                            WindSp = subset(df.in, Year==yr.syn)$wind.m_s,
                            AirT = subset(df.in, Year==yr.syn)$Tmean.C,
@@ -221,7 +224,7 @@ for (yr in yr.start:(yr.start+yr.n-1)){
 }
 
 # now, get df.in into the same format
-df.in.syn <- data.frame(POSIX=format(df.in$Date+hours(0), "%d/%m/%Y %H:%M"),
+df.in.syn <- data.frame(POSIX=format(df.in$Date+hours(hr.of.day), "%d/%m/%Y %H:%M"),
                         Iprec = df.in$precip.mm/24,
                         WindSp = df.in$wind.m_s,
                         AirT = df.in$Tmean.C,

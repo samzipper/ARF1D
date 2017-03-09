@@ -88,7 +88,7 @@ HeaderPointBedrockDepth = "bedrock"
 !******* INPUT  ************
 !*******************************
 !MeteoFile = "meteo/meteoNARRdailyWithSpinUp"
-MeteoFile = "meteo/meteoNARRhourlyWithSpinUp"
+MeteoFile = "meteo/meteoNARR3hourlyWithSpinUp"
 
 !*******************************
 !******** LAND COVER  **********

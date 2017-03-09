@@ -93,7 +93,7 @@ df.out.combo <- data.frame(POSIX = df.meteo$POSIX,
                            ##    some scenarios; I think I may be misinterpreting its meaning. 
                            ##    Setting to 0 at all times, which is default.
                            CanopyFraction = df.yr.all$CanopyFraction,
-                           #CanopyFraction = 0.05,
+                           #CanopyFraction = 0.0,
                            DecayCoeff=2.5,
                            SnowBurialCoeff=1,
                            RootDepth = df.yr.all$RootDepth,

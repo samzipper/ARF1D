@@ -12,17 +12,17 @@ require(gridExtra)
 require(lubridate)
 
 # path to input and output, and where to save plots
-in.path <- paste0(git.dir, "geotop/meteo/meteoNARRhourlyWithSpinUp0001.txt")
-#in.path <- paste0(git.dir, "geotop/meteo/meteoNARRdailyWithSpinUp0001.txt")
+#in.path <- paste0(git.dir, "geotop/meteo/meteoNARRhourlyWithSpinUp0001.txt")
+in.path <- paste0(git.dir, "geotop/meteo/meteoNARRdailyWithSpinUp0001.txt")
 out.path <- paste0(git.dir, "geotop/output-tabs/point0001.txt")
-plot.path <- paste0(git.dir, "geotop/output-plots/meteo_CompareInputToOutput.png")
+plot.path <- paste0(git.dir, "geotop/output-plots/meteo_CompareInputToOutput_3HourlyToDaily_WindMult.png")
 
 #in.path <- paste0("C:/Users/Sam/src/geotop/tests/1D/InfiltrationTrench/meteo/meteotrenchhour0001.txt")
 #out.path <- paste0("C:/Users/Sam/src/geotop/tests/1D/InfiltrationTrench/output-tabs/point0001.txt")
 #plot.path <- paste0("C:/Users/Sam/src/geotop/tests/1D/InfiltrationTrench/output-tabs/meteo_CompareInputToOutput.png")
 
 # year to compare
-yr <- 2009
+yr <- 2010
 
 # read input and output
 df.in <- read.csv(in.path)
@@ -47,7 +47,7 @@ df.in <- subset(df.in, Year==yr)
 df.out <- subset(df.out, Year==yr)
 
 # resample all input fields to same timestep - THIS IS NOT WORKING YET
-ts.in <- as.numeric(df.in$Date[2]-df.in$Date[1])     # timestep in hours
+ts.in <- as.numeric(df.in$Date[2]-df.in$Date[1])     # timestep in hours or days
 ts.out <- as.numeric(df.out$Date[2]-df.out$Date[1])
 if (ts.in != ts.out){
   ts.ratio <- ts.out/ts.in        # assumption is that ts.out>ts.in
@@ -68,6 +68,7 @@ df <- data.frame(Year = df.in$Year,
                  DOY = df.in$DOY,
                  Date = df.in$Date,
                  prec.in = df.in$Iprec*24,
+                 #prec.in = df.in$Iprec,
                  prec.out = df.out$Psnow_over_canopy.mm.+df.out$Prain_over_canopy.mm.,
                  wind.in = df.in$WindSp,
                  wind.out = df.out$Wind_speed.m.s.,
@@ -82,7 +83,7 @@ df.long <- rbind(data.frame(Year = df$Year,
                             DOY = df$DOY,
                             Date = df$Date,
                             prec = df$prec.in,
-                            wind = df$prec.in,
+                            wind = df$wind.in,
                             Tair = df$Tair.in,
                             RH = df$RH.in,
                             SWin = df$SWin.in,
@@ -91,7 +92,7 @@ df.long <- rbind(data.frame(Year = df$Year,
                             DOY = df$DOY,
                             Date = df$Date,
                             prec = df$prec.out,
-                            wind = df$prec.out,
+                            wind = df$wind.out,
                             Tair = df$Tair.out,
                             RH = df$RH.out,
                             SWin = df$SWin.out,
@@ -205,8 +206,8 @@ p.SWin.time <-
 # save plot
 ggsave(plot.path, arrangeGrob(p.Tair.time, p.Tair.scatter,
                               p.SWin.time, p.SWin.scatter,
-#                              p.prec.time, p.prec.scatter,
-#                              p.wind.time, p.wind.scatter,
-#                              p.RH.time, p.RH.scatter, 
+                              p.prec.time, p.prec.scatter,
+                              p.wind.time, p.wind.scatter,
+                              p.RH.time, p.RH.scatter, 
                               ncol=2),
-       width=12, height=12, units="in")
+       width=16, height=12, units="in")

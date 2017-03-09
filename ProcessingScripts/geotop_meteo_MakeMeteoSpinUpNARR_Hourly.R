@@ -1,7 +1,8 @@
 ## geotop_meteo_MakeMeteoSpinUpNARR_Hourly.R
 #' This script is intended to take daily meteo data from NARR (generated with
-#' script geotop_meteo_MakeMeteoSpinUpNARR_Daily.R) and statistically downscale
-#' it to hourly values.
+#' script geotop_meteo_MakeMeteoSpinUpNARR_Daily.R). Two output files will be generated:
+#'   -fname.hourly has a simple constant value the entire day based on daily data
+#'   -fname.hourly.dynamic statistically downscales to estimated hourly values with diel patterns
 #' 
 #' NARR link: https://www.esrl.noaa.gov/psd/data/gridded/data.narr.monolevel.html
 
@@ -19,6 +20,12 @@ source(paste0(git.dir, "ProcessingScripts/Tair_HourlyFromDaily.R"))
 fname.daily <- paste0(git.dir, "geotop/meteo/meteoNARRdailyWithSpinUp0001.txt")   # daily input data
 fname.stats <- paste0(git.dir, "data/ARFlux/ARFlux-Merged_MonthlyStats.csv")      # file with monthly statistics for downscaling
 fname.hourly<- paste0(git.dir, "geotop/meteo/meteoNARRhourlyWithSpinUp0001.txt")  # where to save hourly output data
+fname.3hourly<- paste0(git.dir, "geotop/meteo/meteoNARR3hourlyWithSpinUp0001.txt")  # where to save 3 hourly output data
+fname.hourly.dynamic <- paste0(git.dir, "geotop/meteo/meteoNARRhourlyDynamicWithSpinUp0001.txt")  # where to save hourly output data
+
+# year to start/end hourly data
+yr.start <- 1995
+yr.end <- 2014
 
 # coordinates of site
 site.lat <- 68.93      # unburned=68.93, moderate=68.95, severe=68.99
@@ -35,6 +42,9 @@ df.stats <- read.csv(fname.stats, stringsAsFactors=F)
 df.in$Date <- dmy_hm(df.in$POSIX)
 df.in$DOY <- yday(df.in$Date)
 df.in$Month <- month(df.in$Date)
+
+# subset to start/end data
+df.in <- subset(df.in, year(Date)>=yr.start & year(Date)<=yr.end)
 
 ## solar time calculations
 # equation of time (Campbell & Norman Eq 11.4)
@@ -87,7 +97,10 @@ hours <- data.frame(DOY=rep(seq(1,366), each=24),
                     hr = rep(seq(0,23), 366))
 
 # make data frame with hourly data, year, and DOY
-df.h <- merge(hours, df.in[,c("DOY","Month","Date","SolarNoon","Swglob","prec.intensity.mm_hr","prec.start.hr", "prec.end.hr","WindSp","RH","P","Tair.C.min", "Tair.C.max", "Tair.C.max.yesterday", "Tair.C.min.tomorrow")], by=c("DOY"), all.x=T)
+df.h <- merge(hours, df.in[,c("DOY","Month","Date","SolarNoon","Swglob",
+                              "Iprec", "prec.intensity.mm_hr","prec.start.hr", "prec.end.hr",
+                              "WindSp","RH","P",
+                              "AirT", "Tair.C.min", "Tair.C.max", "Tair.C.max.yesterday", "Tair.C.min.tomorrow")], by=c("DOY"), all.x=T)
 df.h <- df.h[order(df.h$Date, df.h$hr),]
 
 ## air temperature
@@ -126,7 +139,7 @@ df.h$coszen[df.h$coszen<0] <- 0
 
 # summarize to daily (will be same every year)
 df.coszen.d <- summarize(group_by(df.h, DOY),
-                  coszen.mean = mean(coszen))
+                         coszen.mean = mean(coszen))
 df.coszen.d$coszen.mean[df.coszen.d$coszen.mean < 0.0001] <- 0.0001
 
 # merge
@@ -139,17 +152,26 @@ df.h$SWin[df.h$SWin<0] <- 0
 # order df.h
 df.h <- df.h[order(df.h$Date, df.h$hr),]
 
-# make POSIX column
-df.h$POSIX <- 
-
 # make output data frame
+df.out.dynamic <- data.frame(POSIX = format(df.h$Date + hours(df.h$hr), "%d/%m/%Y %H:%M"),
+                             Iprec = df.h$prec.intensity.mm_hr,
+                             WindSp = df.h$WindSp,
+                             AirT = df.h$Tair.C,
+                             RH = df.h$RH,
+                             P = df.h$P,
+                             Swglob = df.h$SWin,
+                             CloudTrans = 1.0)
 df.out <- data.frame(POSIX = format(df.h$Date + hours(df.h$hr), "%d/%m/%Y %H:%M"),
-                     Iprec = df.h$prec.intensity.mm_hr,
-                     WindSp = df.h$WindSp,
-                     AirT = df.h$Tair.C,
-                     RH = df.h$RH,
-                     P = df.h$P,
-                     Swglob = df.h$SWin)
+                             Iprec = df.h$Iprec,
+                             WindSp = df.h$WindSp,
+                             AirT = df.h$AirT,
+                             RH = df.h$RH,
+                             P = df.h$P,
+                             Swglob = df.h$Swglob,
+                             CloudTrans = 1.0)
+df.out.3hr <- df.out[seq(1,dim(df.out)[1],3), ]
 
 # write output
+write.table(df.out.dynamic, file=fname.hourly.dynamic, quote=F, sep=",", na="-9999.0", row.names=F)
 write.table(df.out, file=fname.hourly, quote=F, sep=",", na="-9999.0", row.names=F)
+write.table(df.out.3hr, file=fname.3hourly, quote=F, sep=",", na="-9999.0", row.names=F)
