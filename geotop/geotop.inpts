@@ -1,9 +1,12 @@
 !*******************************
 !******* CONFIGURATION *********
 !*******************************
+!TimeStepEnergyAndWater = 3600
+!InitDateDDMMYYYYhhmm   = 01/07/2009 00:00
+!EndDateDDMMYYYYhhmm    = 03/07/2009 00:00
 TimeStepEnergyAndWater = 86400
-InitDateDDMMYYYYhhmm   = 31/12/2009 00:00
-EndDateDDMMYYYYhhmm    = 31/12/2010 00:00
+InitDateDDMMYYYYhhmm = 31/12/2009 13:00
+EndDateDDMMYYYYhhmm = 31/12/2010 13:00
 EnergyBalance = 1
 WaterBalance  = 1
 PointSim      = 1
@@ -11,20 +14,22 @@ PointSim      = 1
 !*******************************
 !********* GEOGRAPHY ***********
 !*******************************
-Latitude  = 68.93
-Longitude = -150.27
-StandardTimeSimulation = -9.0
+Latitude= 68.93
+Longitude= -150.27
+StandardTimeSimulation=-9
 
 !*******************************
 !******** METEO DATA ***********
 !*******************************
 NumberOfMeteoStation=    1
-MeteoStationCoordinateX= 609904.1
-MeteoStationCoordinateY= 4345653.1
-MeteoStationLatitude=    68.93
-MeteoStationLongitude=   -150.27
-MeteoStationElevation=   760
-MeteoStationStandardTime=-9.0
+MeteoStationCoordinateX=609501
+MeteoStationCoordinateY=7648992
+MeteoStationLatitude=68.93
+MeteoStationLongitude=-150.27
+MeteoStationElevation=760
+MeteoStationStandardTime=-9
+MeteoStationWindVelocitySensorHeight=10
+MeteoStationTemperatureSensorHeight=2
 
 HeaderDateDDMMYYYYhhmmMeteo = "POSIX"
 HeaderJulianDayfrom0Meteo   = "JD"
@@ -36,7 +41,7 @@ HeaderAirPress              = "P"
 HeaderAirTemp               = "AirT"
 HeaderSWglobal              = "Swglob"
 !HeaderLWin                  = "LWin"
-!HeaderCloudSWTransmissivity = "CloudTrans"
+HeaderCloudSWTransmissivity = "CloudTrans"
 
 !********************************************
 !****************** SNOW ********************
@@ -82,8 +87,8 @@ HeaderPointBedrockDepth = "bedrock"
 !*******************************
 !******* INPUT  ************
 !*******************************
-MeteoFile = "meteo/meteoNARRdailyWithSpinUp"
-!MeteoFile = "meteo/meteoNARRhourlyWithSpinUp"
+!MeteoFile = "meteo/meteoNARRdailyWithSpinUp"
+MeteoFile = "meteo/meteoNARRhourlyWithSpinUp"
 
 !*******************************
 !******** LAND COVER  **********
