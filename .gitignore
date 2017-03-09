@@ -2,9 +2,14 @@
 *.png
 *.Rhistory
 *.swp
+*.xlsx
 
 ## ignore in geotop folder only
 geotop/output*
 geotop/_*
 geotop/SnowDepthCalibration/*_geotop.inpts
 geotop/SnowDepthCalibration/*_point0001.txt
+
+## folders to ignore
+geotop/SoilPropertyCalibration/*_SoilARF*
+geotop/SoilPropertyCalibration/output_*
