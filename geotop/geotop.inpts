@@ -5,8 +5,8 @@
 !InitDateDDMMYYYYhhmm   = 01/07/2009 00:00
 !EndDateDDMMYYYYhhmm    = 03/07/2009 00:00
 TimeStepEnergyAndWater = 86400
-InitDateDDMMYYYYhhmm = 31/12/2009 13:00
-EndDateDDMMYYYYhhmm = 31/12/2010 13:00
+InitDateDDMMYYYYhhmm = 31/12/2005 13:00
+EndDateDDMMYYYYhhmm = 31/12/2013 13:00
 EnergyBalance = 1
 WaterBalance  = 1
 PointSim      = 1

@@ -1,4 +1,4 @@
-## geotop_SoilPropertyCalibration_SelectBest+Plot.R
+## geotop_PostProcessAndPlot.R
 #' This is intended to compare modeled and measured data:
 #'   -Soil temperature
 #'   -Soil moisture
@@ -21,7 +21,7 @@ require(gridExtra)
 source(paste0(git.dir, "ProcessingScripts/FitMetrics.R"))
 
 #version
-version <- "20170228b-Match27n+Porosity"
+version <- "20170309-FixSWin-DailyGEOtop"
 
 # function to find closest
 which.closest <- function(x, vec){
@@ -47,7 +47,7 @@ yr.min <- min(c(cal, val))
 yr.max <- max(c(cal, val))
 
 # burn severity site
-fire <- "Severe"  # options are: Unburned, Moderate, Severe
+fire <- "Unburned"  # options are: Unburned, Moderate, Severe
 
 ## read in observed data and preprocess
 # paths

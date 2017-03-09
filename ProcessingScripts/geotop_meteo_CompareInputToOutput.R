@@ -13,9 +13,10 @@ require(lubridate)
 
 # path to input and output, and where to save plots
 #in.path <- paste0(git.dir, "geotop/meteo/meteoNARRhourlyWithSpinUp0001.txt")
+#in.path <- paste0(git.dir, "geotop/meteo/meteoNARR3hourlyWithSpinUp0001.txt")
 in.path <- paste0(git.dir, "geotop/meteo/meteoNARRdailyWithSpinUp0001.txt")
 out.path <- paste0(git.dir, "geotop/output-tabs/point0001.txt")
-plot.path <- paste0(git.dir, "geotop/output-plots/meteo_CompareInputToOutput_3HourlyToDaily_WindMult.png")
+plot.path <- paste0(git.dir, "geotop/output-plots/meteo_CompareInputToOutput_3HourlyToDaily_Linear.png")
 
 #in.path <- paste0("C:/Users/Sam/src/geotop/tests/1D/InfiltrationTrench/meteo/meteotrenchhour0001.txt")
 #out.path <- paste0("C:/Users/Sam/src/geotop/tests/1D/InfiltrationTrench/output-tabs/point0001.txt")

@@ -22,6 +22,7 @@ fname.stats <- paste0(git.dir, "data/ARFlux/ARFlux-Merged_MonthlyStats.csv")    
 fname.hourly<- paste0(git.dir, "geotop/meteo/meteoNARRhourlyWithSpinUp0001.txt")  # where to save hourly output data
 fname.3hourly<- paste0(git.dir, "geotop/meteo/meteoNARR3hourlyWithSpinUp0001.txt")  # where to save 3 hourly output data
 fname.hourly.dynamic <- paste0(git.dir, "geotop/meteo/meteoNARRhourlyDynamicWithSpinUp0001.txt")  # where to save hourly output data
+fname.3hourly.dynamic<- paste0(git.dir, "geotop/meteo/meteoNARR3hourlyDynamicWithSpinUp0001.txt")  # where to save 3 hourly output data
 
 # year to start/end hourly data
 yr.start <- 1995
@@ -170,8 +171,10 @@ df.out <- data.frame(POSIX = format(df.h$Date + hours(df.h$hr), "%d/%m/%Y %H:%M"
                              Swglob = df.h$Swglob,
                              CloudTrans = 1.0)
 df.out.3hr <- df.out[seq(1,dim(df.out)[1],3), ]
+df.out.3hr.dynamic <- df.out.dynamic[seq(1,dim(df.out.dynamic)[1],3), ]
 
 # write output
 write.table(df.out.dynamic, file=fname.hourly.dynamic, quote=F, sep=",", na="-9999.0", row.names=F)
 write.table(df.out, file=fname.hourly, quote=F, sep=",", na="-9999.0", row.names=F)
 write.table(df.out.3hr, file=fname.3hourly, quote=F, sep=",", na="-9999.0", row.names=F)
+write.table(df.out.3hr.dynamic, file=fname.3hourly.dynamic, quote=F, sep=",", na="-9999.0", row.names=F)
