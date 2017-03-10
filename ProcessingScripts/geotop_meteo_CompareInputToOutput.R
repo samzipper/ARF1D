@@ -5,18 +5,19 @@
 rm(list=ls())
 
 # git directory for relative paths
-git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
+#git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
+git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
 
 require(ggplot2)
 require(gridExtra)
 require(lubridate)
 
 # path to input and output, and where to save plots
-#in.path <- paste0(git.dir, "geotop/meteo/meteoNARRhourlyWithSpinUp0001.txt")
+#in.path <- paste0(git.dir, "geotop/meteo/meteoNARRhourlyDynamicWithSpinUp0001.txt")
 #in.path <- paste0(git.dir, "geotop/meteo/meteoNARR3hourlyWithSpinUp0001.txt")
 in.path <- paste0(git.dir, "geotop/meteo/meteoNARRdailyWithSpinUp0001.txt")
 out.path <- paste0(git.dir, "geotop/output-tabs/point0001.txt")
-plot.path <- paste0(git.dir, "geotop/output-plots/meteo_CompareInputToOutput_3HourlyToDaily_Linear.png")
+plot.path <- paste0(git.dir, "geotop/output-plots/meteo_CompareInputToOutput_HourlyIn_4hrRun_DailyOut.png")
 
 #in.path <- paste0("C:/Users/Sam/src/geotop/tests/1D/InfiltrationTrench/meteo/meteotrenchhour0001.txt")
 #out.path <- paste0("C:/Users/Sam/src/geotop/tests/1D/InfiltrationTrench/output-tabs/point0001.txt")
@@ -38,7 +39,7 @@ df.in$Date <- dmy_hm(df.in$POSIX)
 df.out$Date <- dmy_hm(df.out$Date12.DDMMYYYYhhmm.)
 
 df.in$Year <- year(df.in$Date)
-df.in$DOY <- yday(df.in$Date)
+df.in$DOY <- yday(df.in$Date)+1
 
 df.out$Year <- year(df.out$Date)
 df.out$DOY <- yday(df.out$Date)
@@ -47,22 +48,9 @@ df.out$DOY <- yday(df.out$Date)
 df.in <- subset(df.in, Year==yr)
 df.out <- subset(df.out, Year==yr)
 
-# resample all input fields to same timestep - THIS IS NOT WORKING YET
-ts.in <- as.numeric(df.in$Date[2]-df.in$Date[1])     # timestep in hours or days
-ts.out <- as.numeric(df.out$Date[2]-df.out$Date[1])
-if (ts.in != ts.out){
-  ts.ratio <- ts.out/ts.in        # assumption is that ts.out>ts.in
-  filter.sum <- rep(1, ts.ratio)   # filter for sum (used for precip)
-  filter.mean <- rep(1/ts.ratio, ts.ratio)  # filter for averages (used for all other variables)
-  df.in$Iprec <- stats::filter(df.in$Iprec, filter.sum)
-  df.in$WindSp <- stats::filter(df.in$WindSp, filter.mean)
-  df.in$AirT <- stats::filter(df.in$AirT, filter.mean)
-  df.in$RH <- stats::filter(df.in$RH, filter.mean)
-  df.in$Swglob <- stats::filter(df.in$Swglob, filter.mean)
-}
-
 # subset to matching dates
-df.in <- subset(df.in, Date %in% df.out$Date)
+df.in <- subset(df.in, DOY %in% df.out$DOY)
+df.out <- subset(df.out, DOY %in% df.in$DOY)
 
 # combine
 df <- data.frame(Year = df.in$Year,

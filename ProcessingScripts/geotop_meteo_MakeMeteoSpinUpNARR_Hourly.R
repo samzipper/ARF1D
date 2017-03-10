@@ -27,7 +27,7 @@ fname.3hourly.dynamic<- paste0(git.dir, "geotop/meteo/meteoNARR3hourlyDynamicWit
 
 # year to start/end hourly data
 yr.start <- 1999
-yr.end <- 2014
+yr.end <- 2015
 
 # coordinates of site
 site.lat <- 68.93      # unburned=68.93, moderate=68.95, severe=68.99

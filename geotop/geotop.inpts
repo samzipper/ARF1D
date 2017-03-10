@@ -1,9 +1,9 @@
 !*******************************
 !******* CONFIGURATION *********
 !*******************************
-TimeStepEnergyAndWater = 3600
-InitDateDDMMYYYYhhmm   = 01/07/2009 00:00
-EndDateDDMMYYYYhhmm    = 03/07/2009 00:00
+TimeStepEnergyAndWater = 14400
+InitDateDDMMYYYYhhmm   = 31/12/2001 00:00
+EndDateDDMMYYYYhhmm    = 31/12/2015 00:00
 !TimeStepEnergyAndWater = 86400
 !InitDateDDMMYYYYhhmm = 31/12/2005 13:00
 !EndDateDDMMYYYYhhmm = 31/12/2013 13:00
@@ -129,7 +129,7 @@ VegTransNIR = 0.45
 !*******************************
 SoilParFile = "soil/SoilARF"
 
-SoilLayerNumber = 100
+SoilLayerNumber = 30
 SoilLayerTypes = 1
 PointSoilType = 1
 
@@ -148,17 +148,17 @@ HeaderCthSoilSolids = "thermcap"
 !*******************************
 !******* NUMERICS **********
 !*******************************
-!HeatEqTol = 1.0E-09
+HeatEqTol = 1.0E-09
 !RichardMaxIter = 1500
 !RichardInitForc = 0.01
-!RichardTol = 1.0E-09
-MinTimeStep = 1800
-MinRatioKactualToKSat = 1.0E-6
+RichardTol = 1.0E-09
+MinTimeStep = 300
+MinRatioKactualToKSat = 1.0E-5
 
 !*************************************
 !******* OUTPUT TIME SERIES **********
 !*************************************
-DtPlotPoint = 1
+DtPlotPoint = 24
 SoilTempProfileFile="output-tabs/soiltemp"
 SoilIceContentProfileFile="output-tabs/thetaice"
 SoilLiqContentProfileFile="output-tabs/thetaliq"

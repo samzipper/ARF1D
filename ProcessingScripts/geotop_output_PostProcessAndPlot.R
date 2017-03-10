@@ -11,7 +11,8 @@
 rm(list=ls())
 
 # git directory for relative paths
-git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
+#git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
+git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
 
 require(lubridate)
 require(ggplot2)
@@ -21,7 +22,7 @@ require(gridExtra)
 source(paste0(git.dir, "ProcessingScripts/FitMetrics.R"))
 
 #version
-version <- "20170309-FixSWin-DailyGEOtop"
+version <- "20170310-DailyMetTesting"
 
 # function to find closest
 which.closest <- function(x, vec){
@@ -159,9 +160,9 @@ df.mod.VWC <- read.csv(path.mod.VWC, stringsAsFactors=F)
 df.mod.point <- read.csv(path.mod.point, stringsAsFactors=F)
 
 # make Date column
-df.mod.temp$Date <- dmy_hm(df.mod.temp$Date12.DDMMYYYYhhmm.)
-df.mod.VWC$Date <- dmy_hm(df.mod.VWC$Date12.DDMMYYYYhhmm.)
-df.mod.point$Date <- dmy_hm(df.mod.point$Date12.DDMMYYYYhhmm.)
+df.mod.temp$Date <- dmy_hm(df.mod.temp$Date12.DDMMYYYYhhmm.)-days(1)    # subtract 1 because data recorded at midnight (00:00) is average of previous day
+df.mod.VWC$Date <- dmy_hm(df.mod.VWC$Date12.DDMMYYYYhhmm.)-days(1)
+df.mod.point$Date <- dmy_hm(df.mod.point$Date12.DDMMYYYYhhmm.)-days(1)
 
 # subset
 df.mod.temp <- subset(df.mod.temp, year(Date)>=yr.min & year(Date)<=yr.max)
@@ -250,7 +251,6 @@ df.thaw.day <- summarize(group_by(df.thaw, Date),
                          ThawDepth.mm.std = sd(ThawDepth.mm, na.rm=T),
                          ThawDepth.mm.min = min(ThawDepth.mm, na.rm=T),
                          ThawDepth.mm.max = max(ThawDepth.mm, na.rm=T))
-
 
 ## calculate fit metrics - calibration period
 # ARFlux
