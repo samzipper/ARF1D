@@ -5,6 +5,7 @@ rm(list=ls())
 
 # git directory for relative paths
 git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
+#git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
 
 require(lubridate)
 require(dplyr)

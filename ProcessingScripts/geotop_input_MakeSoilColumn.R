@@ -12,22 +12,23 @@ rm(list=ls())
 
 # git directory for relative paths
 git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
+#git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
 
 # path to save output soil file
 out.path <- paste0(git.dir, "geotop/soil/soilARF0001.txt")
 
 # define soil layer properties
-min.Dz <- 5       # [mm] - thickness of organic soil layers
+min.Dz <- 25       # [mm] - thickness of organic soil layers
 total.Dz <- 10000  # [mm] - total soil thickness
-nsoilay <- 100     # number of soil layers
+nsoilay <- 30     # number of soil layers
 
 ## tunable soil parameters
 # organic soil - using values from Jiang et al. (2015) SI for 1st layer
 #   thermal conductivity & capacity from Kurylyk et al. (2016) WRR Table A1
 org.z <- 174      # [mm] - thickness of organic soil (Jiang et al. 2015, Table 1, thickness at unburned site = 17.4 cm +/- 2.1 cm)
 org.Ks <- 0.17    # [mm/s] - saturated hydraulic condutivity 
-org.vwc_s <- 0.5  # [m3/m3] - saturated water content
-org.vwc_r <- 0.1  # [m3/m3] - residual water content
+org.vwc_s <- 0.84  # [m3/m3] - saturated water content
+org.vwc_r <- 0.04  # [m3/m3] - residual water content
 org.VG_alpha <- 12.7*(1/1000) # [mm-1] - Van Genuchten alpha (convert from 12.7 m-1)
 org.VG_n <- 1.30       # [-] - Van Genuchten n
 org.thermcond <- 0.25   # [W/m/K] - thermal conductivity of soil solids
@@ -36,8 +37,8 @@ org.thermcap <- 2.6E+6   # [J/m3/K] - thermal capacity of soil solids
 # mineral soil - using values from Jiang et al. (2015) SI for 3rd layer
 #   thermal conductivity & capacity from Kurylyk et al. (2016) WRR Table A1
 min.Ks <- 0.021   # [mm/s] - saturated hydraulic condutivity 
-min.vwc_s <- 0.84 # [m3/m3] - saturated water content
-min.vwc_r <- 0.04 # [m3/m3] - residual water content
+min.vwc_s <- 0.56 # [m3/m3] - saturated water content
+min.vwc_r <- 0.07 # [m3/m3] - residual water content
 min.VG_alpha <- 2.41*(1/1000) # [mm-1] - Van Genuchten alpha (convert from 12.7 m-1)
 min.VG_n <- 1.33       # [-] - Van Genuchten n
 min.thermcond <- 1.62   # [W/m/K] - thermal conductivity of soil solids
