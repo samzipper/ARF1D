@@ -159,12 +159,12 @@ MinRatioKactualToKSat = 1.0E-5
 !******* OUTPUT TIME SERIES **********
 !*************************************
 DtPlotPoint = 24
-SoilTempProfileFile="output-tabs/soiltemp"
-SoilIceContentProfileFile="output-tabs/thetaice"
-SoilLiqContentProfileFile="output-tabs/thetaliq"
+!SoilTempProfileFile="output-tabs/soiltemp"
+!SoilIceContentProfileFile="output-tabs/thetaice"
+!SoilLiqContentProfileFile="output-tabs/thetaliq"
 !SoilLiqWaterPressProfileFile="output-tabs/psiliq"
 !SoilTotWaterPressProfileFile="output-tabs/psitot"
-SoilAll=1
+!SoilAll=1
 
 !*************************************
 !******** POINT OUTPUT FILE **********
@@ -173,3 +173,6 @@ PointOutputFile="output-tabs/point"
 !PointAll=1
 DatePoint=1
 SnowDepthPoint=2
+PrainPoint=3
+PsnowPoint=4
+AirTempPoint=5
