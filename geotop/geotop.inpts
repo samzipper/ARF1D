@@ -2,7 +2,7 @@
 !******* CONFIGURATION *********
 !*******************************
 TimeStepEnergyAndWater = 14400
-InitDateDDMMYYYYhhmm   = 31/12/2001 00:00
+InitDateDDMMYYYYhhmm   = 31/12/2002 00:00
 EndDateDDMMYYYYhhmm    = 31/12/2015 00:00
 !TimeStepEnergyAndWater = 86400
 !InitDateDDMMYYYYhhmm = 31/12/2005 13:00

@@ -11,8 +11,8 @@
 rm(list=ls())
 
 # git directory for relative paths
-#git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
-git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
+git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
+#git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
 
 require(lubridate)
 require(ggplot2)
@@ -22,7 +22,7 @@ require(gridExtra)
 source(paste0(git.dir, "ProcessingScripts/FitMetrics.R"))
 
 #version
-version <- "20170310-DailyMetTesting"
+version <- "20170310-DailyMetTesting_NoCanopy"
 
 # function to find closest
 which.closest <- function(x, vec){
@@ -261,6 +261,7 @@ df.fit.VWC.ARFlux <- df.obs.ARFlux[is.finite(df.obs.ARFlux$VWC),]
 df.fit.VWC.ARFlux$VWC.mod <- df.mod.day$VWC.ARFlux.mean[match(df.fit.VWC.ARFlux$Date, df.mod.day$Date)]
 
 df.thaw.day$thaw.mod <- df.mod.day$ThawDepth.mm[match(df.thaw.day$Date, df.mod.day$Date)]
+df.thaw.day$thaw.mod.point <- df.mod.point$lowest_thawed_soil_depth.mm.[match(df.thaw.day$Date, df.mod.point$Date)]
 
 df.fit.LE <- df.obs.ARFlux[is.finite(df.obs.ARFlux$LE.W.m2),]
 df.fit.LE$LE.mod <- df.mod.point$LE.W.m2.[match(df.fit.LE$Date, df.mod.point$Date)]
@@ -343,10 +344,10 @@ df.fit.table.cal["Tower VWC",] <- c(RMSE(subset(df.fit.VWC.ARFlux, period=="cal"
                                     NRMSE(subset(df.fit.VWC.ARFlux, period=="cal")$VWC.mod, subset(df.fit.VWC.ARFlux, period=="cal")$VWC),
                                     NashSutcliffe(subset(df.fit.VWC.ARFlux, period=="cal")$VWC.mod, subset(df.fit.VWC.ARFlux, period=="cal")$VWC),
                                     R2(subset(df.fit.VWC.ARFlux, period=="cal")$VWC.mod, subset(df.fit.VWC.ARFlux, period=="cal")$VWC))
-df.fit.table.cal["Thaw Depth",] <- c(RMSE(subset(df.thaw.day, period=="cal")$thaw.mod, subset(df.thaw.day, period=="cal")$ThawDepth.mm.mean),
-                                     NRMSE(subset(df.thaw.day, period=="cal")$thaw.mod, subset(df.thaw.day, period=="cal")$ThawDepth.mm.mean),
-                                     NashSutcliffe(subset(df.thaw.day, period=="cal")$thaw.mod, subset(df.thaw.day, period=="cal")$ThawDepth.mm.mean),
-                                     R2(subset(df.thaw.day, period=="cal")$thaw.mod, subset(df.thaw.day, period=="cal")$ThawDepth.mm.mean))
+df.fit.table.cal["Thaw Depth",] <- c(RMSE(subset(df.thaw.day, period=="cal")$thaw.mod.point, subset(df.thaw.day, period=="cal")$ThawDepth.mm.mean),
+                                     NRMSE(subset(df.thaw.day, period=="cal")$thaw.mod.point, subset(df.thaw.day, period=="cal")$ThawDepth.mm.mean),
+                                     NashSutcliffe(subset(df.thaw.day, period=="cal")$thaw.mod.point, subset(df.thaw.day, period=="cal")$ThawDepth.mm.mean),
+                                     R2(subset(df.thaw.day, period=="cal")$thaw.mod.point, subset(df.thaw.day, period=="cal")$ThawDepth.mm.mean))
 df.fit.table.cal["Nest Soil Temp",] <- c(RMSE(subset(df.fit.temp, period=="cal")$Temp.mod, subset(df.fit.temp, period=="cal")$Temp.mean),
                                          NRMSE(subset(df.fit.temp, period=="cal")$Temp.mod, subset(df.fit.temp, period=="cal")$Temp.mean),
                                          NashSutcliffe(subset(df.fit.temp, period=="cal")$Temp.mod, subset(df.fit.temp, period=="cal")$Temp.mean),
@@ -366,10 +367,10 @@ df.fit.table.val["Tower VWC",] <- c(RMSE(subset(df.fit.VWC.ARFlux, period=="val"
                                     NRMSE(subset(df.fit.VWC.ARFlux, period=="val")$VWC.mod, subset(df.fit.VWC.ARFlux, period=="val")$VWC),
                                     NashSutcliffe(subset(df.fit.VWC.ARFlux, period=="val")$VWC.mod, subset(df.fit.VWC.ARFlux, period=="val")$VWC),
                                     R2(subset(df.fit.VWC.ARFlux, period=="val")$VWC.mod, subset(df.fit.VWC.ARFlux, period=="val")$VWC))
-df.fit.table.val["Thaw Depth",] <- c(RMSE(subset(df.thaw.day, period=="val")$thaw.mod, subset(df.thaw.day, period=="val")$ThawDepth.mm.mean),
-                                     NRMSE(subset(df.thaw.day, period=="val")$thaw.mod, subset(df.thaw.day, period=="val")$ThawDepth.mm.mean),
-                                     NashSutcliffe(subset(df.thaw.day, period=="val")$thaw.mod, subset(df.thaw.day, period=="val")$ThawDepth.mm.mean),
-                                     R2(subset(df.thaw.day, period=="val")$thaw.mod, subset(df.thaw.day, period=="val")$ThawDepth.mm.mean))
+df.fit.table.val["Thaw Depth",] <- c(RMSE(subset(df.thaw.day, period=="val")$thaw.mod.point, subset(df.thaw.day, period=="val")$ThawDepth.mm.mean),
+                                     NRMSE(subset(df.thaw.day, period=="val")$thaw.mod.point, subset(df.thaw.day, period=="val")$ThawDepth.mm.mean),
+                                     NashSutcliffe(subset(df.thaw.day, period=="val")$thaw.mod.point, subset(df.thaw.day, period=="val")$ThawDepth.mm.mean),
+                                     R2(subset(df.thaw.day, period=="val")$thaw.mod.point, subset(df.thaw.day, period=="val")$ThawDepth.mm.mean))
 df.fit.table.val["Nest Soil Temp",] <- c(RMSE(subset(df.fit.temp, period=="val")$Temp.mod, subset(df.fit.temp, period=="val")$Temp.mean),
                                          NRMSE(subset(df.fit.temp, period=="val")$Temp.mod, subset(df.fit.temp, period=="val")$Temp.mean),
                                          NashSutcliffe(subset(df.fit.temp, period=="val")$Temp.mod, subset(df.fit.temp, period=="val")$Temp.mean),
@@ -454,6 +455,7 @@ df.fit.energy.table.val["G",] <- c(RMSE(subset(df.fit.G, period=="val")$G.mod, s
 #path.plot.val <- paste0(git.dir, "geotop/SoilPropertyCalibration/Plot_", number, "_", fire, ".png")
 path.plot.val.sub <- paste0(git.dir, "geotop/output-plots/Plots_CalVal_Subsurface_", version, "_", fire, ".png")
 path.plot.val.sur <- paste0(git.dir, "geotop/output-plots/Plots_CalVal_Surface_", version, "_", fire, ".png")
+path.plot.val.diag <- paste0(git.dir, "geotop/output-plots/Plots_CalVal_Diagnostics_", version, "_", fire, ".png")
 
 # plot subsurface temperature and VWC
 p.thaw.compare.ARFlux <- 
@@ -461,7 +463,7 @@ p.thaw.compare.ARFlux <-
   annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_line(data=subset(df.mod.day, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=ThawDepth.mm), color="brown") +
   geom_segment(data=subset(df.thaw.day, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, xend=Date, y=ThawDepth.mm.mean-ThawDepth.mm.std, yend=ThawDepth.mm.mean+ThawDepth.mm.std)) +
-  geom_point(data=subset(df.thaw.day, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=ThawDepth.mm.mean)) +
+  geom_point(data=subset(df.thaw.day, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=ThawDepth.mm.mean), shape=21) +
   scale_x_date(expand=c(0,0)) +
   scale_y_reverse(name="Tower Thaw Depth [mm]") +
   theme_bw() +
@@ -472,7 +474,7 @@ p.temp.compare.ARFlux <-
   annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_hline(yintercept=0, color="gray65") +
   geom_line(data=subset(df.mod.day, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=Temp.ARFlux.mean), color="red") +
-  geom_point(data=df.obs.ARFlux, aes(x=Date, y=Tsoil.C)) +
+  geom_point(data=df.obs.ARFlux, aes(x=Date, y=Tsoil.C), shape=21) +
   scale_x_date(expand=c(0,0)) +
   scale_y_continuous(name=paste0("Tower Soil Temp [C]: ", depth.ARFlux.min, "-", depth.ARFlux.max, " mm")) +
   theme_bw() +
@@ -483,7 +485,7 @@ p.VWC.compare.ARFlux <-
   annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_hline(yintercept=0, color="gray65") +
   geom_line(data=subset(df.mod.day, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=VWC.ARFlux.mean), color="blue") +
-  geom_point(data=df.obs.ARFlux, aes(x=Date, y=VWC)) +
+  geom_point(data=df.obs.ARFlux, aes(x=Date, y=VWC), shape=21) +
   scale_x_date(expand=c(0,0)) +
   scale_y_continuous(name=paste0("Tower VWC [m3/m3]: ", depths.ARFlux.VWC, " mm")) +
   theme_bw() +
@@ -494,7 +496,7 @@ p.temp.compare <-
   annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_hline(yintercept=0, color="gray65") +
   geom_line(data=subset(df.mod.day, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=Temp.mean), color="red") +
-  geom_point(data=df.obs.day, aes(x=Date, y=Temp.mean)) +
+  geom_point(data=df.obs.day, aes(x=Date, y=Temp.mean), shape=21) +
   scale_y_continuous(name=paste0("Nest Soil Temp [C]: ", depth.min, "-", depth.max, " mm")) +
   scale_x_date(expand=c(0,0)) +
   theme_bw() +
@@ -504,15 +506,15 @@ p.VWC.compare <-
   ggplot() +
   annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_line(data=subset(df.mod.day, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=VWC.mean), color="blue") +
-  geom_point(data=df.obs.day, aes(x=Date, y=VWC.mean)) +
+  geom_point(data=df.obs.day, aes(x=Date, y=VWC.mean), shape=21) +
   scale_y_continuous(name=paste0("Nest VWC [m3/m3]: ", depth.min, "-", depth.max, " mm")) +
   scale_x_date(expand=c(0,0)) +
   theme_bw() +
   theme(panel.grid=element_blank())
 
 ggsave(path.plot.val.sub, arrangeGrob(p.thaw.compare.ARFlux, p.temp.compare.ARFlux, p.VWC.compare.ARFlux, p.temp.compare, p.VWC.compare, 
-                                  arrangeGrob(tableGrob(round(df.fit.table.cal, 3)), tableGrob(round(df.fit.table.val, 3)), ncol=2), 
-                                  ncol=1, heights=c(1,1,1,1,1,0.75)),
+                                      arrangeGrob(tableGrob(round(df.fit.table.cal, 3)), tableGrob(round(df.fit.table.val, 3)), ncol=2), 
+                                      ncol=1, heights=c(1,1,1,1,1,0.75)),
        width=12, height=12, units="in")
 
 # surface fluxes
@@ -520,7 +522,7 @@ p.LE.compare <-
   ggplot() +
   annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=LE.W.m2.), color="green") +
-  geom_point(data=df.fit.LE, aes(x=Date, y=LE.W.m2)) +
+  geom_point(data=df.fit.LE, aes(x=Date, y=LE.W.m2), shape=21) +
   scale_y_continuous(name="Tower LE Flux [W m-2]") +
   scale_x_date(expand=c(0,0)) +
   theme_bw() +
@@ -530,7 +532,7 @@ p.H.compare <-
   ggplot() +
   annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=H.W.m2.), color="red") +
-  geom_point(data=df.fit.H, aes(x=Date, y=H.W.m2)) +
+  geom_point(data=df.fit.H, aes(x=Date, y=H.W.m2), shape=21) +
   scale_y_continuous(name="Tower H Flux [W m-2]") +
   scale_x_date(expand=c(0,0)) +
   theme_bw() +
@@ -540,7 +542,7 @@ p.G.compare <-
   ggplot() +
   annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=Soil_heat_flux.W.m2.), color="brown") +
-  geom_point(data=df.fit.G, aes(x=Date, y=G.W.m2)) +
+  geom_point(data=df.fit.G, aes(x=Date, y=G.W.m2), shape=21) +
   scale_y_continuous(name="Tower G Flux [W m-2]") +
   scale_x_date(expand=c(0,0)) +
   theme_bw() +
@@ -550,7 +552,7 @@ p.Rnet.compare <-
   ggplot() +
   annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=SWnet.W.m2.+LWnet.W.m2.), color="brown") +
-  geom_point(data=df.fit.Rnet, aes(x=Date, y=Rnet.W.m2)) +
+  geom_point(data=df.fit.Rnet, aes(x=Date, y=Rnet.W.m2), shape=21) +
   scale_y_continuous(name="Tower Rnet [W m-2]") +
   scale_x_date(expand=c(0,0)) +
   theme_bw() +
@@ -560,7 +562,7 @@ p.SWin.compare <-
   ggplot() +
   annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=SWin.W.m2.), color="brown") +
-  geom_point(data=df.obs.ARFlux, aes(x=Date, y=SWin.W.m2)) +
+  geom_point(data=df.obs.ARFlux, aes(x=Date, y=SWin.W.m2), shape=21) +
   scale_y_continuous(name="Tower SWin [W m-2]") +
   scale_x_date(expand=c(0,0)) +
   theme_bw() +
@@ -570,7 +572,7 @@ p.SWout.compare <-
   ggplot() +
   annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=SWup.W.m2.), color="brown") +
-  geom_point(data=df.obs.ARFlux, aes(x=Date, y=SWout.W.m2)) +
+  geom_point(data=df.obs.ARFlux, aes(x=Date, y=SWout.W.m2), shape=21) +
   scale_y_continuous(name="Tower SWout [W m-2]") +
   scale_x_date(expand=c(0,0)) +
   theme_bw() +
@@ -580,7 +582,7 @@ p.LWin.compare <-
   ggplot() +
   annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=LWin.W.m2.), color="brown") +
-  geom_point(data=df.obs.ARFlux, aes(x=Date, y=LWin.W.m2)) +
+  geom_point(data=df.obs.ARFlux, aes(x=Date, y=LWin.W.m2), shape=21) +
   scale_y_continuous(name="Tower LWin [W m-2]") +
   scale_x_date(expand=c(0,0)) +
   theme_bw() +
@@ -590,7 +592,7 @@ p.LWout.compare <-
   ggplot() +
   annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=LWup.W.m2.), color="brown") +
-  geom_point(data=df.obs.ARFlux, aes(x=Date, y=LWout.W.m2)) +
+  geom_point(data=df.obs.ARFlux, aes(x=Date, y=LWout.W.m2), shape=21) +
   scale_y_continuous(name="Tower LWout [W m-2]") +
   scale_x_date(expand=c(0,0)) +
   theme_bw() +
@@ -600,3 +602,78 @@ ggsave(path.plot.val.sur, arrangeGrob(p.Rnet.compare, p.SWin.compare, p.SWout.co
                                       arrangeGrob(tableGrob(round(df.fit.energy.table.cal, 3)), tableGrob(round(df.fit.energy.table.val, 3)), ncol=2), 
                                       ncol=1),
        width=12, height=12, units="in")
+
+# other diagnostic plots
+p.mod.LSAI <-
+  ggplot() +
+  annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
+  geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=LSAI.m2.m2.), color="green") +
+  geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=Canopy_fraction...), color="brown") +
+  scale_y_continuous(name="LSAI (green), Canopy fraction (brown)") +
+  scale_x_date(expand=c(0,0)) +
+  theme_bw() +
+  theme(panel.grid=element_blank())
+
+p.mod.ET <-
+  ggplot() +
+  annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
+  geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=Trasp_canopy.mm.), color="green") +
+  geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=Evap_surface.mm.), color="brown") +
+  scale_y_continuous(name="Transpiration (green), Soil Evap (brown)") +
+  scale_x_date(expand=c(0,0)) +
+  theme_bw() +
+  theme(panel.grid=element_blank())
+
+p.mod.Tair <-
+  ggplot() +
+  annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
+  geom_hline(yintercept=0, color="gray65") +
+  geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=Tair.C.), color="red") +
+#  geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=Tvegetation.C.), color="green") +
+  geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=Tsurface.C.), color="orange") +
+  scale_y_continuous(name="Tair (red), Tsurface (orange)") +
+  scale_x_date(expand=c(0,0)) +
+  theme_bw() +
+  theme(panel.grid=element_blank())
+
+p.mod.precip <-
+  ggplot() +
+  annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
+  geom_hline(yintercept=0, color="gray65") +
+  geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=Prain_over_canopy.mm.+Psnow_over_canopy.mm.), color="blue") +
+  scale_y_continuous(name="Daily Precip [mm]") +
+  scale_x_date(expand=c(0,0)) +
+  theme_bw() +
+  theme(panel.grid=element_blank())
+
+p.mod.snow <-
+  ggplot() +
+  annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
+  geom_hline(yintercept=0, color="gray65") +
+  geom_ribbon(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, ymin=0, ymax=snow_depth.mm.), fill="deepskyblue1") +
+  scale_y_continuous(name="Snow Depth [mm]") +
+  scale_x_date(expand=c(0,0)) +
+  theme_bw() +
+  theme(panel.grid=element_blank())
+
+
+ggsave(path.plot.val.diag, arrangeGrob(p.mod.precip, p.mod.Tair, p.mod.ET, p.mod.LSAI, p.mod.snow, ncol=1),
+       width=12, height=12, units="in")
+
+# save zoomed-in nice plots
+path.plot.nice <- paste0(git.dir, "geotop/output-plots/Plots_CalVal_Zoom_", version, "_", fire, ".png")
+ggsave(path.plot.nice, 
+       arrangeGrob(
+         arrangeGrob(p.mod.precip+scale_x_date(limits=c(as.Date("2007-12-31"), as.Date("2010-01-01")), expand=c(0,0)),
+                     p.mod.Tair+scale_x_date(limits=c(as.Date("2007-12-31"), as.Date("2010-01-01")), expand=c(0,0)),
+                     p.mod.ET+scale_x_date(limits=c(as.Date("2007-12-31"), as.Date("2010-01-01")), expand=c(0,0)), ncol=1),
+         arrangeGrob(p.thaw.compare.ARFlux+scale_x_date(limits=c(as.Date("2007-12-31"), as.Date("2010-01-01")), expand=c(0,0)),
+                     p.temp.compare.ARFlux+scale_x_date(limits=c(as.Date("2007-12-31"), as.Date("2010-01-01")), expand=c(0,0)),
+                     p.VWC.compare.ARFlux+scale_x_date(limits=c(as.Date("2007-12-31"), as.Date("2010-01-01")), expand=c(0,0)), ncol=1),
+         arrangeGrob(p.Rnet.compare+scale_x_date(limits=c(as.Date("2007-12-31"), as.Date("2010-01-01")), expand=c(0,0)),
+                     p.SWin.compare+scale_x_date(limits=c(as.Date("2007-12-31"), as.Date("2010-01-01")), expand=c(0,0)),
+                     p.SWout.compare+scale_x_date(limits=c(as.Date("2007-12-31"), as.Date("2010-01-01")), expand=c(0,0)), ncol=1),
+         arrangeGrob(p.LE.compare+scale_x_date(limits=c(as.Date("2007-12-31"), as.Date("2010-01-01")), expand=c(0,0)),
+                     p.H.compare+scale_x_date(limits=c(as.Date("2007-12-31"), as.Date("2010-01-01")), expand=c(0,0)),
+                     p.G.compare+scale_x_date(limits=c(as.Date("2007-12-31"), as.Date("2010-01-01")), expand=c(0,0)), ncol=1),
+       ncol=4), width=16, height=12, units="in")
