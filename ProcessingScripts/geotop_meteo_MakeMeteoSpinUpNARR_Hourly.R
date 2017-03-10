@@ -10,6 +10,7 @@ rm(list=ls())
 
 # git directory for relative paths
 git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
+#git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
 
 require(lubridate)
 require(ggplot2)
@@ -25,7 +26,7 @@ fname.hourly.dynamic <- paste0(git.dir, "geotop/meteo/meteoNARRhourlyDynamicWith
 fname.3hourly.dynamic<- paste0(git.dir, "geotop/meteo/meteoNARR3hourlyDynamicWithSpinUp0001.txt")  # where to save 3 hourly output data
 
 # year to start/end hourly data
-yr.start <- 1995
+yr.start <- 1999
 yr.end <- 2014
 
 # coordinates of site
@@ -40,7 +41,7 @@ df.in <- read.csv(fname.daily, stringsAsFactors=F)
 df.stats <- read.csv(fname.stats, stringsAsFactors=F)
 
 # date processing
-df.in$Date <- dmy_hm(df.in$POSIX)
+df.in$Date <- as.Date(dmy_hm(df.in$POSIX))  # strip hours
 df.in$DOY <- yday(df.in$Date)
 df.in$Month <- month(df.in$Date)
 
@@ -106,7 +107,9 @@ df.h <- df.h[order(df.h$Date, df.h$hr),]
 
 ## air temperature
 # calculate solar time (12=solar noon)
-df.h$hr.solar <- df.h$hr - (df.h$SolarNoon - 12)
+df.h$hr.solar <- 12 + (df.h$hr - df.h$SolarNoon)
+df.h$hr.solar[df.h$hr.solar >= 24] <- df.h$hr.solar[df.h$hr.solar >= 24]-24
+df.h$hr.solar[df.h$hr.solar < 0] <- df.h$hr.solar[df.h$hr.solar < 0]+24
 
 # calculate hourly temperature
 df.h$Tair.C <- Tair_HourlyFromDaily(solar.time=df.h$hr.solar,

@@ -1,12 +1,12 @@
 !*******************************
 !******* CONFIGURATION *********
 !*******************************
-!TimeStepEnergyAndWater = 3600
-!InitDateDDMMYYYYhhmm   = 01/07/2009 00:00
-!EndDateDDMMYYYYhhmm    = 03/07/2009 00:00
-TimeStepEnergyAndWater = 86400
-InitDateDDMMYYYYhhmm = 31/12/2005 13:00
-EndDateDDMMYYYYhhmm = 31/12/2013 13:00
+TimeStepEnergyAndWater = 3600
+InitDateDDMMYYYYhhmm   = 01/07/2009 00:00
+EndDateDDMMYYYYhhmm    = 03/07/2009 00:00
+!TimeStepEnergyAndWater = 86400
+!InitDateDDMMYYYYhhmm = 31/12/2005 13:00
+!EndDateDDMMYYYYhhmm = 31/12/2013 13:00
 EnergyBalance = 1
 WaterBalance  = 1
 PointSim      = 1
@@ -88,7 +88,7 @@ HeaderPointBedrockDepth = "bedrock"
 !******* INPUT  ************
 !*******************************
 !MeteoFile = "meteo/meteoNARRdailyWithSpinUp"
-MeteoFile = "meteo/meteoNARR3hourlyWithSpinUp"
+MeteoFile = "meteo/meteoNARRhourlyDynamicWithSpinUp"
 
 !*******************************
 !******** LAND COVER  **********
@@ -158,7 +158,7 @@ MinRatioKactualToKSat = 1.0E-6
 !*************************************
 !******* OUTPUT TIME SERIES **********
 !*************************************
-DtPlotPoint = 24
+DtPlotPoint = 1
 SoilTempProfileFile="output-tabs/soiltemp"
 SoilIceContentProfileFile="output-tabs/thetaice"
 SoilLiqContentProfileFile="output-tabs/thetaliq"
