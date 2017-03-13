@@ -1,12 +1,10 @@
 !*******************************
 !******* CONFIGURATION *********
 !*******************************
-!TimeStepEnergyAndWater = 3600
-!InitDateDDMMYYYYhhmm   = 01/07/2009 00:00
-!EndDateDDMMYYYYhhmm    = 03/07/2009 00:00
 TimeStepEnergyAndWater = 14400
+!TimeStepEnergyAndWater = 3600
 InitDateDDMMYYYYhhmm   = 31/12/2009 00:00
-EndDateDDMMYYYYhhmm    = 31/12/2015 00:00
+EndDateDDMMYYYYhhmm    = 31/12/2010 00:00
 EnergyBalance = 1
 WaterBalance  = 1
 PointSim      = 1
@@ -93,14 +91,13 @@ MeteoFile = "meteo/meteoNARRhourlyDynamicWithSpinUp"
 !*******************************
 !******** LAND COVER  **********
 !*******************************
-NumLandCoverTypes = 1
-PointLandCoverType = 1
-SoilRoughness = 100.0
-SurFlowResLand = 0.5
-!VegHeight =1800.0
-!LSAI = 0.6
-!CanopyFraction = 0.0
-!RootDepth =1000.0
+NumLandCoverTypes=1
+PointLandCoverType=1
+SoilRoughness=100.0
+ThresSnowSoilRough=100.0
+LeafAngles=0
+SurFlowResLand=0.5
+SurFlowResExp=0.667
 
 TimeDependentVegetationParameterFile="veg/VegParams"
 
@@ -152,13 +149,22 @@ HeatEqTol = 1.0E-09
 !RichardMaxIter = 1500
 !RichardInitForc = 0.01
 RichardTol = 1.0E-09
-MinTimeStep = 300
+MinTimeStep = 150
 MinRatioKactualToKSat = 1.0E-5
+
+! canopy numerics
+CanopyMaxIter=100
+LocMaxIter=100
+TsMaxIter=100
+BusingerMaxIter=100
+
+! canopy stability (copied from geotop_examples/Mazia_1D)
+MoninObukhov=2
 
 !*************************************
 !******* OUTPUT TIME SERIES **********
 !*************************************
-DtPlotPoint = 24
+DtPlotPoint = 4
 !SoilTempProfileFile="output-tabs/soiltemp"
 !SoilIceContentProfileFile="output-tabs/thetaice"
 !SoilLiqContentProfileFile="output-tabs/thetaliq"
@@ -170,9 +176,9 @@ DtPlotPoint = 24
 !******** POINT OUTPUT FILE **********
 !*************************************
 PointOutputFile="output-tabs/point"
-!PointAll=1
-DatePoint=1
-SnowDepthPoint=2
-PrainPoint=3
-PsnowPoint=4
-AirTempPoint=5
+PointAll=1
+!DatePoint=1
+!SnowDepthPoint=2
+!PrainPoint=3
+!PsnowPoint=4
+!AirTempPoint=5
