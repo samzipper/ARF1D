@@ -22,7 +22,7 @@ require(gridExtra)
 source(paste0(git.dir, "ProcessingScripts/FitMetrics.R"))
 
 #version
-version <- "20170310-DailyMetTesting_NoCanopy"
+version <- "20170313-WithCanopy"
 
 # function to find closest
 which.closest <- function(x, vec){
@@ -144,7 +144,8 @@ for (d in Dates.all){
 }
 
 ## Process model output data
-# modeled data pathpath.mod.temp <- paste0(git.dir, "geotop/output-tabs/soiltemp0001.txt")
+# modeled data path
+path.mod.temp <- paste0(git.dir, "geotop/output-tabs/soiltemp0001.txt")
 path.mod.VWC <- paste0(git.dir, "geotop/output-tabs/thetaliq0001.txt")
 path.mod.point <- paste0(git.dir, "geotop/output-tabs/point0001.txt")
 
@@ -455,7 +456,7 @@ path.plot.val.diag <- paste0(git.dir, "geotop/output-plots/Plots_CalVal_Diagnost
 p.thaw.compare.ARFlux <- 
   ggplot() +
   annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
-  geom_line(data=subset(df.mod.day, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=ThawDepth.mm), color="brown") +
+  geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=lowest_thawed_soil_depth.mm.), color="brown") +
   geom_segment(data=subset(df.thaw.day, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, xend=Date, y=ThawDepth.mm.mean-ThawDepth.mm.std, yend=ThawDepth.mm.mean+ThawDepth.mm.std)) +
   geom_point(data=subset(df.thaw.day, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=ThawDepth.mm.mean), shape=21) +
   scale_x_date(expand=c(0,0)) +
@@ -595,7 +596,7 @@ p.LWout.compare <-
 ggsave(path.plot.val.sur, arrangeGrob(p.Rnet.compare, p.SWin.compare, p.SWout.compare, p.LWin.compare, p.LWout.compare, p.LE.compare, p.H.compare, p.G.compare, 
                                       arrangeGrob(tableGrob(round(df.fit.energy.table.cal, 3)), tableGrob(round(df.fit.energy.table.val, 3)), ncol=2), 
                                       ncol=1),
-       width=12, height=12, units="in")
+       width=12, height=16, units="in")
 
 # other diagnostic plots
 p.mod.LSAI <-

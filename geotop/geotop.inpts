@@ -44,11 +44,11 @@ HeaderCloudSWTransmissivity = "CloudTrans"
 !****************** SNOW ********************
 !********************************************
 
-ThresTempRain = 0.802
-ThresTempSnow = -0.212
+ThresTempRain = 3.386
+ThresTempSnow = -1.357
 
 IrriducibleWatSatSnow = 0.04
-SnowCorrFactor = 1.073
+SnowCorrFactor = 0.613
 
 SnowAgingCoeffVis = 0.25
 SnowAgingCoeffNIR = 0.45
