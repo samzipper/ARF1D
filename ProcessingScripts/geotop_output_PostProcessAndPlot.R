@@ -11,8 +11,8 @@
 rm(list=ls())
 
 # git directory for relative paths
-git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
-#git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
+#git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
+git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
 
 require(lubridate)
 require(ggplot2)
@@ -144,13 +144,7 @@ for (d in Dates.all){
 }
 
 ## Process model output data
-# parameter set number
-number <- "0001"
-
-# modeled data path
-#path.mod.temp <- paste0(git.dir, "geotop/SoilPropertyCalibration/output_", number, "_", fire, "_soiltemp0001.txt")
-#path.mod.VWC <- paste0(git.dir, "geotop/SoilPropertyCalibration/output_", number, "_", fire, "_thetaliq0001.txt")
-path.mod.temp <- paste0(git.dir, "geotop/output-tabs/soiltemp0001.txt")
+# modeled data pathpath.mod.temp <- paste0(git.dir, "geotop/output-tabs/soiltemp0001.txt")
 path.mod.VWC <- paste0(git.dir, "geotop/output-tabs/thetaliq0001.txt")
 path.mod.point <- paste0(git.dir, "geotop/output-tabs/point0001.txt")
 

@@ -1,21 +1,29 @@
 ## geotop_input_MakeVegFile.R
 #' This script is intended to make a time-dependent vegetation file.
+#' A daily meteorological data file is used to determine the start/end
+#' of the growing season, and also the timestep of the output file.
 
 rm(list=ls())
 
 # git directory for relative paths
-git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
-#git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
+#git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
+git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
 
 require(lubridate)
 require(dplyr)
 
 # some vegetation parameters to set
-VegHeight.min <- 50   # [mm] - min veg height (50 mm is min allowed in GEOtop)
+VegHeight.min <- 200  # [mm] - min veg height (50 mm is min allowed in GEOtop)
 VegHeight.max <- 500  # [mm] - max veg height (based on Google Image Search for Anaktuvuk River Fire, looked like it was ~knee high at flowering)
-LSAI.min <- 0.05  # [m2/m2] - min LAI+SAI used in non-growing season
-LSAI.max <- 2.0   # [m2/m2] - max LAI+SAI, based on Rocha & Shaver (2009) AFM
+LSAI.min <- 0.05      # [m2/m2] - min LAI+SAI used in non-growing season
+LSAI.max <- 2.0       # [m2/m2] - max LAI+SAI, based on Rocha & Shaver (2009) AFM
 RootDepth.max <- 500  # [mm] - max root depth; defined based on ~annual thaw depth (Iversen et al., 2015, NP)
+ThresVeg1 <- 50       # [mm] - at snow depths >ThresVeg1, vegetation completely buried (=ThresSnowVegUp)
+ThresVeg2 <- 10       # [mm] - at snow depths >ThresVeg2, vegetation completely exposed (=ThresSnowVegDown)
+
+# year to start/end data
+yr.start <- 1999
+yr.end <- 2015
 
 # time to ramp up/down after SOS and before EOS
 days.ramp <- 30
@@ -33,6 +41,9 @@ df.meteo <- read.csv(fname.meteo, stringsAsFactors=F)
 df.meteo$Date <- dmy_hm(df.meteo$POSIX)
 df.meteo$year <- year(df.meteo$Date)
 df.meteo$DOY <- yday(df.meteo$Date)
+
+# subset to output years
+df.meteo <- subset(df.meteo, year >= yr.start & year <= yr.end)
 
 ## find annual SOS and EOS based on when 10-day moving average air temperature exceeds 0 for first time (SOS) and last time (EOS)
 # make 10-day moving average temperature
@@ -87,19 +98,14 @@ df.yr$CanopyFraction <- 1-exp(-0.5*df.yr$LSAI)
 # make output data frame
 df.out.combo <- data.frame(POSIX = df.meteo$POSIX,
                            VegHeight = df.yr.all$VegHeight,
-                           ThresVeg1 = 0,
-                           ThresVeg2 = 0,
+                           ThresVeg1 = ThresVeg1,
+                           ThresVeg2 = ThresVeg2,
                            LSAI = df.yr.all$LSAI,
-                           ## 2/24/2017: Canopy fraction causing model to randomly stop under
-                           ##    some scenarios; I think I may be misinterpreting its meaning. 
-                           ##    Setting to 0 at all times, which is default.
-                           #CanopyFraction = df.yr.all$CanopyFraction,
-                           CanopyFraction = 0.0,
+                           CanopyFraction = df.yr.all$CanopyFraction,
                            DecayCoeff=2.5,
                            SnowBurialCoeff=1,
                            RootDepth = df.yr.all$RootDepth,
-                           MinStomatalRes=60)
-#df.out.combo$CanopyFraction[df.out.combo$LSAI<0.4] <- 0
+                           MinStomatalRes=30)
 
 # write output
 write.table(df.out.combo, file=fname.out, quote=F, sep=",", na="-9999.0", row.names=F)
