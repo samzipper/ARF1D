@@ -1,6 +1,6 @@
 Soil water retention properties found in the literature for the Van Genuchten retention function.,,,,,,,,,
 ,,,,,,,,,
-Source,ThetaS,ThetaR,Alpha_m-1,Alpha_mm-1,n,Ks_m_d-1,Ks_mm_s-1,source,comments
+Reference,ThetaS,ThetaR,Alpha_m-1,Alpha_mm-1,n,Ks_m_d-1,Ks_mm_s-1,source,comments
 Naasz et al. (2005),0.875,0.339,0.68,6.80E-04,10.3,33.26,3.85E-01,measured,drying curve
 Naasz et al. (2005),0.866,0.43,1.06,1.06E-03,4.8,40.464,4.68E-01,measured,wetting curve
 da Silva et al. (1998),0.901,0,0.264,2.64E-04,1.39,70.704,8.18E-01,measured,drying curve
@@ -15,3 +15,6 @@ Schwaerzel et al. (2006),0.684,NA,0.21,2.10E-04,1.48,0.00041,4.75E-06,measured,d
 Schwaerzel et al. (2006),0.79,NA,0.25,2.50E-04,1.26,0.0025,2.89E-05,measured,depth 22-32 cm
 Schwaerzel et al. (2006),0.741,NA,0.51,5.10E-04,1.15,0.0092,1.06E-04,measured,depth 22-32 cm
 Jiang et al. (2015),0.5,0.1,12.7,1.27E-02,1.3,14.688,1.70E-01,modeled,1st layer; Table S1
+Zhang et al. (2010),0.85,0.18,50,5.00E-02,1.45,362.88,4.20E+00,measured,surface organic (0-0.1 m)
+Zhang et al. (2010),0.88,0.2,10,1.00E-02,1.35,2.5056,2.90E-02,measured,peat (0.1-0.2 m)
+Zhang et al. (2010),0.75,0.2,10,1.00E-02,1.35,0.59616,6.90E-03,measured,peat (0.2-3.0 m)
