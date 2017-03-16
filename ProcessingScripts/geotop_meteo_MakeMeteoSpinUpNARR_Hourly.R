@@ -9,8 +9,8 @@
 rm(list=ls())
 
 # git directory for relative paths
-git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
-#git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
+#git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
+git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
 
 require(lubridate)
 require(ggplot2)
@@ -26,7 +26,7 @@ fname.hourly.dynamic <- paste0(git.dir, "geotop/meteo/meteoNARRhourlyDynamicWith
 fname.3hourly.dynamic<- paste0(git.dir, "geotop/meteo/meteoNARR3hourlyDynamicWithSpinUp0001.txt")  # where to save 3 hourly output data
 
 # year to start/end hourly data
-yr.start <- 1999
+yr.start <- 1989
 yr.end <- 2015
 
 # coordinates of site
@@ -118,12 +118,22 @@ df.h$Tair.C <- Tair_HourlyFromDaily(solar.time=df.h$hr.solar,
                                     Tmax.yesterday=df.h$Tair.C.max.yesterday,
                                     Tmin.tomorrow=df.h$Tair.C.min.tomorrow)
 
+# summarize to double-check against daily
+df.h.d <- summarize(group_by(df.h, Date),
+                    Tair.hr = mean(Tair.C))
+df.comp <- data.frame(Tair.d = df.in$AirT,
+                      Tair.hr = df.h.d$Tair.hr)
+
+# calculate bias and correct
+Tair.bias <- coef(lm(Tair.hr ~ Tair.d, data=df.comp))[1]
+df.h$Tair.C <- df.h$Tair.C - Tair.bias
+
 ## precip
 # turn off precip when it's not raining
 df.h$prec.intensity.mm_hr[df.h$hr < df.h$prec.start.hr | df.h$hr > df.h$prec.end.hr] <- 0
 
 ## wind speed
-# randomly distribute wind speed
+# randomly distribute wind speed (note: this is not used in output)
 df.h$WindSp <- 1.13989*df.h$WindSp*(-log(runif(1,0,1)))^0.30   # this is the way that EPIC model does it, according to AgroIBIS
 df.h$WindSp[df.h$WindSp<0] <- 0
 

@@ -17,14 +17,14 @@ require(lubridate)
 #in.path <- paste0(git.dir, "geotop/meteo/meteoNARR3hourlyWithSpinUp0001.txt")
 in.path <- paste0(git.dir, "geotop/meteo/meteoNARRdailyWithSpinUp0001.txt")
 out.path <- paste0(git.dir, "geotop/output-tabs/point0001.txt")
-plot.path <- paste0(git.dir, "geotop/output-plots/meteo_CompareInputToOutput_HourlyIn_4hrRun_DailyOut.png")
+plot.path <- paste0(git.dir, "geotop/output-plots/meteo_CompareInputToOutput_20170315-100soil-Top10-1hr-IgnoreP-SnowThres749-Start2006-SnowAlbUp-StabCorr1-MO2-CanIter1000-NewMeteo-WindMult.png")
 
 #in.path <- paste0("C:/Users/Sam/src/geotop/tests/1D/InfiltrationTrench/meteo/meteotrenchhour0001.txt")
 #out.path <- paste0("C:/Users/Sam/src/geotop/tests/1D/InfiltrationTrench/output-tabs/point0001.txt")
 #plot.path <- paste0("C:/Users/Sam/src/geotop/tests/1D/InfiltrationTrench/output-tabs/meteo_CompareInputToOutput.png")
 
 # year to compare
-yr <- 2010
+yr <- 2008
 
 # read input and output
 df.in <- read.csv(in.path)
@@ -39,7 +39,7 @@ df.in$Date <- dmy_hm(df.in$POSIX)
 df.out$Date <- dmy_hm(df.out$Date12.DDMMYYYYhhmm.)
 
 df.in$Year <- year(df.in$Date)
-df.in$DOY <- yday(df.in$Date)+1
+df.in$DOY <- yday(df.in$Date)
 
 df.out$Year <- year(df.out$Date)
 df.out$DOY <- yday(df.out$Date)
