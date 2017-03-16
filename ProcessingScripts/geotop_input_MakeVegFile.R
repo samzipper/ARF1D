@@ -51,7 +51,7 @@ df.meteo$AirT.avg <- as.numeric(stats::filter(df.meteo$AirT, rep(0.1,10), sides=
 df.meteo$GS <- df.meteo$AirT.avg>0  # growing season logical: T means during growing season
 
 # for each year, find DOY of min and max GS
-df.meteo.gs <- summarize(group_by(df.meteo[df.meteo$AirT.avg>0,], year),
+df.meteo.gs <- summarize(group_by(df.meteo[df.meteo$GS,], year),
                          SOS = min(DOY, na.rm=T),
                          EOS = max(DOY, na.rm=T))
 df.meteo.gs <- df.meteo.gs[complete.cases(df.meteo.gs),]
@@ -103,7 +103,7 @@ df.out.combo <- data.frame(POSIX = df.meteo$POSIX,
                            LSAI = df.yr.all$LSAI,
                            CanopyFraction = df.yr.all$CanopyFraction,
                            DecayCoeff=2.5,
-                           SnowBurialCoeff=1,
+                           SnowBurialCoeff=1.0,
                            RootDepth = df.yr.all$RootDepth,
                            MinStomatalRes=30)
 
