@@ -172,7 +172,7 @@ df.out.dynamic <- data.frame(POSIX = format(df.h$Date + hours(df.h$hr), "%d/%m/%
                              WindSp = df.h$WindSp,
                              AirT = df.h$Tair.C,
                              RH = df.h$RH,
-                             P = df.h$P,
+                             #P = df.h$P,
                              Swglob = df.h$SWin,
                              CloudTrans = 1.0)
 df.out <- data.frame(POSIX = format(df.h$Date + hours(df.h$hr), "%d/%m/%Y %H:%M"),
@@ -180,7 +180,7 @@ df.out <- data.frame(POSIX = format(df.h$Date + hours(df.h$hr), "%d/%m/%Y %H:%M"
                              WindSp = df.h$WindSp,
                              AirT = df.h$AirT,
                              RH = df.h$RH,
-                             P = df.h$P,
+                             #P = df.h$P,
                              Swglob = df.h$Swglob,
                              CloudTrans = 1.0)
 df.out.3hr <- df.out[seq(1,dim(df.out)[1],3), ]
