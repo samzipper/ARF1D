@@ -183,11 +183,14 @@ df.out <- data.frame(POSIX = format(df.h$Date + hours(df.h$hr), "%d/%m/%Y %H:%M"
                              #P = df.h$P,
                              Swglob = df.h$Swglob,
                              CloudTrans = 1.0)
-df.out.3hr <- df.out[seq(1,dim(df.out)[1],3), ]
-df.out.3hr.dynamic <- df.out.dynamic[seq(1,dim(df.out.dynamic)[1],3), ]
+#df.out.3hr <- df.out[seq(1,dim(df.out)[1],3), ]
+#df.out.3hr.dynamic <- df.out.dynamic[seq(1,dim(df.out.dynamic)[1],3), ]
 
 # write output
-write.table(df.out.dynamic, file=fname.hourly.dynamic, quote=F, sep=",", na="-9999.0", row.names=F)
-write.table(df.out, file=fname.hourly, quote=F, sep=",", na="-9999.0", row.names=F)
-write.table(df.out.3hr, file=fname.3hourly, quote=F, sep=",", na="-9999.0", row.names=F)
-write.table(df.out.3hr.dynamic, file=fname.3hourly.dynamic, quote=F, sep=",", na="-9999.0", row.names=F)
+f.hr.dynamic <- file(fname.hourly.dynamic, open="wb")
+write.table(df.out.dynamic, file=f.hr.dynamic, quote=F, sep=",", na="-9999.0", row.names=F, eol="\n")
+close(f.hr.dynamic)
+
+f.hr <- file(fname.hourly, open="wb")
+write.table(df.out, file=f.hr, quote=F, sep=",", na="-9999.0", row.names=F)
+close(f.hr)
