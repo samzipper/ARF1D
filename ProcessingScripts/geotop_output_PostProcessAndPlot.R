@@ -22,7 +22,7 @@ require(gridExtra)
 source(paste0(git.dir, "ProcessingScripts/FitMetrics.R"))
 
 #version
-version <- "20170313-WithCanopy"
+version <- "20170315-50soil-Top10-4hr-IgnoreP-SnowThres749-SnowAlbUp-StabCorr1-MO2-CanIter100-NewMeteo-SpinUp7yr-Burial1.0-Tol05-LF-WindMult"
 
 # function to find closest
 which.closest <- function(x, vec){
@@ -143,6 +143,14 @@ for (d in Dates.all){
   df.obs.day$Temp.max[i.d] <- max(unlist(df.obs[df.obs$Date==d, Temp.cols]), na.rm=T)
 }
 
+# calculate albedo
+df.obs.ARFlux$albedo <- df.obs.ARFlux$SWout.W.m2/df.obs.ARFlux$SWin.W.m2
+
+# any days where albedo is <0 or >1, set to SWout, SWin, and albedo to NaN
+df.obs.ARFlux$SWout.W.m2[df.obs.ARFlux$albedo < 0 | df.obs.ARFlux$albedo > 1] <- NaN
+df.obs.ARFlux$SWin.W.m2[df.obs.ARFlux$albedo < 0 | df.obs.ARFlux$albedo > 1] <- NaN
+df.obs.ARFlux$albedo[df.obs.ARFlux$albedo < 0 | df.obs.ARFlux$albedo > 1] <- NaN
+
 ## Process model output data
 # modeled data path
 path.mod.temp <- paste0(git.dir, "geotop/output-tabs/soiltemp0001.txt")
@@ -233,6 +241,9 @@ for (d in Dates.all){
   df.mod.day$ThawDepth.mm[i.d] <- min(df.mod.temp.profile$depth[which(df.mod.temp.profile$Temp<0)])
 }
 
+# calculate albedo
+df.mod.point$albedo <- df.mod.point$SWup.W.m2./df.mod.point$SWin.W.m2.
+
 ## make plots
 # convert dates
 df.mod.day$Date <- mdy(df.mod.day$Date)
@@ -247,6 +258,12 @@ df.thaw.day <- summarize(group_by(df.thaw, Date),
                          ThawDepth.mm.min = min(ThawDepth.mm, na.rm=T),
                          ThawDepth.mm.max = max(ThawDepth.mm, na.rm=T))
 
+# calculate LE based on evaporation and transpiration
+df.mod.point$LEfromET.W.m2 <- (df.mod.point$Evap_surface.mm. + df.mod.point$Trasp_canopy.mm.)*2.45*1e6/86400
+df.mod.point$LE.weighted.W.m2 <- (df.mod.point$LEg_unveg.W.m2.*(1-df.mod.point$Canopy_fraction...))+(df.mod.point$LEv.W.m2.*df.mod.point$Canopy_fraction...)
+df.mod.point$H.weighted.W.m2 <- (df.mod.point$Hg_unveg.W.m2.*(1-df.mod.point$Canopy_fraction...))+(df.mod.point$Hv.W.m2.*df.mod.point$Canopy_fraction...)
+
+
 ## calculate fit metrics - calibration period
 # ARFlux
 df.fit.temp.ARFlux <- df.obs.ARFlux[is.finite(df.obs.ARFlux$Tsoil.C),]
@@ -259,10 +276,10 @@ df.thaw.day$thaw.mod <- df.mod.day$ThawDepth.mm[match(df.thaw.day$Date, df.mod.d
 df.thaw.day$thaw.mod.point <- df.mod.point$lowest_thawed_soil_depth.mm.[match(df.thaw.day$Date, df.mod.point$Date)]
 
 df.fit.LE <- df.obs.ARFlux[is.finite(df.obs.ARFlux$LE.W.m2),]
-df.fit.LE$LE.mod <- df.mod.point$LE.W.m2.[match(df.fit.LE$Date, df.mod.point$Date)]
+df.fit.LE$LE.mod <- df.mod.point$LE.weighted.W.m2[match(df.fit.LE$Date, df.mod.point$Date)]
 
 df.fit.H <- df.obs.ARFlux[is.finite(df.obs.ARFlux$H.W.m2),]
-df.fit.H$H.mod <- df.mod.point$H.W.m2.[match(df.fit.H$Date, df.mod.point$Date)]
+df.fit.H$H.mod <- df.mod.point$H.weighted.W.m2[match(df.fit.H$Date, df.mod.point$Date)]
 
 df.fit.Rnet <- df.obs.ARFlux[is.finite(df.obs.ARFlux$Rnet.W.m2),]
 df.fit.Rnet$Rnet.mod <- df.mod.point$SWnet.W.m2.[match(df.fit.Rnet$Date, df.mod.point$Date)]+df.mod.point$LWnet.W.m2.[match(df.fit.Rnet$Date, df.mod.point$Date)]
@@ -275,6 +292,9 @@ df.fit.LWin$LWin.mod <- df.mod.point$LWin.W.m2.[match(df.fit.LWin$Date, df.mod.p
 
 df.fit.SWout <- df.obs.ARFlux[is.finite(df.obs.ARFlux$SWout.W.m2),]
 df.fit.SWout$SWout.mod <- df.mod.point$SWup.W.m2.[match(df.fit.SWout$Date, df.mod.point$Date)]
+
+df.fit.albedo <- df.obs.ARFlux[is.finite(df.obs.ARFlux$albedo),]
+df.fit.albedo$albedo.mod <- df.mod.point$albedo[match(df.fit.albedo$Date, df.mod.point$Date)]
 
 df.fit.LWout <- df.obs.ARFlux[is.finite(df.obs.ARFlux$LWout.W.m2),]
 df.fit.LWout$LWout.mod <- df.mod.point$LWup.W.m2.[match(df.fit.LWout$Date, df.mod.point$Date)]
@@ -321,6 +341,9 @@ df.fit.LWin$period[year(df.fit.LWin$Date)  %in% val] <- "val"
 
 df.fit.SWout$period <- "cal"
 df.fit.SWout$period[year(df.fit.SWout$Date)  %in% val] <- "val"
+
+df.fit.albedo$period <- "cal"
+df.fit.albedo$period[year(df.fit.albedo$Date)  %in% val] <- "val"
 
 df.fit.LWout$period <- "cal"
 df.fit.LWout$period[year(df.fit.LWout$Date)  %in% val] <- "val"
@@ -516,20 +539,40 @@ ggsave(path.plot.val.sub, arrangeGrob(p.thaw.compare.ARFlux, p.temp.compare.ARFl
 p.LE.compare <-
   ggplot() +
   annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
-  geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=LE.W.m2.), color="green") +
+  geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=LE.weighted.W.m2), color="green") +
   geom_point(data=df.fit.LE, aes(x=Date, y=LE.W.m2), shape=21) +
   scale_y_continuous(name="Tower LE Flux [W m-2]") +
   scale_x_date(expand=c(0,0)) +
   theme_bw() +
   theme(panel.grid=element_blank())
 
+p.LE.scatter <-
+  ggplot(df.fit.LE, aes(x=LE.W.m2, y=LE.mod, color=period)) +
+  geom_abline(intercept=0, slope=1, color="gray65") +
+  geom_point() +
+  stat_smooth(method="lm") +
+  scale_x_continuous("Tower LE Flux [W m-2]") +
+  scale_y_continuous("Modeled LE Flux [W m-2]") +
+  theme_bw() +
+  theme(panel.grid=element_blank())
+
 p.H.compare <-
   ggplot() +
   annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
-  geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=H.W.m2.), color="red") +
+  geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=H.weighted.W.m2), color="red") +
   geom_point(data=df.fit.H, aes(x=Date, y=H.W.m2), shape=21) +
   scale_y_continuous(name="Tower H Flux [W m-2]") +
   scale_x_date(expand=c(0,0)) +
+  theme_bw() +
+  theme(panel.grid=element_blank())
+
+p.H.scatter <-
+  ggplot(df.fit.H, aes(x=H.W.m2, y=H.mod, color=period)) +
+  geom_abline(intercept=0, slope=1, color="gray65") +
+  geom_point() +
+  stat_smooth(method="lm") +
+  scale_x_continuous("Tower H Flux [W m-2]") +
+  scale_y_continuous("Modeled H Flux [W m-2]") +
   theme_bw() +
   theme(panel.grid=element_blank())
 
@@ -543,6 +586,16 @@ p.G.compare <-
   theme_bw() +
   theme(panel.grid=element_blank())
 
+p.G.scatter <-
+  ggplot(df.fit.G, aes(x=G.W.m2, y=G.mod, color=period)) +
+  geom_abline(intercept=0, slope=1, color="gray65") +
+  geom_point() +
+  stat_smooth(method="lm") +
+  scale_x_continuous("Tower G Flux [W m-2]") +
+  scale_y_continuous("Modeled G Flux [W m-2]") +
+  theme_bw() +
+  theme(panel.grid=element_blank())
+
 p.Rnet.compare <-
   ggplot() +
   annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
@@ -550,6 +603,16 @@ p.Rnet.compare <-
   geom_point(data=df.fit.Rnet, aes(x=Date, y=Rnet.W.m2), shape=21) +
   scale_y_continuous(name="Tower Rnet [W m-2]") +
   scale_x_date(expand=c(0,0)) +
+  theme_bw() +
+  theme(panel.grid=element_blank())
+
+p.Rnet.scatter <-
+  ggplot(df.fit.Rnet, aes(x=Rnet.W.m2, y=Rnet.mod, color=period)) +
+  geom_abline(intercept=0, slope=1, color="gray65") +
+  geom_point() +
+  stat_smooth(method="lm") +
+  scale_x_continuous("Tower Rnet Flux [W m-2]") +
+  scale_y_continuous("Modeled Rnet Flux [W m-2]") +
   theme_bw() +
   theme(panel.grid=element_blank())
 
@@ -563,6 +626,16 @@ p.SWin.compare <-
   theme_bw() +
   theme(panel.grid=element_blank())
 
+p.SWin.scatter <-
+  ggplot(df.fit.SWin, aes(x=SWin.W.m2, y=SWin.mod, color=period)) +
+  geom_abline(intercept=0, slope=1, color="gray65") +
+  geom_point() +
+  stat_smooth(method="lm") +
+  scale_x_continuous("Tower SWin Flux [W m-2]") +
+  scale_y_continuous("Modeled SWin Flux [W m-2]") +
+  theme_bw() +
+  theme(panel.grid=element_blank())
+
 p.SWout.compare <-
   ggplot() +
   annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
@@ -570,6 +643,36 @@ p.SWout.compare <-
   geom_point(data=df.obs.ARFlux, aes(x=Date, y=SWout.W.m2), shape=21) +
   scale_y_continuous(name="Tower SWout [W m-2]") +
   scale_x_date(expand=c(0,0)) +
+  theme_bw() +
+  theme(panel.grid=element_blank())
+
+p.SWout.scatter <-
+  ggplot(df.fit.SWout, aes(x=SWout.W.m2, y=SWout.mod, color=period)) +
+  geom_abline(intercept=0, slope=1, color="gray65") +
+  geom_point() +
+  stat_smooth(method="lm") +
+  scale_x_continuous("Tower SWout Flux [W m-2]") +
+  scale_y_continuous("Modeled SWout Flux [W m-2]") +
+  theme_bw() +
+  theme(panel.grid=element_blank())
+
+p.albedo.compare <-
+  ggplot() +
+  annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
+  geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=albedo), color="brown") +
+  geom_point(data=df.obs.ARFlux, aes(x=Date, y=albedo), shape=21) +
+  scale_y_continuous(name="Tower Albedo [-]") +
+  scale_x_date(expand=c(0,0)) +
+  theme_bw() +
+  theme(panel.grid=element_blank())
+
+p.albedo.scatter <-
+  ggplot(df.fit.albedo, aes(x=albedo, y=albedo.mod, color=period)) +
+  geom_abline(intercept=0, slope=1, color="gray65") +
+  geom_point() +
+  stat_smooth(method="lm") +
+  scale_x_continuous("Tower Albedo") +
+  scale_y_continuous("Modeled Albedo") +
   theme_bw() +
   theme(panel.grid=element_blank())
 
@@ -583,6 +686,16 @@ p.LWin.compare <-
   theme_bw() +
   theme(panel.grid=element_blank())
 
+p.LWin.scatter <-
+  ggplot(df.fit.LWin, aes(x=LWin.W.m2, y=LWin.mod, color=period)) +
+  geom_abline(intercept=0, slope=1, color="gray65") +
+  geom_point() +
+  stat_smooth(method="lm") +
+  scale_x_continuous("Tower LWin Flux [W m-2]") +
+  scale_y_continuous("Modeled LWin Flux [W m-2]") +
+  theme_bw() +
+  theme(panel.grid=element_blank())
+
 p.LWout.compare <-
   ggplot() +
   annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
@@ -593,10 +706,33 @@ p.LWout.compare <-
   theme_bw() +
   theme(panel.grid=element_blank())
 
-ggsave(path.plot.val.sur, arrangeGrob(p.Rnet.compare, p.SWin.compare, p.SWout.compare, p.LWin.compare, p.LWout.compare, p.LE.compare, p.H.compare, p.G.compare, 
+p.LWout.scatter <-
+  ggplot(df.fit.LWout, aes(x=LWout.W.m2, y=LWout.mod, color=period)) +
+  geom_abline(intercept=0, slope=1, color="gray65") +
+  geom_point() +
+  stat_smooth(method="lm") +
+  scale_x_continuous("Tower LWout Flux [W m-2]") +
+  scale_y_continuous("Modeled LWout Flux [W m-2]") +
+  theme_bw() +
+  theme(panel.grid=element_blank())
+
+ggsave(path.plot.val.sur, arrangeGrob(p.Rnet.compare, p.SWin.compare, p.SWout.compare, p.albedo.compare, p.LWin.compare, p.LWout.compare, p.LE.compare, p.H.compare, p.G.compare, 
                                       arrangeGrob(tableGrob(round(df.fit.energy.table.cal, 3)), tableGrob(round(df.fit.energy.table.val, 3)), ncol=2), 
                                       ncol=1),
        width=12, height=16, units="in")
+
+ggsave(path.plot.val.sur, arrangeGrob(p.Rnet.compare, p.Rnet.scatter,
+                                      p.SWin.compare, p.SWin.scatter,
+                                      p.SWout.compare, p.SWout.scatter,
+                                      p.albedo.compare, p.albedo.scatter,
+                                      p.LWin.compare, p.LWin.scatter,
+                                      p.LWout.compare, p.LWout.scatter,
+                                      p.LE.compare, p.LE.scatter,
+                                      p.H.compare, p.H.scatter,
+                                      p.G.compare, p.G.scatter,
+                                      tableGrob(round(df.fit.energy.table.cal, 3)), tableGrob(round(df.fit.energy.table.val, 3)), 
+                                      ncol=2, widths=c(3,1)),
+       width=16, height=16, units="in")
 
 # other diagnostic plots
 p.mod.LSAI <-
@@ -612,8 +748,8 @@ p.mod.LSAI <-
 p.mod.ET <-
   ggplot() +
   annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
-  geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=Trasp_canopy.mm.), color="green") +
-  geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=Evap_surface.mm.), color="brown") +
+  geom_ribbon(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, ymin=0, ymax=Evap_surface.mm.), fill="brown", alpha=0.5) +
+  geom_ribbon(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, ymin=Evap_surface.mm., ymax=Evap_surface.mm.+Trasp_canopy.mm.), fill="green", alpha=0.5) +
   scale_y_continuous(name="Transpiration (green), Soil Evap (brown)") +
   scale_x_date(expand=c(0,0)) +
   theme_bw() +

@@ -1,3 +1,8 @@
 Thermal properties found in the literature for peat,,,,
 ,,,,
 References,ThermalConductivitySolids_W-m2-K,ThermalCapacitySolids_J-m3-K,Source,Comments
+McKenzie et al. (2007),0.25,2.50E+06,unknown,
+Kurylyk et al. (2016) WRR,0.25,2.60E+06,Hillel (1998) for thermal conductivity,
+Treat et al. (2013),0.04 - 0.69,5.80E+05,,
+Jafarov et al. (2013) ERL,0.08 - 0.36,1.6E+06 - 1.9E+06,,Table 1
+Jiang et al. (2015) JGR,,2.50E+06,Unknown,SI page 4

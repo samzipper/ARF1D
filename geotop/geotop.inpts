@@ -1,9 +1,11 @@
 !*******************************
 !******* CONFIGURATION *********
 !*******************************
+!TimeStepEnergyAndWater = 3600
+!TimeStepEnergyAndWater = 10800
 TimeStepEnergyAndWater = 14400
-InitDateDDMMYYYYhhmm   = 31/12/2001 00:00
-EndDateDDMMYYYYhhmm    = 31/12/2015 00:00
+InitDateDDMMYYYYhhmm   = 31/12/2000 23:00
+EndDateDDMMYYYYhhmm    = 31/12/2009 23:00
 EnergyBalance = 1
 WaterBalance  = 1
 PointSim      = 1
@@ -23,7 +25,7 @@ MeteoStationCoordinateX=609501
 MeteoStationCoordinateY=7648992
 MeteoStationLatitude=68.93
 MeteoStationLongitude=-150.27
-MeteoStationElevation=760
+MeteoStationElevation=760.0
 MeteoStationStandardTime=-9
 MeteoStationWindVelocitySensorHeight=10
 MeteoStationTemperatureSensorHeight=2
@@ -34,7 +36,7 @@ HeaderIPrec                 = "Iprec"
 HeaderWindVelocity          = "WindSp"
 !HeaderWindDirection         = "WindDir"
 HeaderRH                    = "RH"
-HeaderAirPress              = "P"
+!HeaderAirPress              = "P"
 HeaderAirTemp               = "AirT"
 HeaderSWglobal              = "Swglob"
 !HeaderLWin                  = "LWin"
@@ -44,14 +46,27 @@ HeaderCloudSWTransmissivity = "CloudTrans"
 !****************** SNOW ********************
 !********************************************
 
-ThresTempRain = 3.386
-ThresTempSnow = -1.357
+! Best performance was with SnowDepthCalibration0690
+! (RMSE	=73.3 mm), which had the following values:
+!ThresTempRain = 3.386
+!ThresTempSnow = -1.357
+!SnowCorrFactor = 0.613
+!
+! However, having such a high ThresTempRain was 
+! leading to occasional small snowfall events during
+! the summer which led to extreme negative values of
+! soil heat flux due to snow falling on a warm soil
+! surface. Therefore, I am using the values from
+! SnowDepthCalibration0749, which had a comparable 
+! RMSE (78.97 mm) but ThresTempRain and ThresTempSnow
+! much closer to 0.0.
+ThresTempRain = 0.209
+ThresTempSnow = -0.986
+SnowCorrFactor = 0.600
 
 IrriducibleWatSatSnow = 0.04
-SnowCorrFactor = 0.613
 
-SnowAgingCoeffVis = 0.25
-SnowAgingCoeffNIR = 0.45
+MaxSnowLayerNumber = 10
 
 !********************************************
 !****** INIT AND BOUNDARY CONDITIONS ********
@@ -59,7 +74,7 @@ SnowAgingCoeffNIR = 0.45
 
 InitSoilTemp                = -5.0
 InitSoilTempBedrock         = -5.0
-InitSoilPressure            = -1000
+InitSoilPressure            = 0.0
 !InitWaterTableDepth         = 10000
 FreeDrainageAtLateralBorder = 0
 FreeDrainageAtBottom        = 1
@@ -94,8 +109,8 @@ NumLandCoverTypes=1
 PointLandCoverType=1
 SoilRoughness=100.0
 ThresSnowSoilRough=100.0
-LeafAngles=0
-SurFlowResLand=0.5
+LeafAngles=-1
+SurFlowResLand=0.25
 SurFlowResExp=0.667
 
 TimeDependentVegetationParameterFile="veg/VegParams"
@@ -103,12 +118,13 @@ TimeDependentVegetationParameterFile="veg/VegParams"
 !*******************************
 !***** ALBEDO & EMISSIVITY *****
 !*******************************
-! Soil values from Campbell & Norman Tables 11.2 and 11.3
+! Soil values from Campbell & Norman Table 11.2
+! Soil emissivity from Rocha & Shaver, 2011, GCB, Table 1
 SoilAlbVisDry = 0.13
 SoilAlbNIRDry = 0.13
 SoilAlbVisWet = 0.08
 SoilAlbNIRWet = 0.08
-SoilEmissiv = 0.945
+SoilEmissiv = 0.97
 
 ! Veg values from different sources
 !   Reflectivity from ARFlux_2008-2014_BurnSpectra.csv file
@@ -120,12 +136,16 @@ VegReflNIR = 0.313
 VegTransVis = 0.45
 VegTransNIR = 0.45
 
+! Snow values from ~mean winter albedo measured at flux towers
+FreshSnowReflVis = 0.90
+FreshSnowReflNIR = 0.90
+
 !*******************************
 !*******  SOIL TYPE ************
 !*******************************
 SoilParFile = "soil/SoilARF"
 
-SoilLayerNumber = 30
+SoilLayerNumber = 50
 SoilLayerTypes = 1
 PointSoilType = 1
 
@@ -144,18 +164,19 @@ HeaderCthSoilSolids = "thermcap"
 !*******************************
 !******* NUMERICS **********
 !*******************************
-HeatEqTol = 1.0E-09
+HeatEqTol = 1.0E-05
 !RichardMaxIter = 1500
 !RichardInitForc = 0.01
 RichardTol = 1.0E-09
-MinTimeStep = 150
+MinTimeStep = 60
 MinRatioKactualToKSat = 1.0E-5
 
 ! canopy numerics
-CanopyMaxIter=100
-LocMaxIter=100
-TsMaxIter=100
-BusingerMaxIter=100
+CanopyMaxIter=50
+LocMaxIter=50
+TsMaxIter=50
+BusingerMaxIter=50
+CanopyStabCorrection=1
 
 ! canopy stability (copied from geotop_examples/Mazia_1D)
 MoninObukhov=2
@@ -164,11 +185,15 @@ MoninObukhov=2
 !******* OUTPUT TIME SERIES **********
 !*************************************
 DtPlotPoint = 24
+!DtPlotDischarge = 24
+!DtPlotBasin = 24
 SoilTempProfileFile="output-tabs/soiltemp"
 !SoilIceContentProfileFile="output-tabs/thetaice"
 SoilLiqContentProfileFile="output-tabs/thetaliq"
 !SoilLiqWaterPressProfileFile="output-tabs/psiliq"
 !SoilTotWaterPressProfileFile="output-tabs/psitot"
+!DischargeFile="output-tabs/discharge"
+!BasinFile="output-tabs/basin"
 SoilAll=1
 
 !*************************************
