@@ -26,7 +26,7 @@ fname.hourly.dynamic <- paste0(git.dir, "geotop/meteo/meteoNARRhourlyDynamicWith
 fname.3hourly.dynamic<- paste0(git.dir, "geotop/meteo/meteoNARR3hourlyDynamicWithSpinUp0001.txt")  # where to save 3 hourly output data
 
 # year to start/end hourly data
-yr.start <- 1989
+yr.start <- 1982
 yr.end <- 2015
 
 # coordinates of site
