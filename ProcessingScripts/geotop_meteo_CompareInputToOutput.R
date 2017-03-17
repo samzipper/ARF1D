@@ -17,7 +17,7 @@ require(lubridate)
 #in.path <- paste0(git.dir, "geotop/meteo/meteoNARR3hourlyWithSpinUp0001.txt")
 in.path <- paste0(git.dir, "geotop/meteo/meteoNARRdailyWithSpinUp0001.txt")
 out.path <- paste0(git.dir, "geotop/output-tabs/point0001.txt")
-plot.path <- paste0(git.dir, "geotop/output-plots/meteo_CompareInputToOutput_20170315-100soil-Top10-1hr-IgnoreP-SnowThres749-Start2006-SnowAlbUp-StabCorr1-MO2-CanIter1000-NewMeteo-Tol09-LF-WindMult.png")
+plot.path <- paste0(git.dir, "geotop/output-plots/meteo_CompareInputToOutput.png")
 
 #in.path <- paste0("C:/Users/Sam/src/geotop/tests/1D/InfiltrationTrench/meteo/meteotrenchhour0001.txt")
 #out.path <- paste0("C:/Users/Sam/src/geotop/tests/1D/InfiltrationTrench/output-tabs/point0001.txt")

@@ -1,11 +1,12 @@
 !*******************************
 !******* CONFIGURATION *********
 !*******************************
-!TimeStepEnergyAndWater = 3600
+TimeStepEnergyAndWater = 3600
+!TimeStepEnergyAndWater = 7200
 !TimeStepEnergyAndWater = 10800
-TimeStepEnergyAndWater = 14400
-InitDateDDMMYYYYhhmm   = 31/12/2000 23:00
-EndDateDDMMYYYYhhmm    = 31/12/2009 23:00
+!TimeStepEnergyAndWater = 14400
+InitDateDDMMYYYYhhmm   = 31/12/2007 23:00
+EndDateDDMMYYYYhhmm    = 31/12/2008 23:00
 EnergyBalance = 1
 WaterBalance  = 1
 PointSim      = 1
@@ -48,21 +49,22 @@ HeaderCloudSWTransmissivity = "CloudTrans"
 
 ! Best performance was with SnowDepthCalibration0690
 ! (RMSE	=73.3 mm), which had the following values:
-!ThresTempRain = 3.386
-!ThresTempSnow = -1.357
-!SnowCorrFactor = 0.613
+ThresTempRain = 3.386
+ThresTempSnow = -1.357
+SnowCorrFactor = 0.613
 !
 ! However, having such a high ThresTempRain was 
 ! leading to occasional small snowfall events during
 ! the summer which led to extreme negative values of
 ! soil heat flux due to snow falling on a warm soil
-! surface. Therefore, I am using the values from
+! surface. With longer model timesteps (>2 hrs), it 
+! is recommended to use the values from
 ! SnowDepthCalibration0749, which had a comparable 
 ! RMSE (78.97 mm) but ThresTempRain and ThresTempSnow
 ! much closer to 0.0.
-ThresTempRain = 0.209
-ThresTempSnow = -0.986
-SnowCorrFactor = 0.600
+!ThresTempRain = 0.209
+!ThresTempSnow = -0.986
+!SnowCorrFactor = 0.600
 
 IrriducibleWatSatSnow = 0.04
 
@@ -72,8 +74,8 @@ MaxSnowLayerNumber = 10
 !****** INIT AND BOUNDARY CONDITIONS ********
 !********************************************
 
-InitSoilTemp                = -5.0
-InitSoilTempBedrock         = -5.0
+InitSoilTemp                = -4.8
+InitSoilTempBedrock         = -4.8
 InitSoilPressure            = 0.0
 !InitWaterTableDepth         = 10000
 FreeDrainageAtLateralBorder = 0
@@ -185,15 +187,11 @@ MoninObukhov=2
 !******* OUTPUT TIME SERIES **********
 !*************************************
 DtPlotPoint = 24
-!DtPlotDischarge = 24
-!DtPlotBasin = 24
 SoilTempProfileFile="output-tabs/soiltemp"
 !SoilIceContentProfileFile="output-tabs/thetaice"
 SoilLiqContentProfileFile="output-tabs/thetaliq"
 !SoilLiqWaterPressProfileFile="output-tabs/psiliq"
 !SoilTotWaterPressProfileFile="output-tabs/psitot"
-!DischargeFile="output-tabs/discharge"
-!BasinFile="output-tabs/basin"
 SoilAll=1
 
 !*************************************
