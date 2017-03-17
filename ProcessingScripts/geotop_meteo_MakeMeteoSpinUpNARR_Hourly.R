@@ -9,8 +9,8 @@
 rm(list=ls())
 
 # git directory for relative paths
-#git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
-git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
+git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
+#git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
 
 require(lubridate)
 require(ggplot2)
@@ -26,7 +26,7 @@ fname.hourly.dynamic <- paste0(git.dir, "geotop/meteo/meteoNARRhourlyDynamicWith
 fname.3hourly.dynamic<- paste0(git.dir, "geotop/meteo/meteoNARR3hourlyDynamicWithSpinUp0001.txt")  # where to save 3 hourly output data
 
 # year to start/end hourly data
-yr.start <- 2002
+yr.start <- 2012
 yr.end <- 2015
 
 # coordinates of site
@@ -104,6 +104,8 @@ df.h <- merge(hours, df.in[,c("DOY","Month","Date","SolarNoon","Swglob",
                               "WindSp","RH","P",
                               "AirT", "Tair.C.min", "Tair.C.max", "Tair.C.max.yesterday", "Tair.C.min.tomorrow")], by=c("DOY"), all.x=T)
 df.h <- df.h[order(df.h$Date, df.h$hr),]
+
+df.h <- df.h[complete.cases(df.h),]
 
 ## air temperature
 # calculate solar time (12=solar noon)

@@ -7,6 +7,7 @@ rm(list=ls())
 
 # git directory for relative paths
 git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
+#git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
 
 require(lubridate)
 require(ggplot2)
@@ -16,7 +17,7 @@ require(gridExtra)
 source(paste0(git.dir, "ProcessingScripts/FitMetrics.R"))
 
 # version name
-version <- "20170220e-Snow"
+version <- "20170317-Snow-Start2013-Speed-WindMult2"
 fire <- "Unburned"  # options are: Unburned, Moderate, Severe
 
 ## paths

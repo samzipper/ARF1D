@@ -5,8 +5,8 @@ TimeStepEnergyAndWater = 3600
 !TimeStepEnergyAndWater = 7200
 !TimeStepEnergyAndWater = 10800
 !TimeStepEnergyAndWater = 14400
-InitDateDDMMYYYYhhmm   = 31/12/2002 23:00
-EndDateDDMMYYYYhhmm    = 31/12/2012 23:00
+InitDateDDMMYYYYhhmm   = 31/12/2013 23:00
+EndDateDDMMYYYYhhmm    = 31/12/2015 23:00
 EnergyBalance = 1
 WaterBalance  = 1
 PointSim      = 1
@@ -47,24 +47,9 @@ HeaderCloudSWTransmissivity = "CloudTrans"
 !****************** SNOW ********************
 !********************************************
 
-! Best performance was with SnowDepthCalibration0690
-! (RMSE	=73.3 mm), which had the following values:
 ThresTempRain = 3.386
 ThresTempSnow = -1.357
-SnowCorrFactor = 0.613
-!
-! However, having such a high ThresTempRain was 
-! leading to occasional small snowfall events during
-! the summer which led to extreme negative values of
-! soil heat flux due to snow falling on a warm soil
-! surface. With longer model timesteps (>2 hrs), it 
-! is recommended to use the values from
-! SnowDepthCalibration0749, which had a comparable 
-! RMSE (78.97 mm) but ThresTempRain and ThresTempSnow
-! much closer to 0.0.
-!ThresTempRain = 0.209
-!ThresTempSnow = -0.986
-!SnowCorrFactor = 0.600
+SnowCorrFactor = 0.61
 
 IrriducibleWatSatSnow = 0.04
 
@@ -194,19 +179,20 @@ MoninObukhov=2
 !******* OUTPUT TIME SERIES **********
 !*************************************
 DtPlotPoint = 24
-SoilTempProfileFile="output-tabs/soiltemp"
+!SoilTempProfileFile="output-tabs/soiltemp"
 !SoilIceContentProfileFile="output-tabs/thetaice"
-SoilLiqContentProfileFile="output-tabs/thetaliq"
+!SoilLiqContentProfileFile="output-tabs/thetaliq"
 !SoilLiqWaterPressProfileFile="output-tabs/psiliq"
 !SoilTotWaterPressProfileFile="output-tabs/psitot"
-SoilAll=1
+!SoilAll=1
 
 !*************************************
 !******** POINT OUTPUT FILE **********
 !*************************************
 PointOutputFile="output-tabs/point"
-PointAll=1
-!DatePoint=1
-!SWEPoint=2
-!SnowDensityPoint=3
-!SnowTempPoint=4
+!PointAll=1
+DatePoint=1
+SnowDepthPoint=2
+PrainPoint=3
+PsnowPoint=4
+AirTempPoint=5

@@ -5,8 +5,8 @@
 rm(list=ls())
 
 # git directory for relative paths
-#git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
-git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
+git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
+#git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
 
 require(ggplot2)
 require(gridExtra)
@@ -17,14 +17,14 @@ require(lubridate)
 #in.path <- paste0(git.dir, "geotop/meteo/meteoNARR3hourlyWithSpinUp0001.txt")
 in.path <- paste0(git.dir, "geotop/meteo/meteoNARRdailyWithSpinUp0001.txt")
 out.path <- paste0(git.dir, "geotop/output-tabs/point0001.txt")
-plot.path <- paste0(git.dir, "geotop/output-plots/meteo_CompareInputToOutput.png")
+plot.path <- paste0(git.dir, "geotop/output-plots/meteo_CompareInputToOutput-2012start-WindMult2.png")
 
 #in.path <- paste0("C:/Users/Sam/src/geotop/tests/1D/InfiltrationTrench/meteo/meteotrenchhour0001.txt")
 #out.path <- paste0("C:/Users/Sam/src/geotop/tests/1D/InfiltrationTrench/output-tabs/point0001.txt")
 #plot.path <- paste0("C:/Users/Sam/src/geotop/tests/1D/InfiltrationTrench/output-tabs/meteo_CompareInputToOutput.png")
 
 # year to compare
-yr <- 2008
+yr <- 2015
 
 # read input and output
 df.in <- read.csv(in.path)
