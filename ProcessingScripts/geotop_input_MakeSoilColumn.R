@@ -18,9 +18,9 @@ git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
 out.path <- paste0(git.dir, "geotop/soil/soilARF0001.txt")
 
 # define soil layer properties
-min.Dz <- 10       # [mm] - thickness of organic soil layers
+min.Dz   <- 10     # [mm] - thickness of organic soil layers
 total.Dz <- 10000  # [mm] - total soil thickness
-nsoilay <- 50     # number of soil layers
+nsoilay  <- 50     # number of soil layers
 
 ## tunable soil parameters
 # organic soil - using values from Jiang et al. (2015) SI for 1st layer
@@ -34,15 +34,17 @@ org.VG_n <- 1.30       # [-] - Van Genuchten n
 org.thermcond <- 0.25   # [W/m/K] - thermal conductivity of soil solids
 org.thermcap <- 2.6E+6   # [J/m3/K] - thermal capacity of soil solids
 
-# mineral soil - using values from Jiang et al. (2015) SI for 3rd layer
+# mineral soil - using values from Carsel & Parrish (1988) for sandy loam
+# based on nearby measurements: mean sample 23% silt+clay: http://arc-lter.ecosystems.mbl.edu/2011mat8906npaggssoiljcm
+# this translates to a sandy loam soil
 #   thermal conductivity & capacity from Kurylyk et al. (2016) WRR Table A1
-min.Ks <- 0.021   # [mm/s] - saturated hydraulic condutivity 
-min.vwc_s <- 0.56 # [m3/m3] - saturated water content
-min.vwc_r <- 0.07 # [m3/m3] - residual water content
-min.VG_alpha <- 2.41*(1/1000) # [mm-1] - Van Genuchten alpha (convert from 12.7 m-1)
-min.VG_n <- 1.33       # [-] - Van Genuchten n
-min.thermcond <- 1.62   # [W/m/K] - thermal conductivity of soil solids
-min.thermcap <- 2.0E+6   # [J/m3/K] - thermal capacity of soil solids
+min.Ks <- 0.012    # [mm/s] - saturated hydraulic condutivity 
+min.vwc_s <- 0.41  # [m3/m3] - saturated water content
+min.vwc_r <- 0.065 # [m3/m3] - residual water content
+min.VG_alpha <- 7.5*(1/1000)  # [mm-1] - Van Genuchten alpha (convert from 12.7 m-1)
+min.VG_n <- 1.89              # [-] - Van Genuchten n
+min.thermcond <- 1.62         # [W/m/K] - thermal conductivity of soil solids
+min.thermcap <- 2.0E+6        # [J/m3/K] - thermal capacity of soil solids
 
 ## figure out number of organic and mineral layers based on thicknesses
 nsoilay.org <- round(org.z/min.Dz)

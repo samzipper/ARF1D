@@ -22,7 +22,7 @@ require(gridExtra)
 source(paste0(git.dir, "ProcessingScripts/FitMetrics.R"))
 
 #version
-version <- "20170315-50soil-Top10-1hr-SnowThres690"
+version <- "20170315-50soil-Top10-1hr-SnowThres690-NewIC"
 
 # function to find closest
 which.closest <- function(x, vec){
