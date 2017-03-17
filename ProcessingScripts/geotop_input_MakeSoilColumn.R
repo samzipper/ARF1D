@@ -17,6 +17,9 @@ git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
 # path to save output soil file
 out.path <- paste0(git.dir, "geotop/soil/soilARF0001.txt")
 
+# logical: should organic layer Ksat be decreased with depth?
+decrease.org.Ksat <- T
+
 # define soil layer properties
 min.Dz   <- 10     # [mm] - thickness of organic soil layers
 total.Dz <- 10000  # [mm] - total soil thickness
@@ -88,8 +91,30 @@ for (j in 1:(nsoilay-1)){
     # organic layers
     df.out$Dz[j+1] <- min.Dz
     df.out$z.tot[j+1] <- df.out$z.tot[j] + df.out$Dz[j+1]
-    df.out$Kh[j+1] <- org.Ks
-    df.out$Kv[j+1] <- org.Ks
+    
+    if (decrease.org.Ksat){
+      # make a linear relationship between depth and Ksat
+      # this is based on data in the LitData_PeatHydraulicProperties.csv
+      # file from Schwaerzel et al. (2006)
+      df.scale <- data.frame(depth=c(75, 75, 75, 200, 200, 200, 270, 270, 270),  # mm
+                             Ksat=c(3.88E-03, 1.62E-03, 4.83E-04,  # mm/s
+                                    4.38E-04, 7.74E-04, 7.70E-04,
+                                    4.75E-06, 2.89E-05, 1.06E-04))
+      scale.slope <- coef(lm(log10(Ksat) ~ depth, df.scale))[2]  # this is the slope, in [(mm/s)/mm]
+      
+      # depth of center of this layer
+      depth.center.mm <- df.out$z.tot[j+1] - df.out$Dz[j+1]/2
+      
+      # reduce based on distance from 0
+      Ksat.depth <- 10^(log10(org.Ks)+scale.slope*depth.center.mm)
+      if (Ksat.depth<min.Ks) Ksat.depth <- min.Ks   # don't let it drop below mineral soil Ks
+      df.out$Kh[j+1] <- Ksat.depth
+      df.out$Kv[j+1] <- Ksat.depth
+      
+    } else {
+      df.out$Kh[j+1] <- org.Ks
+      df.out$Kv[j+1] <- org.Ks
+    }
     df.out$vwc_r[j+1] <- org.vwc_r
     df.out$vwc_s[j+1] <- org.vwc_s
     df.out$VG_alpha[j+1] <- org.VG_alpha
@@ -116,3 +141,7 @@ df.out$SS <- 1.00E-07       # Specific storativity - use default value
 
 # save output file
 write.csv(df.out, out.path, quote=F, row.names=F)
+
+## make a plot
+#ggplot(df.out, aes(x=Kh, y=z.tot)) + scale_y_reverse() + geom_point()
+#ggplot(df.scale, aes(x=log10(Ksat), y=depth)) + scale_y_reverse() + geom_point() + stat_smooth(method="lm")

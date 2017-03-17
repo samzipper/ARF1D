@@ -6,7 +6,7 @@ TimeStepEnergyAndWater = 3600
 !TimeStepEnergyAndWater = 10800
 !TimeStepEnergyAndWater = 14400
 InitDateDDMMYYYYhhmm   = 31/12/2002 23:00
-EndDateDDMMYYYYhhmm    = 02/01/2003 23:00
+EndDateDDMMYYYYhhmm    = 31/12/2012 23:00
 EnergyBalance = 1
 WaterBalance  = 1
 PointSim      = 1
@@ -193,12 +193,12 @@ MoninObukhov=2
 !*************************************
 !******* OUTPUT TIME SERIES **********
 !*************************************
-DtPlotPoint = 1
+DtPlotPoint = 24
 SoilTempProfileFile="output-tabs/soiltemp"
 !SoilIceContentProfileFile="output-tabs/thetaice"
 SoilLiqContentProfileFile="output-tabs/thetaliq"
 !SoilLiqWaterPressProfileFile="output-tabs/psiliq"
-SoilTotWaterPressProfileFile="output-tabs/psitot"
+!SoilTotWaterPressProfileFile="output-tabs/psitot"
 SoilAll=1
 
 !*************************************
