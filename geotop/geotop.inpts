@@ -65,6 +65,12 @@ SnowCorrFactor = 0.613
 !ThresTempRain = 0.209
 !ThresTempSnow = -0.986
 !SnowCorrFactor = 0.600
+!
+! For hourly SnowDepthCalibration, the best performance 
+! number 663, which had the following values:
+ThresTempRain = 3.66
+ThresTempSnow = -0.06
+SnowCorrFactor = 0.54
 
 IrriducibleWatSatSnow = 0.04
 
