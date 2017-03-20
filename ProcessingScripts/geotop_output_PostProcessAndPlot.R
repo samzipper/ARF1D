@@ -22,7 +22,7 @@ require(gridExtra)
 source(paste0(git.dir, "ProcessingScripts/FitMetrics.R"))
 
 #version
-version <- "20170315-50soil-Top10-1hr-SnowThres690-NewIC-PeatKsatDecay"
+version <- "20170320-1hr-PeatKsatDecay"
 
 # function to find closest
 which.closest <- function(x, vec){
@@ -118,30 +118,26 @@ Temp.cols <- c("Temp.1", "Temp.2", "Temp.3", "Temp.4", "Temp.5", "Temp.6")
 # calculate just Date (without time)
 df.obs$Date <- format(df.obs$Date, "%m/%d/%Y")
 Dates.all <- unique(df.obs$Date)
-df.obs.day <- data.frame(Date = Dates.all, 
-                         VWC.mean = NaN,
-                         VWC.std = NaN,
-                         VWC.min = NaN,
-                         VWC.max = NaN,
-                         Temp.mean = NaN,
-                         Temp.std = NaN,
-                         Temp.min = NaN,
-                         Temp.max = NaN)
-for (d in Dates.all){
-  # figure out index for this date
-  i.d <- which(df.obs.day$Date==d)
-  
-  # summarize VWC and temperature
-  df.obs.day$VWC.mean[i.d] <- mean(unlist(df.obs[df.obs$Date==d, VWC.cols]), na.rm=T)/100
-  df.obs.day$VWC.std[i.d] <- sd(unlist(df.obs[df.obs$Date==d, VWC.cols]), na.rm=T)/100
-  df.obs.day$VWC.min[i.d] <- min(unlist(df.obs[df.obs$Date==d, VWC.cols]), na.rm=T)/100
-  df.obs.day$VWC.max[i.d] <- max(unlist(df.obs[df.obs$Date==d, VWC.cols]), na.rm=T)/100
-  
-  df.obs.day$Temp.mean[i.d] <- mean(unlist(df.obs[df.obs$Date==d, Temp.cols]), na.rm=T)
-  df.obs.day$Temp.std[i.d] <- sd(unlist(df.obs[df.obs$Date==d, Temp.cols]), na.rm=T)
-  df.obs.day$Temp.min[i.d] <- min(unlist(df.obs[df.obs$Date==d, Temp.cols]), na.rm=T)
-  df.obs.day$Temp.max[i.d] <- max(unlist(df.obs[df.obs$Date==d, Temp.cols]), na.rm=T)
-}
+
+# divide VWC to fractional
+df.obs[,VWC.cols] <- df.obs[,VWC.cols]/100
+
+# melt to long-form data frame
+df.obs.melt <- melt(df.obs[,c("Date", VWC.cols, Temp.cols)], id=c("Date"))
+
+# make column for sensor number
+var.strsep <- matrix(unlist(strsplit(as.character(df.obs.melt$variable), ".", fixed=T)), 
+                     ncol=2, nrow=dim(df.obs.melt)[1], byrow=T)
+df.obs.melt$var <- var.strsep[,1]
+df.obs.melt$sensor <- var.strsep[,2]
+df.obs.melt$depth <- depths[match(df.obs.melt$sensor, names(depths))]
+
+# summarize to daily mean
+df.obs.melt.d <- summarize(group_by(df.obs.melt, Date, variable, var, sensor, depth),
+                           obs.mean = mean(value),
+                           obs.std = sd(value),
+                           obs.min = min(value),
+                           obs.max = max(value))
 
 # calculate albedo
 df.obs.ARFlux$albedo <- df.obs.ARFlux$SWout.W.m2/df.obs.ARFlux$SWin.W.m2
@@ -156,72 +152,97 @@ df.obs.ARFlux$albedo[df.obs.ARFlux$albedo < 0 | df.obs.ARFlux$albedo > 1] <- NaN
 path.mod.temp <- paste0(git.dir, "geotop/output-tabs/soiltemp0001.txt")
 path.mod.VWC <- paste0(git.dir, "geotop/output-tabs/thetaliq0001.txt")
 path.mod.point <- paste0(git.dir, "geotop/output-tabs/point0001.txt")
+path.mod.discharge <- paste0(git.dir, "geotop/output-tabs/discharge.txt")
 
 # read in data
 df.mod.temp <- read.csv(path.mod.temp, stringsAsFactors=F)
 df.mod.VWC <- read.csv(path.mod.VWC, stringsAsFactors=F)
 df.mod.point <- read.csv(path.mod.point, stringsAsFactors=F)
+df.mod.discharge <- read.csv(path.mod.discharge, stringsAsFactors=F)
 
 # make Date column
-df.mod.temp$Date <- dmy_hm(df.mod.temp$Date12.DDMMYYYYhhmm.)-days(1)    # subtract 1 because data recorded at midnight (00:00) is average of previous day
-df.mod.VWC$Date <- dmy_hm(df.mod.VWC$Date12.DDMMYYYYhhmm.)-days(1)
-df.mod.point$Date <- dmy_hm(df.mod.point$Date12.DDMMYYYYhhmm.)-days(1)
+df.mod.temp$Date <- dmy_hm(df.mod.temp$Date12.DDMMYYYYhhmm.)
+df.mod.VWC$Date <- dmy_hm(df.mod.VWC$Date12.DDMMYYYYhhmm.)
+df.mod.point$Date <- dmy_hm(df.mod.point$Date12.DDMMYYYYhhmm.)
+df.mod.discharge$Date <- dmy_hm(df.mod.discharge$DATE.day.month.year.hour.min.)
 
 # subset
 df.mod.temp <- subset(df.mod.temp, year(Date)>=yr.min & year(Date)<=yr.max)
 df.mod.VWC <- subset(df.mod.VWC, year(Date)>=yr.min & year(Date)<=yr.max)
 df.mod.point <- subset(df.mod.point, year(Date)>=yr.min & year(Date)<=yr.max)
+df.mod.discharge <- subset(df.mod.discharge, year(Date)>=yr.min & year(Date)<=yr.max)
 
 # format Date column
 df.mod.temp$Date <- format(df.mod.temp$Date, "%m/%d/%Y")
 df.mod.VWC$Date <- format(df.mod.VWC$Date, "%m/%d/%Y")
 df.mod.point$Date <- format(df.mod.point$Date, "%m/%d/%Y")
+df.mod.discharge$Date <- format(df.mod.discharge$Date, "%m/%d/%Y")
 
-# keep column for Date and anything beginning with "X" (these are the depths)
+# merge discharge with point file
+df.mod.point$Qoutbottom.mm <- df.mod.discharge$Qoutbottom.m3.s.*(24*60*60)*1000  # convert to mm/day
+
+# for profile files, keep column for Date and anything beginning with "X" (these are the depths)
 all.cols <- colnames(df.mod.temp)
 cols.keep <- c("Date", all.cols[startsWith(all.cols, "X")])
 df.mod.temp <- df.mod.temp[,cols.keep]
 df.mod.VWC <- df.mod.VWC[,cols.keep]
 
+# reformat as long-form
+df.mod.temp.melt <- melt(df.mod.temp, id="Date", value.name="value.mod")
+df.mod.temp.melt$depth <- as.numeric(sub("X", "", df.mod.temp.melt$variable))
+df.mod.temp.melt.d <- summarize(group_by(df.mod.temp.melt, Date),
+                                value.mod.all = mean(value.mod))
+
+df.mod.VWC.melt <- melt(df.mod.VWC, id="Date", value.name="value.mod")
+df.mod.VWC.melt$depth <- as.numeric(sub("X", "", df.mod.VWC.melt$variable))
+df.mod.VWC.melt.d <- summarize(group_by(df.mod.VWC.melt, Date),
+                                value.mod.all = mean(value.mod))
+
+# add column names to match df.obs.melt.d
+df.mod.temp.melt$var <- "Temp"
+df.mod.VWC.melt$var <- "VWC"
+
+# combine
+df.mod.melt <- rbind(df.mod.temp.melt, df.mod.VWC.melt)
+df.mod.melt$variable <- NULL
+
+# merge with obs data frame
+df.nest.melt.d <- merge(df.obs.melt.d, df.mod.melt, by=c("Date", "var", "depth"), all.x=T)
+df.nest.melt.d$variable <- NULL
+
+# get rid of missing data
+df.nest.melt.d <- df.nest.melt.d[complete.cases(df.nest.melt.d),]
+
+# summarize to average of all sensors for each day
+df.nest.melt.d.all <- summarize(group_by(df.nest.melt.d, Date, var),
+                                obs.mean.all=mean(obs.mean),
+                                obs.std.all=sd(obs.std),
+                                mod.mean.all=mean(value.mod),
+                                mod.std.all=sd(value.mod))
+
 # figure out depth for each column
 cols.depth <- as.numeric(sub("X", "", cols.keep))
 
 # determine which columns are within the depth range of the observations
-cols.compare <- unlist(lapply(depths, FUN=which.closest, vec=cols.depth))
 cols.compare.ARFlux <- unlist(lapply(depths.ARFlux, FUN=which.closest, vec=cols.depth))
 cols.compare.ARFlux.VWC <- unlist(lapply(depths.ARFlux.VWC, FUN=which.closest, vec=cols.depth))
 
 # summarize model for each day
 Dates.all <- unique(df.mod.temp$Date)
 df.mod.day <- data.frame(Date = Dates.all, 
-                         VWC.mean = NaN,
-                         VWC.std = NaN,
-                         VWC.min = NaN,
-                         VWC.max = NaN,
-                         Temp.mean = NaN,
-                         Temp.std = NaN,
-                         Temp.min = NaN,
-                         Temp.max = NaN,
                          Temp.ARFlux.mean = NaN,
                          Temp.ARFlux.std = NaN,
                          Temp.ARFlux.min = NaN,
                          Temp.ARFlux.max = NaN,
-                         ThawDepth.mm = NaN)
+                         VWC.ARFlux.mean = NaN,
+                         VWC.ARFlux.std = NaN,
+                         VWC.ARFlux.min = NaN,
+                         VWC.ARFlux.max = NaN)
 for (d in Dates.all){
   # figure out index for this date
   i.d <- which(df.mod.day$Date==d)
   
   # summarize VWC and temperature
-  df.mod.day$VWC.mean[i.d] <- mean(unlist(df.mod.VWC[df.mod.VWC$Date==d, cols.compare]), na.rm=T)
-  df.mod.day$VWC.std[i.d] <- sd(unlist(df.mod.VWC[df.mod.VWC$Date==d, cols.compare]), na.rm=T)
-  df.mod.day$VWC.min[i.d] <- min(unlist(df.mod.VWC[df.mod.VWC$Date==d, cols.compare]), na.rm=T)
-  df.mod.day$VWC.max[i.d] <- max(unlist(df.mod.VWC[df.mod.VWC$Date==d, cols.compare]), na.rm=T)
-  
-  df.mod.day$Temp.mean[i.d] <- mean(unlist(df.mod.temp[df.mod.temp$Date==d, cols.compare]), na.rm=T)
-  df.mod.day$Temp.std[i.d] <- sd(unlist(df.mod.temp[df.mod.temp$Date==d, cols.compare]), na.rm=T)
-  df.mod.day$Temp.min[i.d] <- min(unlist(df.mod.temp[df.mod.temp$Date==d, cols.compare]), na.rm=T)
-  df.mod.day$Temp.max[i.d] <- max(unlist(df.mod.temp[df.mod.temp$Date==d, cols.compare]), na.rm=T)
-  
   df.mod.day$Temp.ARFlux.mean[i.d] <- mean(unlist(df.mod.temp[df.mod.temp$Date==d, cols.compare.ARFlux]), na.rm=T)
   df.mod.day$Temp.ARFlux.std[i.d] <- sd(unlist(df.mod.temp[df.mod.temp$Date==d, cols.compare.ARFlux]), na.rm=T)
   df.mod.day$Temp.ARFlux.min[i.d] <- min(unlist(df.mod.temp[df.mod.temp$Date==d, cols.compare.ARFlux]), na.rm=T)
@@ -231,14 +252,7 @@ for (d in Dates.all){
   df.mod.day$VWC.ARFlux.std[i.d] <- sd(unlist(df.mod.VWC[df.mod.VWC$Date==d, cols.compare.ARFlux.VWC]), na.rm=T)
   df.mod.day$VWC.ARFlux.min[i.d] <- min(unlist(df.mod.VWC[df.mod.VWC$Date==d, cols.compare.ARFlux.VWC]), na.rm=T)
   df.mod.day$VWC.ARFlux.max[i.d] <- max(unlist(df.mod.VWC[df.mod.VWC$Date==d, cols.compare.ARFlux.VWC]), na.rm=T)
-  
-  ## figure out thaw depth: shallowest depth at which temperature > 0
-  # extract all temperatures for that date
-  df.mod.temp.profile <- data.frame(depth = cols.depth[is.finite(cols.depth)], 
-                                    Temp = unlist(df.mod.temp[df.mod.temp$Date==d, is.finite(cols.depth)]))
-  
-  # find the shallowest temperature that is frozen
-  df.mod.day$ThawDepth.mm[i.d] <- min(df.mod.temp.profile$depth[which(df.mod.temp.profile$Temp<0)])
+
 }
 
 # calculate albedo
@@ -248,10 +262,13 @@ df.mod.point$albedo <- df.mod.point$SWup.W.m2./df.mod.point$SWin.W.m2.
 # convert dates
 df.mod.day$Date <- mdy(df.mod.day$Date)
 df.mod.point$Date <- mdy(df.mod.point$Date)
-df.obs.day$Date <- mdy(df.obs.day$Date)
+df.mod.temp.melt.d$Date <- mdy(df.mod.temp.melt.d$Date)
+df.mod.VWC.melt.d$Date <- mdy(df.mod.VWC.melt.d$Date)
+df.nest.melt.d$Date <- mdy(df.nest.melt.d$Date)
+df.nest.melt.d.all$Date <- mdy(df.nest.melt.d.all$Date)
 df.obs.ARFlux$Date <- ymd(df.obs.ARFlux$Date)
 
-# for each thaw date, summarize to mean and range
+# for each thaw date, summarize observations to mean and range
 df.thaw.day <- summarize(group_by(df.thaw, Date),
                          ThawDepth.mm.mean = mean(ThawDepth.mm, na.rm=T),
                          ThawDepth.mm.std = sd(ThawDepth.mm, na.rm=T),
@@ -263,6 +280,18 @@ df.mod.point$LEfromET.W.m2 <- (df.mod.point$Evap_surface.mm. + df.mod.point$Tras
 df.mod.point$LE.weighted.W.m2 <- (df.mod.point$LEg_unveg.W.m2.*(1-df.mod.point$Canopy_fraction...))+(df.mod.point$LEv.W.m2.*df.mod.point$Canopy_fraction...)
 df.mod.point$H.weighted.W.m2 <- (df.mod.point$Hg_unveg.W.m2.*(1-df.mod.point$Canopy_fraction...))+(df.mod.point$Hv.W.m2.*df.mod.point$Canopy_fraction...)
 
+# calculate water balance components
+df.mod.point$ET.mm <- df.mod.point$Evap_surface.mm. + df.mod.point$Trasp_canopy.mm.
+df.mod.point$precip.mm <- df.mod.point$Psnow_over_canopy.mm. + df.mod.point$Prain_over_canopy.mm.
+df.mod.point$precip.effective.mm <- df.mod.point$Prain_under_canopy.mm. + df.mod.point$snow_melted.mm.
+
+# summarize to annual water balance
+df.mod.point$year <- year(df.mod.point$Date)
+df.mod.point.yr <- dplyr::summarize(group_by(df.mod.point, year),
+                                    ET.mm = sum(ET.mm),
+                                    precip.mm = sum(precip.mm),
+                                    precip.effective.mm = sum(precip.effective.mm),
+                                    Qoutbottom.mm = sum(Qoutbottom.mm))
 
 ## calculate fit metrics - calibration period
 # ARFlux
@@ -272,7 +301,6 @@ df.fit.temp.ARFlux$Temp.mod <- df.mod.day$Temp.ARFlux.mean[match(df.fit.temp.ARF
 df.fit.VWC.ARFlux <- df.obs.ARFlux[is.finite(df.obs.ARFlux$VWC),]
 df.fit.VWC.ARFlux$VWC.mod <- df.mod.day$VWC.ARFlux.mean[match(df.fit.VWC.ARFlux$Date, df.mod.day$Date)]
 
-df.thaw.day$thaw.mod <- df.mod.day$ThawDepth.mm[match(df.thaw.day$Date, df.mod.day$Date)]
 df.thaw.day$thaw.mod.point <- df.mod.point$lowest_thawed_soil_depth.mm.[match(df.thaw.day$Date, df.mod.point$Date)]
 
 df.fit.LE <- df.obs.ARFlux[is.finite(df.obs.ARFlux$LE.W.m2),]
@@ -302,13 +330,13 @@ df.fit.LWout$LWout.mod <- df.mod.point$LWup.W.m2.[match(df.fit.LWout$Date, df.mo
 df.fit.G <- df.obs.ARFlux[is.finite(df.obs.ARFlux$G.W.m2),]
 df.fit.G$G.mod <- df.mod.point$Soil_heat_flux.W.m2.[match(df.fit.G$Date, df.mod.point$Date)]
 
-# temp + VWC
-df.fit.temp <- df.obs.day[is.finite(df.obs.day$Temp.mean),]
-df.fit.temp$Temp.mod <- df.mod.day$Temp.mean[match(df.fit.temp$Date, df.mod.day$Date)]
-df.fit.VWC <- df.obs.day[is.finite(df.obs.day$VWC.mean),]
-df.fit.VWC$VWC.mod <- df.mod.day$VWC.mean[match(df.fit.VWC$Date, df.mod.day$Date)]
-
 # make calibration/validation column
+df.nest.melt.d$period <- "cal"
+df.nest.melt.d$period[year(df.nest.melt.d$Date) %in% val] <- "val"
+
+df.nest.melt.d.all$period <- "cal"
+df.nest.melt.d.all$period[year(df.nest.melt.d.all$Date) %in% val] <- "val"
+
 df.fit.temp.ARFlux$period <- "cal"
 df.fit.temp.ARFlux$period[year(df.fit.temp.ARFlux$Date) %in% val] <- "val"
 
@@ -366,14 +394,14 @@ df.fit.table.cal["Thaw Depth",] <- c(RMSE(subset(df.thaw.day, period=="cal")$tha
                                      NRMSE(subset(df.thaw.day, period=="cal")$thaw.mod.point, subset(df.thaw.day, period=="cal")$ThawDepth.mm.mean),
                                      NashSutcliffe(subset(df.thaw.day, period=="cal")$thaw.mod.point, subset(df.thaw.day, period=="cal")$ThawDepth.mm.mean),
                                      R2(subset(df.thaw.day, period=="cal")$thaw.mod.point, subset(df.thaw.day, period=="cal")$ThawDepth.mm.mean))
-df.fit.table.cal["Nest Soil Temp",] <- c(RMSE(subset(df.fit.temp, period=="cal")$Temp.mod, subset(df.fit.temp, period=="cal")$Temp.mean),
-                                         NRMSE(subset(df.fit.temp, period=="cal")$Temp.mod, subset(df.fit.temp, period=="cal")$Temp.mean),
-                                         NashSutcliffe(subset(df.fit.temp, period=="cal")$Temp.mod, subset(df.fit.temp, period=="cal")$Temp.mean),
-                                         R2(subset(df.fit.temp, period=="cal")$Temp.mod, subset(df.fit.temp, period=="cal")$Temp.mean))
-df.fit.table.cal["Nest VWC",] <- c(RMSE(subset(df.fit.VWC, period=="cal")$VWC.mod, subset(df.fit.VWC, period=="cal")$VWC.mean),
-                                   NRMSE(subset(df.fit.VWC, period=="cal")$VWC.mod, subset(df.fit.VWC, period=="cal")$VWC.mean),
-                                   NashSutcliffe(subset(df.fit.VWC, period=="cal")$VWC.mod, subset(df.fit.VWC, period=="cal")$VWC.mean),
-                                   R2(subset(df.fit.VWC, period=="cal")$VWC.mod, subset(df.fit.VWC, period=="cal")$VWC.mean))
+df.fit.table.cal["Nest Soil Temp",] <- c(RMSE(subset(df.nest.melt.d.all, var=="Temp" & period=="cal")$mod.mean.all, subset(df.nest.melt.d.all, var=="Temp" & period=="cal")$obs.mean.all),
+                                         NRMSE(subset(df.nest.melt.d.all, var=="Temp" & period=="cal")$mod.mean.all, subset(df.nest.melt.d.all, var=="Temp" & period=="cal")$obs.mean.all),
+                                         NashSutcliffe(subset(df.nest.melt.d.all, var=="Temp" & period=="cal")$mod.mean.all, subset(df.nest.melt.d.all, var=="Temp" & period=="cal")$obs.mean.all),
+                                         R2(subset(df.nest.melt.d.all, var=="Temp" & period=="cal")$mod.mean.all, subset(df.nest.melt.d.all, var=="Temp" & period=="cal")$obs.mean.all))
+df.fit.table.cal["Nest VWC",] <- c(RMSE(subset(df.nest.melt.d.all, var=="VWC" & period=="cal")$mod.mean.all, subset(df.nest.melt.d.all, var=="VWC" & period=="cal")$obs.mean.all),
+                                   NRMSE(subset(df.nest.melt.d.all, var=="VWC" & period=="cal")$mod.mean.all, subset(df.nest.melt.d.all, var=="VWC" & period=="cal")$obs.mean.all),
+                                   NashSutcliffe(subset(df.nest.melt.d.all, var=="VWC" & period=="cal")$mod.mean.all, subset(df.nest.melt.d.all, var=="VWC" & period=="cal")$obs.mean.all),
+                                   R2(subset(df.nest.melt.d.all, var=="VWC" & period=="cal")$mod.mean.all, subset(df.nest.melt.d.all, var=="VWC" & period=="cal")$obs.mean.all))
 
 df.fit.table.val <- data.frame(RMSE=numeric(5), NRMSE=numeric(5), NSE=numeric(5), R2=numeric(5),
                                row.names=c("Thaw Depth","Tower Soil Temp", "Tower VWC", "Nest Soil Temp", "Nest VWC"))
@@ -389,14 +417,14 @@ df.fit.table.val["Thaw Depth",] <- c(RMSE(subset(df.thaw.day, period=="val")$tha
                                      NRMSE(subset(df.thaw.day, period=="val")$thaw.mod.point, subset(df.thaw.day, period=="val")$ThawDepth.mm.mean),
                                      NashSutcliffe(subset(df.thaw.day, period=="val")$thaw.mod.point, subset(df.thaw.day, period=="val")$ThawDepth.mm.mean),
                                      R2(subset(df.thaw.day, period=="val")$thaw.mod.point, subset(df.thaw.day, period=="val")$ThawDepth.mm.mean))
-df.fit.table.val["Nest Soil Temp",] <- c(RMSE(subset(df.fit.temp, period=="val")$Temp.mod, subset(df.fit.temp, period=="val")$Temp.mean),
-                                         NRMSE(subset(df.fit.temp, period=="val")$Temp.mod, subset(df.fit.temp, period=="val")$Temp.mean),
-                                         NashSutcliffe(subset(df.fit.temp, period=="val")$Temp.mod, subset(df.fit.temp, period=="val")$Temp.mean),
-                                         R2(subset(df.fit.temp, period=="val")$Temp.mod, subset(df.fit.temp, period=="val")$Temp.mean))
-df.fit.table.val["Nest VWC",] <- c(RMSE(subset(df.fit.VWC, period=="val")$VWC.mod, subset(df.fit.VWC, period=="val")$VWC.mean),
-                                   NRMSE(subset(df.fit.VWC, period=="val")$VWC.mod, subset(df.fit.VWC, period=="val")$VWC.mean),
-                                   NashSutcliffe(subset(df.fit.VWC, period=="val")$VWC.mod, subset(df.fit.VWC, period=="val")$VWC.mean),
-                                   R2(subset(df.fit.VWC, period=="val")$VWC.mod, subset(df.fit.VWC, period=="val")$VWC.mean))
+df.fit.table.val["Nest Soil Temp",] <- c(RMSE(subset(df.nest.melt.d.all, var=="Temp" & period=="val")$mod.mean.all, subset(df.nest.melt.d.all, var=="Temp" & period=="val")$obs.mean.all),
+                                         NRMSE(subset(df.nest.melt.d.all, var=="Temp" & period=="val")$mod.mean.all, subset(df.nest.melt.d.all, var=="Temp" & period=="val")$obs.mean.all),
+                                         NashSutcliffe(subset(df.nest.melt.d.all, var=="Temp" & period=="val")$mod.mean.all, subset(df.nest.melt.d.all, var=="Temp" & period=="val")$obs.mean.all),
+                                         R2(subset(df.nest.melt.d.all, var=="Temp" & period=="val")$mod.mean.all, subset(df.nest.melt.d.all, var=="Temp" & period=="val")$obs.mean.all))
+df.fit.table.val["Nest VWC",] <- c(RMSE(subset(df.nest.melt.d.all, var=="VWC" & period=="val")$mod.mean.all, subset(df.nest.melt.d.all, var=="VWC" & period=="val")$obs.mean.all),
+                                   NRMSE(subset(df.nest.melt.d.all, var=="VWC" & period=="val")$mod.mean.all, subset(df.nest.melt.d.all, var=="VWC" & period=="val")$obs.mean.all),
+                                   NashSutcliffe(subset(df.nest.melt.d.all, var=="VWC" & period=="val")$mod.mean.all, subset(df.nest.melt.d.all, var=="VWC" & period=="val")$obs.mean.all),
+                                   R2(subset(df.nest.melt.d.all, var=="VWC" & period=="val")$mod.mean.all, subset(df.nest.melt.d.all, var=="VWC" & period=="val")$obs.mean.all))
 
 df.fit.energy.table.cal <- data.frame(RMSE=numeric(8), NRMSE=numeric(8), NSE=numeric(8), R2=numeric(8),
                                       row.names=c("Rnet","SWin", "SWout", "LWin", "LWout", "LE", "H", "G"))
@@ -474,6 +502,7 @@ df.fit.energy.table.val["G",] <- c(RMSE(subset(df.fit.G, period=="val")$G.mod, s
 path.plot.val.sub <- paste0(git.dir, "geotop/output-plots/Plots_CalVal_Subsurface_", version, "_", fire, ".png")
 path.plot.val.sur <- paste0(git.dir, "geotop/output-plots/Plots_CalVal_Surface_", version, "_", fire, ".png")
 path.plot.val.diag <- paste0(git.dir, "geotop/output-plots/Plots_CalVal_Diagnostics_", version, "_", fire, ".png")
+path.plot.val.nest <- paste0(git.dir, "geotop/output-plots/Plots_CalVal_Nest_", version, "_", fire, ".png")
 
 # plot subsurface temperature and VWC
 p.thaw.compare.ARFlux <- 
@@ -494,7 +523,7 @@ p.temp.compare.ARFlux <-
   geom_line(data=subset(df.mod.day, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=Temp.ARFlux.mean), color="red") +
   geom_point(data=df.obs.ARFlux, aes(x=Date, y=Tsoil.C), shape=21) +
   scale_x_date(expand=c(0,0)) +
-  scale_y_continuous(name=paste0("Tower Soil Temp [C]: ", depth.ARFlux.min, "-", depth.ARFlux.max, " mm")) +
+  scale_y_continuous(name=paste0("Tower Soil Temp [C]: Mean ", depth.ARFlux.min, " & ", depth.ARFlux.max, " mm")) +
   theme_bw() +
   theme(panel.grid=element_blank())
 
@@ -513,8 +542,8 @@ p.temp.compare <-
   ggplot() +
   annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
   geom_hline(yintercept=0, color="gray65") +
-  geom_line(data=subset(df.mod.day, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=Temp.mean), color="red") +
-  geom_point(data=df.obs.day, aes(x=Date, y=Temp.mean), shape=21) +
+  geom_line(data=df.mod.temp.melt.d, aes(x=Date, y=value.mod.all), color="red") +
+  geom_point(data=subset(df.nest.melt.d.all, var=="Temp"), aes(x=Date, y=obs.mean.all), shape=21) +
   scale_y_continuous(name=paste0("Nest Soil Temp [C]: ", depth.min, "-", depth.max, " mm")) +
   scale_x_date(expand=c(0,0)) +
   theme_bw() +
@@ -523,8 +552,8 @@ p.temp.compare <-
 p.VWC.compare <-
   ggplot() +
   annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
-  geom_line(data=subset(df.mod.day, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=VWC.mean), color="blue") +
-  geom_point(data=df.obs.day, aes(x=Date, y=VWC.mean), shape=21) +
+  geom_line(data=df.mod.VWC.melt.d, aes(x=Date, y=value.mod.all), color="blue") +
+  geom_point(data=subset(df.nest.melt.d.all, var=="VWC"), aes(x=Date, y=obs.mean.all), shape=21) +
   scale_y_continuous(name=paste0("Nest VWC [m3/m3]: ", depth.min, "-", depth.max, " mm")) +
   scale_x_date(expand=c(0,0)) +
   theme_bw() +
@@ -533,6 +562,43 @@ p.VWC.compare <-
 ggsave(path.plot.val.sub, arrangeGrob(p.thaw.compare.ARFlux, p.temp.compare.ARFlux, p.VWC.compare.ARFlux, p.temp.compare, p.VWC.compare, 
                                       arrangeGrob(tableGrob(round(df.fit.table.cal, 3)), tableGrob(round(df.fit.table.val, 3)), ncol=2), 
                                       ncol=1, heights=c(1,1,1,1,1,0.75)),
+       width=12, height=12, units="in")
+
+# nest plots, split out by depth
+df.mod.melt$Date <- mdy(df.mod.melt$Date)
+df.mod.obs.melt <- merge(df.mod.melt, df.nest.melt.d[,c("Date", "depth", "var", "obs.mean")], by=c("Date", "depth", "var"), all.x=T)
+df.nest.fit <- summarize(group_by(df.nest.melt.d, var, depth),
+                         RMSE=round(RMSE(value.mod, obs.mean), 3),
+                         NRMSE=round(NRMSE(value.mod, obs.mean), 3),
+                         NSE=round(NashSutcliffe(value.mod, obs.mean), 3),
+                         R2=round(R2(value.mod, obs.mean), 3))
+
+p.nest.temp <- 
+  ggplot(subset(df.mod.obs.melt, depth %in% depths & var=="Temp"), aes(x=Date)) +
+  annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
+  geom_hline(yintercept=0, color="gray65") +
+  geom_line(aes(y=value.mod), color="red") +
+  geom_point(aes(y=obs.mean), shape=21) +
+  scale_y_continuous(name="Temperature [C]") +
+  scale_x_date(name="Date", expand=c(0,0)) +
+  facet_grid(depth~.) +
+  theme_bw() +
+  theme(panel.grid=element_blank())
+
+p.nest.VWC <- 
+  ggplot(subset(df.mod.obs.melt, depth %in% depths & var=="VWC"), aes(x=Date)) +
+  annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
+  geom_hline(yintercept=0, color="gray65") +
+  geom_line(aes(y=value.mod), color="blue") +
+  geom_point(aes(y=obs.mean), shape=21) +
+  scale_y_continuous(name="VWC [m3 m-3]") +
+  scale_x_date(name="Date", expand=c(0,0)) +
+  facet_grid(depth~.) +
+  theme_bw() +
+  theme(panel.grid=element_blank())
+
+ggsave(path.plot.val.nest, arrangeGrob(arrangeGrob(p.nest.temp, p.nest.VWC, ncol=2), tableGrob(df.nest.fit), 
+                                       ncol=1, heights=c(1,0.5)),
        width=12, height=12, units="in")
 
 # surface fluxes
@@ -787,8 +853,17 @@ p.mod.snow <-
   theme_bw() +
   theme(panel.grid=element_blank())
 
+p.mod.WTD <-
+  ggplot() +
+  annotate(geom="rect", xmin=ymd(paste0(cal, "-01-01")), xmax=ymd(paste0(cal, "-12-31")), ymin=-Inf, ymax=Inf, fill="gray90") +
+  geom_hline(yintercept=0, color="gray65") +
+  geom_line(data=subset(df.mod.point, year(Date)>=2008 & year(Date)<=2013), aes(x=Date, y=highest_water_table_depth.mm.), color="blue") +
+  scale_y_reverse(name="Water Table Depth [mm]") +
+  scale_x_date(expand=c(0,0)) +
+  theme_bw() +
+  theme(panel.grid=element_blank())
 
-ggsave(path.plot.val.diag, arrangeGrob(p.mod.precip, p.mod.Tair, p.mod.ET, p.mod.LSAI, p.mod.snow, ncol=1),
+ggsave(path.plot.val.diag, arrangeGrob(p.mod.precip, p.mod.Tair, p.mod.ET, p.mod.LSAI, p.mod.snow, p.mod.WTD, ncol=1),
        width=12, height=12, units="in")
 
 # save zoomed-in nice plots
