@@ -45,7 +45,7 @@ HeaderSWglobal              = "Swglob"
 HeaderCloudSWTransmissivity = "CloudTrans"
 
 !********************************************
-!****************** SNOW ********************
+!***************** PRECIP *******************
 !********************************************
 
 ! Best performance was with SnowDepthCalibration0690
@@ -72,6 +72,8 @@ SnowCorrFactor = 0.613
 ThresTempRain = 3.66
 ThresTempSnow = -0.06
 SnowCorrFactor = 0.54
+
+RainCorrFactor=1.0
 
 IrriducibleWatSatSnow = 0.04
 
@@ -208,10 +210,10 @@ PointAll=1
 
 ! profiles
 SoilAll=1
-SoilPlotDepths=20,25,40,45,50,55,60,70,80,90,100
+!SoilPlotDepths=20,25,40,45,50,55,60,70,80,90,100
 
 SoilAveragedTempProfileFile="output-tabs/soiltemp"
-!SoilAveragedIceContentProfileFile="output-tabs/thetaice"
+SoilAveragedIceContentProfileFile="output-tabs/thetaice"
 SoilAveragedLiqContentProfileFile="output-tabs/thetaliq"
 !SoilLiqWaterPressProfileFile="output-tabs/psiliq"
 !SoilTotWaterPressProfileFile="output-tabs/psitot"

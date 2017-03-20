@@ -22,7 +22,7 @@ require(gridExtra)
 source(paste0(git.dir, "ProcessingScripts/FitMetrics.R"))
 
 #version
-version <- "20170320-1hr-PeatKsatDecay"
+version <- "20170320-1hr-PeatKsatDecay-DoublePrecip"
 
 # function to find closest
 which.closest <- function(x, vec){
@@ -503,6 +503,18 @@ path.plot.val.sub <- paste0(git.dir, "geotop/output-plots/Plots_CalVal_Subsurfac
 path.plot.val.sur <- paste0(git.dir, "geotop/output-plots/Plots_CalVal_Surface_", version, "_", fire, ".png")
 path.plot.val.diag <- paste0(git.dir, "geotop/output-plots/Plots_CalVal_Diagnostics_", version, "_", fire, ".png")
 path.plot.val.nest <- paste0(git.dir, "geotop/output-plots/Plots_CalVal_Nest_", version, "_", fire, ".png")
+path.plot.val.wb <- paste0(git.dir, "geotop/output-plots/Plots_CalVal_WB_", version, "_", fire, ".png")
+
+# water balance plot
+p.WB <- 
+  ggplot(df.mod.point.yr, aes(x=year, y=precip.effective.mm-ET.mm)) +
+  geom_hline(yintercept=0, color="gray65") +
+  geom_bar(stat="identity") +
+  scale_x_continuous(name="Year") +
+  scale_y_continuous(name="Precip - ET [mm]") +
+  theme_bw() +
+  theme(panel.grid=element_blank())
+ggsave(path.plot.val.wb, p.WB, width=6, height=6, units="in")
 
 # plot subsurface temperature and VWC
 p.thaw.compare.ARFlux <- 
