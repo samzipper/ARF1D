@@ -12,22 +12,26 @@ rm(list=ls())
 #git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
 git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
 
+# which geotop version
+f.geotop <- "geotop_NRCS/"
+#f.geotop <- "geotop/"
+
 require(lubridate)
 require(ggplot2)
 require(dplyr)
 source(paste0(git.dir, "ProcessingScripts/Tair_HourlyFromDaily.R"))
 
 # filenames
-fname.daily <- paste0(git.dir, "geotop/meteo/meteoNARRdailyWithSpinUp0001.txt")   # daily input data
+fname.daily <- paste0(git.dir, f.geotop, "meteo/meteoNARRdailyWithSpinUp0001.txt")   # daily input data
 fname.stats <- paste0(git.dir, "data/ARFlux/ARFlux-Merged_MonthlyStats.csv")      # file with monthly statistics for downscaling
-fname.hourly<- paste0(git.dir, "geotop/meteo/meteoNARRhourlyWithSpinUp0001.txt")  # where to save hourly output data
-fname.3hourly<- paste0(git.dir, "geotop/meteo/meteoNARR3hourlyWithSpinUp0001.txt")  # where to save 3 hourly output data
-fname.hourly.dynamic <- paste0(git.dir, "geotop/meteo/meteoNARRhourlyDynamicWithSpinUp0001.txt")  # where to save hourly output data
-fname.3hourly.dynamic<- paste0(git.dir, "geotop/meteo/meteoNARR3hourlyDynamicWithSpinUp0001.txt")  # where to save 3 hourly output data
+fname.hourly<- paste0(git.dir, f.geotop, "meteo/meteoNARRhourlyWithSpinUp0001.txt")  # where to save hourly output data
+fname.3hourly<- paste0(git.dir, f.geotop, "meteo/meteoNARR3hourlyWithSpinUp0001.txt")  # where to save 3 hourly output data
+fname.hourly.dynamic <- paste0(git.dir, f.geotop, "meteo/meteoNARRhourlyDynamicWithSpinUp0001.txt")  # where to save hourly output data
+fname.3hourly.dynamic<- paste0(git.dir, f.geotop, "meteo/meteoNARR3hourlyDynamicWithSpinUp0001.txt")  # where to save 3 hourly output data
 
 # year to start/end hourly data
-yr.start <- 2002
-yr.end <- 2015
+yr.start <- 1978
+yr.end <- 2011
 
 # coordinates of site
 site.lat <- 68.93      # unburned=68.93, moderate=68.95, severe=68.99

@@ -5,9 +5,9 @@
 *.xlsx
 
 ## ignore in geotop folder only
-geotop/output*
-geotop/_*
-geotop/SnowDepthCalibration/*_geotop.inpts
+geotop*/output*
+geotop*/_*
+geotop*/SnowDepthCalibration/*_geotop.inpts
 
 ## folders to ignore
 geotop/SoilPropertyCalibration/*_SoilARF*

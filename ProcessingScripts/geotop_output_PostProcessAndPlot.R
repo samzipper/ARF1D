@@ -22,7 +22,7 @@ require(gridExtra)
 source(paste0(git.dir, "ProcessingScripts/FitMetrics.R"))
 
 #version
-version <- "20170320-1hr-PeatKsatDecay-DoublePrecip"
+version <- "20170327-1hr"
 
 # function to find closest
 which.closest <- function(x, vec){

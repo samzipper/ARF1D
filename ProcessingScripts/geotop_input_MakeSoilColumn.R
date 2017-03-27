@@ -18,7 +18,7 @@ git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
 out.path <- paste0(git.dir, "geotop/soil/soilARF0001.txt")
 
 # logical: should organic layer Ksat be decreased with depth?
-decrease.org.Ksat <- T
+decrease.org.Ksat <- F
 
 # define soil layer properties
 min.Dz   <- 10     # [mm] - thickness of organic soil layers
@@ -32,8 +32,8 @@ org.z <- 174      # [mm] - thickness of organic soil (Jiang et al. 2015, Table 1
 org.Ks <- 0.17    # [mm/s] - saturated hydraulic condutivity 
 org.vwc_s <- 0.84  # [m3/m3] - saturated water content
 org.vwc_r <- 0.04  # [m3/m3] - residual water content
-org.VG_alpha <- 1.0*(1/1000) # [mm-1] - Van Genuchten alpha (Jiang et al. = 12.7 m-1)
-org.VG_n <- 1.30       # [-] - Van Genuchten n
+org.VG_alpha <- 12.7*(1/1000) # [mm-1] - Van Genuchten alpha (Jiang et al. = 12.7 m-1)
+org.VG_n <- 1.20       # [-] - Van Genuchten n
 org.thermcond <- 0.25   # [W/m/K] - thermal conductivity of soil solids
 org.thermcap <- 2.6E+6   # [J/m3/K] - thermal capacity of soil solids
 
@@ -138,6 +138,18 @@ for (j in 1:(nsoilay-1)){
 
 # anything that does not vary based on depth
 df.out$SS <- 1.00E-07       # Specific storativity - use default value
+
+# # homogeneous VG properties, but not thermal
+# df.out$Kh <- min.Ks
+# df.out$Kv <- min.Ks
+# df.out$vwc_r <- min.vwc_r
+# df.out$vwc_s <- min.vwc_s
+# df.out$VG_alpha <- min.VG_alpha
+# df.out$VG_n <- min.VG_n
+# 
+# # homogeneous thermal properties, but not VG
+# df.out$thermcond <- min.thermcond
+# df.out$thermcap <- min.thermcap
 
 # save output file
 write.csv(df.out, out.path, quote=F, row.names=F)

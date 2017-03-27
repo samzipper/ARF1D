@@ -5,9 +5,10 @@ TimeStepEnergyAndWater = 3600
 !TimeStepEnergyAndWater = 7200
 !TimeStepEnergyAndWater = 10800
 !TimeStepEnergyAndWater = 14400
-InitDateDDMMYYYYhhmm   = 31/12/2002 23:00
-!EndDateDDMMYYYYhhmm = 05/01/2003 23:00
-EndDateDDMMYYYYhhmm    = 31/12/2012 23:00
+!InitDateDDMMYYYYhhmm   = 31/12/2002 23:00
+!EndDateDDMMYYYYhhmm    = 31/12/2012 23:00
+InitDateDDMMYYYYhhmm=01/01/2000 23:00
+EndDateDDMMYYYYhhmm=31/12/2015 23:00
 EnergyBalance = 1
 WaterBalance  = 1
 PointSim      = 1
@@ -32,16 +33,17 @@ MeteoStationStandardTime=-9
 MeteoStationWindVelocitySensorHeight=10
 MeteoStationTemperatureSensorHeight=2
 
+!MeteoFile = "meteo/meteoNARRdailyWithSpinUp"
+!MeteoFile = "meteo/meteoNARRhourlyDynamicWithSpinUp"
+MeteoFile = "meteo/meteoNARRhourlyDynamicRepeatedWithSpinUp"
+
 HeaderDateDDMMYYYYhhmmMeteo = "POSIX"
 HeaderJulianDayfrom0Meteo   = "JD"
 HeaderIPrec                 = "Iprec"
-HeaderWindVelocity          = "WindSp"
-!HeaderWindDirection         = "WindDir"
-HeaderRH                    = "RH"
-!HeaderAirPress              = "P"
 HeaderAirTemp               = "AirT"
+HeaderWindVelocity          = "WindSp"
+HeaderRH                    = "RH"
 HeaderSWglobal              = "Swglob"
-!HeaderLWin                  = "LWin"
 HeaderCloudSWTransmissivity = "CloudTrans"
 
 !********************************************
@@ -84,13 +86,15 @@ MaxSnowLayerNumber = 10
 !********************************************
 !! Initial conditions are based on the final state of a 20-year simulation (31/12/1982 - 31/12/2002)
 ! Temperature initial conditions
-InitSoilTemp=-19.253304,-19.181532,-19.107303,-19.032162,-18.957624,-18.882842,-18.807353,-18.730600,-18.652077,-18.571821,-18.489954,-18.407797,-18.327978,-18.246034,-18.106473,-17.627446,-16.505138,-15.382103,-14.151063,-13.502565,-12.549153,-11.310518,-10.408542,-9.884173,-9.423330,-8.950399,-8.477176,-8.012701,-7.563850,-7.136649,-6.737410,-6.372972,-6.049980,-5.773790,-5.547701,-5.372845,-5.248559,-5.172773,-5.142074,-5.151479,-5.194227,-5.261919,-5.345075,-5.433968,-5.519458,-5.593627,-5.650094,-5.684045,-5.692025,-5.671644
+!InitSoilTemp=-19.253304,-19.181532,-19.107303,-19.032162,-18.957624,-18.882842,-18.807353,-18.730600,-18.652077,-18.571821,-18.489954,-18.407797,-18.327978,-18.246034,-18.106473,-17.627446,-16.505138,-15.382103,-14.151063,-13.502565,-12.549153,-11.310518,-10.408542,-9.884173,-9.423330,-8.950399,-8.477176,-8.012701,-7.563850,-7.136649,-6.737410,-6.372972,-6.049980,-5.773790,-5.547701,-5.372845,-5.248559,-5.172773,-5.142074,-5.151479,-5.194227,-5.261919,-5.345075,-5.433968,-5.519458,-5.593627,-5.650094,-5.684045,-5.692025,-5.671644
+InitSoilTemp=-4.8
 InitSoilTempBedrock         = -4.8
 ZeroTempAmplitDepth         = 20000
 ZeroTempAmplitTemp          = -4.8
 
 ! Hydrological initial conditions
-InitSoilPressure=-1109.910141,-1314.347552,-1578.555578,-1573.484479,-1629.796230,-1709.745059,-1805.632460,-1943.653314,-2094.153037,-2213.241865,-2333.899304,-2242.737850,-1971.802322,-2545.692010,-33637.679035,-2252705.345832,-2252694.026744,-2252682.766716,-2252645.302801,-2252574.354450,-2252473.858749,-2252349.815186,-1093.604209,-2.346796,115.248288,64.798163,40.247839,26.596409,18.283042,12.913472,9.294152,6.777016,4.989839,3.699880,2.760860,2.071533,1.563893,1.188172,0.908062,0.697267,0.536492,0.412631,0.315555,0.237832,0.175680,0.124476,0.082551,0.049796,0.024185,-0.058265
+!InitSoilPressure=-1109.910141,-1314.347552,-1578.555578,-1573.484479,-1629.796230,-1709.745059,-1805.632460,-1943.653314,-2094.153037,-2213.241865,-2333.899304,-2242.737850,-1971.802322,-2545.692010,-33637.679035,-2252705.345832,-2252694.026744,-2252682.766716,-2252645.302801,-2252574.354450,-2252473.858749,-2252349.815186,-1093.604209,-2.346796,115.248288,64.798163,40.247839,26.596409,18.283042,12.913472,9.294152,6.777016,4.989839,3.699880,2.760860,2.071533,1.563893,1.188172,0.908062,0.697267,0.536492,0.412631,0.315555,0.237832,0.175680,0.124476,0.082551,0.049796,0.024185,-0.058265
+InitSoilPressure=0.0
 FreeDrainageAtLateralBorder = 0
 FreeDrainageAtBottom        = 1
 
@@ -113,12 +117,6 @@ HeaderPointSlope        = "slope"
 HeaderPointAspect       = "aspect"
 HeaderPointSkyViewFactor= "sky"
 HeaderPointBedrockDepth = "bedrock"
-
-!*******************************
-!******* INPUT  ************
-!*******************************
-!MeteoFile = "meteo/meteoNARRdailyWithSpinUp"
-MeteoFile = "meteo/meteoNARRhourlyDynamicWithSpinUp"
 
 !*******************************
 !******** LAND COVER  **********

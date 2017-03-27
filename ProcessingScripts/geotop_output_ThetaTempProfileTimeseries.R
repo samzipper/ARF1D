@@ -15,7 +15,7 @@ require(dplyr)
 require(gridExtra)
 
 #version
-version <- "20170320-1hr-PeatKsatDecay-DoublePrecip"
+version <- "20170323-1hr-HomoSoilVG"
 
 # burn severity site
 fire <- "Unburned"  # options are: Unburned, Moderate, Severe
@@ -87,7 +87,20 @@ df.all <- data.frame(Date = df.mod.temp.melt$Date,
 # calculate saturation
 df.all$sat.liq <- df.all$VWC.liq/df.all$porosity
 df.all$sat.ice <- df.all$VWC.ice/df.all$porosity
-df.all$sat.air <- (1-df.all$VWC.ice-df.all$VWC.liq)/df.all$porosity
+df.all$sat.air <- (1-df.all$sat.ice-df.all$sat.liq)
+df.all$sat.air[df.all$sat.air<0] <- 0
+
+# max annual thaw depth (used to test for stability)
+df.mod.point$year <- year(df.mod.point$Date)
+df.mod.point.yr <- summarize(group_by(df.mod.point, year),
+                             thaw.depth.max = max(lowest_thawed_soil_depth.mm.))
+p.thaw.yr <-
+  ggplot(df.mod.point.yr, aes(x=year, y=thaw.depth.max)) +
+  geom_line() +
+  scale_y_reverse(name="Max Annual Thaw Depth [mm]") +
+  scale_x_continuous(name="Year") +
+  theme_bw() +
+  theme(panel.grid=element_blank())
 
 p.temp <-
   ggplot() +
@@ -150,12 +163,12 @@ p.sat.ice <-
 
 p.sat.air <-
   ggplot() +
-  geom_tile(data=df.all, aes(x=Date, y=depth.mm, fill=sat.ice, height=Dz)) +
+  geom_tile(data=df.all, aes(x=Date, y=depth.mm, fill=sat.air, height=Dz)) +
   geom_line(data=df.mod.point, aes(x=Date, y=highest_water_table_depth.mm.), color="black") +
   geom_line(data=df.mod.point, aes(x=Date, y=lowest_water_table_depth.mm.), color="black") +
   scale_y_reverse(name="Depth [mm]", expand=c(0,0)) +
   scale_x_datetime(expand=c(0,0)) +
-  scale_fill_gradient(name="Pore Air Fraction [-]", high="blue", low="red", limits=c(0,1)) +
+  scale_fill_gradient(name="Pore Air Fraction [-]", high="red", low="blue", limits=c(0,1)) +
   theme_bw() +
   theme(panel.grid=element_blank(),
         legend.position="bottom")

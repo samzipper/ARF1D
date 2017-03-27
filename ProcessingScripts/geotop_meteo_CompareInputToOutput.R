@@ -24,7 +24,7 @@ plot.path <- paste0(git.dir, "geotop/output-plots/meteo_CompareInputToOutput.png
 #plot.path <- paste0("C:/Users/Sam/src/geotop/tests/1D/InfiltrationTrench/output-tabs/meteo_CompareInputToOutput.png")
 
 # year to compare
-yr <- 2008
+yr <- 2010
 
 # read input and output
 df.in <- read.csv(in.path)
