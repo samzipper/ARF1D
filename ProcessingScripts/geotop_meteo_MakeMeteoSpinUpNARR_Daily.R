@@ -8,7 +8,13 @@
 rm(list=ls())
 
 # git directory for relative paths
-git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
+#git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
+git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
+
+# which geotop version
+geo.dir <- "geotop_NRCS/"
+#geo.dir <- "geotop/"
+
 NARR.dir <- "D:/Dropbox/GIS_GeneralFiles/Meteorology_Gridded/NARR/NARR-DAILIES-MONOLEVEL/"
 
 require(lubridate)
@@ -16,7 +22,7 @@ require(ncdf4)
 
 # filename to save output
 fname.NARR.meteo.out <- paste0(git.dir, "data/meteo/Raw/NARR_Daily_1979-2015.csv")
-fname.out <- paste0(git.dir, "geotop/meteo/meteoNARRdailyWithSpinUp0001.txt")
+fname.out <- paste0(git.dir, geo.dir, "meteo/meteoNARRdailyWithSpinUp0001.txt")
 fname.TFS <- paste0(git.dir, "data/meteo/Raw/Daily_1988_currentTFSDaily.csv")
 fname.ARFlux <- paste0(git.dir, "data/ARFlux/ARFlux_2008-2012_Daily.csv")
 

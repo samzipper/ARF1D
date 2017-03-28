@@ -17,7 +17,7 @@ require(gridExtra)
 source(paste0(git.dir, "ProcessingScripts/FitMetrics.R"))
 
 #version
-version <- "20170327-1hr-Start1988"
+version <- "20170328-1hr-Start1988-RootGrow"
 
 # function to find closest
 which.closest <- function(x, vec){
@@ -57,7 +57,7 @@ df.obs$Date <- ymd(df.obs$Date)
 # subset to only calibration/validation period
 df.obs <- subset(df.obs, year(Date)>=yr.min & year(Date)<=yr.max)
 
-# get rid of 2004 - bad data
+# get rid of 2004 - bad observation data
 df.obs <- subset(df.obs, year(Date) != 2004)
 
 ## Process model output data

@@ -22,8 +22,8 @@ decrease.org.Ksat <- F
 
 # define soil layer properties
 min.Dz   <- 10     # [mm] - thickness of organic soil layers
-total.Dz <- 10000  # [mm] - total soil thickness
-nsoilay  <- 50     # number of soil layers
+total.Dz <- 8000   # [mm] - total soil thickness
+nsoilay  <- 60     # number of soil layers
 
 ## tunable soil parameters
 # organic soil - using values from Jiang et al. (2015) SI for 1st layer
@@ -41,7 +41,7 @@ org.thermcap <- 2.6E+6   # [J/m3/K] - thermal capacity of soil solids
 #   thermal conductivity & capacity from Kurylyk et al. (2016) WRR Table A1
 min.Ks <- 0.00125    # [mm/s] - saturated hydraulic condutivity 
 min.vwc_s <- 0.45  # [m3/m3] - saturated water content
-min.vwc_r <- 0.067 # [m3/m3] - residual water content
+min.vwc_r <- 0.01  # [m3/m3] - residual water content
 min.VG_alpha <- 2.0*(1/1000)  # [mm-1] - Van Genuchten alpha (convert from 12.7 m-1)
 min.VG_n <- 1.41              # [-] - Van Genuchten n
 min.thermcond <- 1.62         # [W/m/K] - thermal conductivity of soil solids

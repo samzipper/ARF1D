@@ -161,7 +161,7 @@ FreshSnowReflNIR = 0.90
 !*******************************
 SoilParFile = "soil/SoilNRCS"
 
-SoilLayerNumber = 50
+SoilLayerNumber = 60
 SoilLayerTypes = 1
 PointSoilType = 1
 
@@ -202,8 +202,8 @@ MoninObukhov=2
 !*************************************
 ! point file
 DtPlotPoint = 24
-!PointOutputFile="output-tabs/point"
-!PointAll=1
+PointOutputFile="output-tabs/point"
+PointAll=1
 !DatePoint=1
 
 ! profiles
