@@ -10,6 +10,19 @@
 
 rm(list=ls())
 
+# function to calculate theta (used to define wilting point and field capacity)
+VG_ThetaFromHead <- function(head, ThetaR, ThetaS, alpha, n){
+  # This is intended to take ThetaS [m3 m-3], ThetaR [m3 m-3], alpha [m-1], and
+  # n [-] values and produce theta estimates for a vector of head [m].
+  if (head >= 0){
+    theta <- ThetaS
+  } else {
+    theta <- ThetaR + (ThetaS - ThetaR)/((1+(alpha*abs(head))^n)^(1-1/n))
+  }
+  
+  return(theta)
+}
+
 # git directory for relative paths
 #git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
 git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
@@ -33,19 +46,27 @@ org.Ks <- 0.17    # [mm/s] - saturated hydraulic condutivity
 org.vwc_s <- 0.55  # [m3/m3] - saturated water content
 org.vwc_r <- 0.01  # [m3/m3] - residual water content
 org.VG_alpha <- 12.7*(1/1000) # [mm-1] - Van Genuchten alpha (Jiang et al. = 12.7 m-1)
-org.VG_n <- 1.20       # [-] - Van Genuchten n
+org.VG_n <- 1.45       # [-] - Van Genuchten n
 org.thermcond <- 0.25   # [W/m/K] - thermal conductivity of soil solids
 org.thermcap <- 2.6E+6   # [J/m3/K] - thermal capacity of soil solids
+
+# calculate field capacity and wilting point
+org.vwc_fc <- VG_ThetaFromHead(-3.3, org.vwc_r, org.vwc_s, org.VG_alpha*1000, org.VG_n)
+org.vwc_wp <- VG_ThetaFromHead(-150, org.vwc_r, org.vwc_s, org.VG_alpha*1000, org.VG_n)
 
 # mineral soil - using values from Carsel & Parrish (1988) for silt loam based on NRCS soil pedons
 #   thermal conductivity & capacity from Kurylyk et al. (2016) WRR Table A1
 min.Ks <- 0.00125    # [mm/s] - saturated hydraulic condutivity 
-min.vwc_s <- 0.45  # [m3/m3] - saturated water content
+min.vwc_s <- 0.41  # [m3/m3] - saturated water content
 min.vwc_r <- 0.01  # [m3/m3] - residual water content
 min.VG_alpha <- 2.0*(1/1000)  # [mm-1] - Van Genuchten alpha (convert from 12.7 m-1)
 min.VG_n <- 1.41              # [-] - Van Genuchten n
 min.thermcond <- 1.62         # [W/m/K] - thermal conductivity of soil solids
 min.thermcap <- 2.0E+6        # [J/m3/K] - thermal capacity of soil solids
+
+# calculate field capacity and wilting point
+min.vwc_fc <- VG_ThetaFromHead(-3.3, min.vwc_r, min.vwc_s, min.VG_alpha*1000, min.VG_n)
+min.vwc_wp <- VG_ThetaFromHead(-150, min.vwc_r, min.vwc_s, min.VG_alpha*1000, min.VG_n)
 
 ## figure out number of organic and mineral layers based on thicknesses
 nsoilay.org <- round(org.z/min.Dz)
@@ -69,6 +90,8 @@ df.out <- data.frame(Dz = numeric(length=nsoilay),
                      Kv = NaN,
                      vwc_r = NaN,
                      vwc_s = NaN,
+                     vwc_fc = NaN,
+                     vwc_wp = NaN,
                      VG_alpha = NaN,
                      VG_n = NaN,
                      SS = NaN,
@@ -80,6 +103,8 @@ df.out$Kh[1] <- org.Ks
 df.out$Kv[1] <- org.Ks
 df.out$vwc_r[1] <- org.vwc_r
 df.out$vwc_s[1] <- org.vwc_s
+df.out$vwc_wp[1] <- org.vwc_wp
+df.out$vwc_fc[1] <- org.vwc_fc
 df.out$VG_alpha[1] <- org.VG_alpha
 df.out$VG_n[1] <- org.VG_n
 df.out$thermcond[1] <- org.thermcond
@@ -115,6 +140,8 @@ for (j in 1:(nsoilay-1)){
     }
     df.out$vwc_r[j+1] <- org.vwc_r
     df.out$vwc_s[j+1] <- org.vwc_s
+    df.out$vwc_fc[j+1] <- org.vwc_fc
+    df.out$vwc_wp[j+1] <- org.vwc_wp
     df.out$VG_alpha[j+1] <- org.VG_alpha
     df.out$VG_n[j+1] <- org.VG_n
     df.out$thermcond[j+1] <- org.thermcond
@@ -127,6 +154,8 @@ for (j in 1:(nsoilay-1)){
     df.out$Kv[j+1] <- min.Ks
     df.out$vwc_r[j+1] <- min.vwc_r
     df.out$vwc_s[j+1] <- min.vwc_s
+    df.out$vwc_fc[j+1] <- min.vwc_fc
+    df.out$vwc_wp[j+1] <- min.vwc_wp
     df.out$VG_alpha[j+1] <- min.VG_alpha
     df.out$VG_n[j+1] <- min.VG_n
     df.out$thermcond[j+1] <- min.thermcond

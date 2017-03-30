@@ -8,7 +8,7 @@ TimeStepEnergyAndWater = 3600
 !InitDateDDMMYYYYhhmm   = 31/12/2002 23:00
 !EndDateDDMMYYYYhhmm    = 31/12/2012 23:00
 InitDateDDMMYYYYhhmm=01/01/1988 23:00
-EndDateDDMMYYYYhhmm=31/12/2011 23:00
+EndDateDDMMYYYYhhmm=31/12/1991 23:00
 EnergyBalance = 1
 WaterBalance  = 1
 PointSim      = 1
@@ -170,6 +170,7 @@ HeaderLateralHydrConductivity = "Kh"
 HeaderNormalHydrConductivity = "Kv"
 HeaderThetaRes = "vwc_r"
 HeaderFieldCapacity = "vwc_fc"
+HeaderWiltingPoint = "vwc_wp"
 HeaderThetaSat = "vwc_s"
 HeaderAlpha = "VG_alpha"
 HeaderN = "VG_n"
@@ -217,5 +218,5 @@ SoilAveragedLiqContentProfileFile="output-tabs/thetaliq"
 !SoilTotWaterPressProfileFile="output-tabs/psitot"
 
 ! discharge
-!DtPlotDischarge=24
-!DischargeFile="output-tabs/discharge"
+DtPlotDischarge=24
+DischargeFile="output-tabs/discharge"
