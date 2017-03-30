@@ -46,7 +46,7 @@ org.Ks <- 0.17    # [mm/s] - saturated hydraulic condutivity
 org.vwc_s <- 0.55  # [m3/m3] - saturated water content
 org.vwc_r <- 0.01  # [m3/m3] - residual water content
 org.VG_alpha <- 12.7*(1/1000) # [mm-1] - Van Genuchten alpha (Jiang et al. = 12.7 m-1)
-org.VG_n <- 1.45       # [-] - Van Genuchten n
+org.VG_n <- 2.00       # [-] - Van Genuchten n
 org.thermcond <- 0.25   # [W/m/K] - thermal conductivity of soil solids
 org.thermcap <- 2.6E+6   # [J/m3/K] - thermal capacity of soil solids
 
