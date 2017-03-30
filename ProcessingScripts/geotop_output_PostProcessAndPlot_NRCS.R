@@ -17,7 +17,7 @@ require(gridExtra)
 source(paste0(git.dir, "ProcessingScripts/FitMetrics.R"))
 
 #version
-version <- "20170329-1hr-Start1988-RootGrow-FC+WP-n200"
+version <- "20170329-1hr-Start1990-RootGrow-FC+WP-n200"
 
 # function to find closest
 which.closest <- function(x, vec){

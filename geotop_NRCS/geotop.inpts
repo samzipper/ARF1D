@@ -161,7 +161,7 @@ FreshSnowReflNIR = 0.90
 !*******************************
 SoilParFile = "soil/SoilNRCS"
 
-SoilLayerNumber = 60
+SoilLayerNumber = 70
 SoilLayerTypes = 1
 PointSoilType = 1
 
@@ -185,7 +185,7 @@ HeatEqTol = 1.0E-05
 !RichardMaxIter = 1500
 !RichardInitForc = 0.01
 RichardTol = 1.0E-09
-MinTimeStep = 60
+MinTimeStep = 120
 MinRatioKactualToKSat = 1.0E-5
 
 ! canopy numerics
@@ -203,8 +203,8 @@ MoninObukhov=2
 !*************************************
 ! point file
 DtPlotPoint = 24
-PointOutputFile="output-tabs/point"
-PointAll=1
+!PointOutputFile="output-tabs/point"
+!PointAll=1
 !DatePoint=1
 
 ! profiles
@@ -212,11 +212,11 @@ SoilAll=1
 SoilPlotDepths=6,70,80,90,120,160,236,280,312,387,390,463,616,650,680,768,978
 
 SoilAveragedTempProfileFile="output-tabs/soiltemp"
-SoilAveragedIceContentProfileFile="output-tabs/thetaice"
+!SoilAveragedIceContentProfileFile="output-tabs/thetaice"
 SoilAveragedLiqContentProfileFile="output-tabs/thetaliq"
 !SoilLiqWaterPressProfileFile="output-tabs/psiliq"
 !SoilTotWaterPressProfileFile="output-tabs/psitot"
 
 ! discharge
-DtPlotDischarge=24
-DischargeFile="output-tabs/discharge"
+!DtPlotDischarge=24
+!DischargeFile="output-tabs/discharge"
