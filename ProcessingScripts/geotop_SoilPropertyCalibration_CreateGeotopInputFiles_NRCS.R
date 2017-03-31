@@ -64,17 +64,27 @@ min.vwc_r <- 0.01  # [m3/m3] - residual water content
 #min.thermcond <- 1.62         # [W/m/K] - thermal conductivity of soil solids
 min.thermcap <- 2.0E+6        # [J/m3/K] - thermal capacity of soil solids
 
-# calculate field capacity and wilting point
-min.vwc_fc <- VG_ThetaFromHead(-3.3, min.vwc_r, min.vwc_s, min.VG_alpha*1000, min.VG_n)
-min.vwc_wp <- VG_ThetaFromHead(-150, min.vwc_r, min.vwc_s, min.VG_alpha*1000, min.VG_n)
-
 ## make LHS sample
 # define number of variables and number of samples
 n.var <- 8
-n.sample <- 100
+n.sample <- 350
 
-# create latin hypercube sample
-LHS.sample <- improvedLHS(n.sample, n.var)   # sample parameter space
+# are you adding to an existing sample, or starting from scratch?
+new.sample <- F  # T = make new sample; F = augment old sample
+if (new.sample){
+  # create latin hypercube sample
+  LHS.sample <- improvedLHS(n.sample, n.var)   # sample parameter space
+} else {
+  # how many samples were in your old sample you are adding to?
+  n.sample.old <- 100
+  
+  # recreate the old sample
+  # MAKE SURE YOU ARE USING THE SAME SET.SEED AT TOP OF SCRIPT
+  LHS.sample.old <- improvedLHS(n.sample.old, n.var)
+  
+  # augment sample
+  LHS.sample <- augmentLHS(LHS.sample.old, (n.sample-n.sample.old))
+}
 df.all <- data.frame(number = sprintf("%04d", seq(1,n.sample)),
                      org.Ks = qunif(LHS.sample[,1], min=1.0E-3, max=1.0E+0),        # lit review
                      org.vwc_s = org.vwc_s,                                         # NRCS observations

@@ -32,7 +32,7 @@ which.closest <- function(x, vec){
   return(i)
 }
 
-## calibrate with odd years, validate with even
+## calibrate with pre-2004, validate with post-2004
 cal <- seq(1998,2003,1)
 val <- seq(2005,2011,1)
 
@@ -57,8 +57,8 @@ df.obs$Date <- ymd(df.obs$Date)
 # subset to only calibration/validation period
 df.obs <- subset(df.obs, year(Date)>=yr.min & year(Date)<=yr.max)
 
-# get rid of 2004 - bad observation data
-df.obs <- subset(df.obs, year(Date) != 2004)
+# bad data from 2004: temp 90 cm, temp 390 cm, temp 680 cm
+df.obs <- df.obs[!(year(df.obs$Date)==2004 & df.obs$variable=="temp" & df.obs$depth.mm %in% c(90,390,680)),]
 
 ## Process model output data
 # modeled data path
