@@ -209,7 +209,7 @@ DtPlotPoint = 24
 
 ! profiles
 SoilAll=1
-SoilPlotDepths=6,70,80,90,120,160,236,280,312,387,390,463,616,650,680,768,978
+SoilPlotDepths=6,87,90,120,160,236,280,312,387,390,463,616,650,680,768,978
 
 SoilAveragedTempProfileFile="output-tabs/soiltemp"
 !SoilAveragedIceContentProfileFile="output-tabs/thetaice"
