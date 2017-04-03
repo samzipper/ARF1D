@@ -26,7 +26,7 @@ df.in <- read.csv(path.in, skip=3, stringsAsFactors=F)
 # trim to only relevant columns
 df.in <- df.in[,c("year", "DOY", "date", "temp.air.C", "precip.in", 
                   "temp.soil.120mm.campbell.C", "temp.soil.280mm.campbell.C", "temp.soil.650mm.campbell.C", 
-                  "temp.air.70mm.C", "temp.soil.6mm.C", "temp.soil.80mm.C", 
+                  "temp.soil.6mm.C", "temp.soil.87mm.C", 
                   "temp.soil.160mm.C", "temp.soil.236mm.C", "temp.soil.312mm.C", 
                   "temp.soil.387mm.C", "temp.soil.463mm.C", "temp.soil.616mm.C", 
                   "temp.soil.768mm.C", "temp.soil.978mm.C", "temp.soil.120mm.C", "VWC.120mm", 
@@ -45,7 +45,7 @@ df.in$VWC.680mm[df.in$year==2004] <- df.in$VWC.680mm[df.in$year==2004]/100
 
 # vitel temperature probe minimum is -12.5 C (see comparison between campbell & vitel for 120 mm) - set values less than 12 C to NaN
 df.in$temp.soil.6mm.C[df.in$temp.soil.6mm.C< -12.0] <- NaN
-df.in$temp.soil.80mm.C[df.in$temp.soil.80mm.C< -12.0] <- NaN
+df.in$temp.soil.87mm.C[df.in$temp.soil.87mm.C< -12.0] <- NaN
 df.in$temp.soil.160mm.C[df.in$temp.soil.160mm.C< -12.0] <- NaN
 df.in$temp.soil.236mm.C[df.in$temp.soil.236mm.C< -12.0] <- NaN
 df.in$temp.soil.312mm.C[df.in$temp.soil.312mm.C< -12.0] <- NaN
