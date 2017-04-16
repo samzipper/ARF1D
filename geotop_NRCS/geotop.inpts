@@ -52,9 +52,9 @@ HeaderCloudSWTransmissivity = "CloudTrans"
 
 ! Best performance was with SnowDepthCalibration0690
 ! (RMSE	=73.3 mm), which had the following values:
-ThresTempRain = 3.386
-ThresTempSnow = -1.357
-SnowCorrFactor = 0.613
+!ThresTempRain = 3.386
+!ThresTempSnow = -1.357
+!SnowCorrFactor = 0.613
 !
 ! However, having such a high ThresTempRain was 
 ! leading to occasional small snowfall events during
@@ -209,7 +209,7 @@ PointAll=1
 
 ! profiles
 SoilAll=1
-SoilPlotDepths=6,70,80,90,120,160,236,280,312,387,390,463,616,650,680,768,978
+SoilPlotDepths=6,87,90,120,160,236,280,312,387,390,463,616,650,680,768,978
 
 SoilAveragedTempProfileFile="output-tabs/soiltemp"
 SoilAveragedIceContentProfileFile="output-tabs/thetaice"
