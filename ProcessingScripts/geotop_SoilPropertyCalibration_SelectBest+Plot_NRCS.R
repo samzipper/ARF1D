@@ -34,7 +34,7 @@ which.closest <- function(x, vec){
 }
 
 # flags for what to do
-process <- T   # process model output data (if false: load already-processed model output data)
+process <- F   # process model output data (if false: load already-processed model output data)
 plot <- T      # make plots (if false: no plots)
 
 # path to save plot
@@ -193,7 +193,7 @@ if (plot){
   #n.best.overall <- df.out.total$number[df.out.total$period=="cal"][which.max(df.out.total$NSE[df.out.total$period=="cal"])]
   
   # min mean NRMSE
-  #n.best.overall <- df.out.total$number[df.out.total$period=="cal"][which.min(df.out.total$NRMSE[df.out.total$period=="cal"])]
+  n.best.overall <- df.out.total$number[df.out.total$period=="cal"][which.min(df.out.total$NRMSE[df.out.total$period=="cal"])]
   
   # lowest VWC RMSE
   #n.best.overall <- df.out$number[df.out$period=="cal" & df.out$variable=="VWC"][which.min(df.out$RMSE[df.out$period=="cal" & df.out$variable=="VWC"])]

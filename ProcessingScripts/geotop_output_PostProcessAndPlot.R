@@ -12,7 +12,7 @@ rm(list=ls())
 
 # git directory for relative paths
 #git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
-git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
+git.dir <- "C:/Users/Sam/WorkGits/SoilPropertyCalibrationBasic/ARF1D/"
 
 require(lubridate)
 require(ggplot2)
@@ -22,7 +22,7 @@ require(gridExtra)
 source(paste0(git.dir, "ProcessingScripts/FitMetrics.R"))
 
 #version
-version <- "20170327-1hr"
+version <- "20170427-1hr-Cal015"
 
 # function to find closest
 which.closest <- function(x, vec){
@@ -214,7 +214,7 @@ df.nest.melt.d$variable <- NULL
 df.nest.melt.d <- df.nest.melt.d[complete.cases(df.nest.melt.d),]
 
 # summarize to average of all sensors for each day
-df.nest.melt.d.all <- summarize(group_by(df.nest.melt.d, Date, var),
+df.nest.melt.d.all <- dplyr::summarize(group_by(df.nest.melt.d, Date, var),
                                 obs.mean.all=mean(obs.mean),
                                 obs.std.all=sd(obs.std),
                                 mod.mean.all=mean(value.mod),
@@ -269,7 +269,7 @@ df.nest.melt.d.all$Date <- mdy(df.nest.melt.d.all$Date)
 df.obs.ARFlux$Date <- ymd(df.obs.ARFlux$Date)
 
 # for each thaw date, summarize observations to mean and range
-df.thaw.day <- summarize(group_by(df.thaw, Date),
+df.thaw.day <- dplyr::summarize(group_by(df.thaw, Date),
                          ThawDepth.mm.mean = mean(ThawDepth.mm, na.rm=T),
                          ThawDepth.mm.std = sd(ThawDepth.mm, na.rm=T),
                          ThawDepth.mm.min = min(ThawDepth.mm, na.rm=T),

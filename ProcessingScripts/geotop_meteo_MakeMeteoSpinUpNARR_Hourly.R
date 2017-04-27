@@ -10,11 +10,11 @@ rm(list=ls())
 
 # git directory for relative paths
 #git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
-git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
+git.dir <- "C:/Users/Sam/WorkGits/SoilPropertyCalibrationBasic/ARF1D/"
 
 # which geotop version
-geo.dir <- "geotop_NRCS/"
-#geo.dir <- "geotop/"
+#geo.dir <- "geotop_NRCS/"
+geo.dir <- "geotop/"
 
 require(lubridate)
 require(ggplot2)
@@ -30,8 +30,8 @@ fname.hourly.dynamic <- paste0(git.dir, geo.dir, "meteo/meteoNARRhourlyDynamicWi
 fname.3hourly.dynamic<- paste0(git.dir, geo.dir, "meteo/meteoNARR3hourlyDynamicWithSpinUp0001.txt")  # where to save 3 hourly output data
 
 # year to start/end hourly data
-yr.start <- 1988
-yr.end <- 2011
+yr.start <- 1990
+yr.end <- 2015
 
 # coordinates of site
 site.lat <- 68.93      # unburned=68.93, moderate=68.95, severe=68.99

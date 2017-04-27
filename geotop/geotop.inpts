@@ -7,7 +7,7 @@ TimeStepEnergyAndWater = 3600
 !TimeStepEnergyAndWater = 14400
 !InitDateDDMMYYYYhhmm   = 31/12/2002 23:00
 !EndDateDDMMYYYYhhmm    = 31/12/2012 23:00
-InitDateDDMMYYYYhhmm=01/01/2000 23:00
+InitDateDDMMYYYYhhmm=01/01/1990 23:00
 EndDateDDMMYYYYhhmm=31/12/2015 23:00
 EnergyBalance = 1
 WaterBalance  = 1
@@ -34,8 +34,8 @@ MeteoStationWindVelocitySensorHeight=10
 MeteoStationTemperatureSensorHeight=2
 
 !MeteoFile = "meteo/meteoNARRdailyWithSpinUp"
-!MeteoFile = "meteo/meteoNARRhourlyDynamicWithSpinUp"
-MeteoFile = "meteo/meteoNARRhourlyDynamicRepeatedWithSpinUp"
+MeteoFile = "meteo/meteoNARRhourlyDynamicWithSpinUp"
+!MeteoFile = "meteo/meteoNARRhourlyDynamicRepeatedWithSpinUp"
 
 HeaderDateDDMMYYYYhhmmMeteo = "POSIX"
 HeaderJulianDayfrom0Meteo   = "JD"
@@ -208,7 +208,7 @@ PointAll=1
 
 ! profiles
 SoilAll=1
-!SoilPlotDepths=20,25,40,45,50,55,60,70,80,90,100
+SoilPlotDepths=20,25,40,45,50,55,60,70,80,90,100
 
 SoilAveragedTempProfileFile="output-tabs/soiltemp"
 SoilAveragedIceContentProfileFile="output-tabs/thetaice"
