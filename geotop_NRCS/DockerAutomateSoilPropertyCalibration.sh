@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for i in {1..100}
+for i in {122..200}
 	do
 		# define the prefix
 		num=`printf %04d $i`

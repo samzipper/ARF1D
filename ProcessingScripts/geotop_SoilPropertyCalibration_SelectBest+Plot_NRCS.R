@@ -34,7 +34,7 @@ which.closest <- function(x, vec){
 }
 
 # flags for what to do
-process <- F   # process model output data (if false: load already-processed model output data)
+process <- T   # process model output data (if false: load already-processed model output data)
 plot <- T      # make plots (if false: no plots)
 
 # path to save plot
@@ -73,7 +73,7 @@ depths.VWC <- unique(df.obs$depth.mm[is.finite(df.obs$value.mean) & df.obs$varia
 if (process){
   
   # numbers to process
-  numbers.all <- seq(1,100)
+  numbers.all <- seq(1,200)
 
   ## read in input data with soil hydraulic properties
   df.in <- read.csv(paste0(git.dir, geo.dir, "SoilPropertyCalibration/SoilPropertyCalibration_Input.csv"))

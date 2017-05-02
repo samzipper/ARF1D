@@ -67,16 +67,15 @@ min.thermcap <- 2.0E+6        # [J/m3/K] - thermal capacity of soil solids
 ## make LHS sample
 # define number of variables and number of samples
 n.var <- 4
-n.sample <- 100
+n.sample <- 200
 
 # are you adding to an existing sample, or starting from scratch?
-new.sample <- T  # T = make new sample; F = augment old sample
+new.sample <- F      # T = make new sample; F = augment old sample
+n.sample.old <- 100  # if F, how many samples were in your old sample you are adding to? (if T, this is ignored)
 if (new.sample){
   # create latin hypercube sample
   LHS.sample <- improvedLHS(n.sample, n.var)   # sample parameter space
 } else {
-  # how many samples were in your old sample you are adding to?
-  n.sample.old <- 100
   
   # recreate the old sample
   # MAKE SURE YOU ARE USING THE SAME SET.SEED AT TOP OF SCRIPT

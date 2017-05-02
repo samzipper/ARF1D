@@ -28,6 +28,8 @@ df.cal.VWC  <- subset(df.out, period=="cal" & variable=="VWC")
 # put into rank order
 df.cal.temp <- df.cal.temp[order(df.cal.temp$RMSE.mean),]
 df.cal.VWC  <- df.cal.VWC[order(df.cal.VWC$RMSE.mean),]
+#df.cal.temp <- df.cal.temp[order(df.cal.temp$NSE.mean),]
+#df.cal.VWC  <- df.cal.VWC[order(df.cal.VWC$NSE.mean),]
 
 # add rank column
 df.cal.temp$rank <- seq(1, dim(df.cal.temp)[1])
@@ -44,6 +46,6 @@ p.cal <-
   scale_x_reverse(expand=c(0,0)) + 
   theme_bw() +
   theme(panel.grid=element_blank())
-
+p.cal
 # (i think) if the LHS sample is saturated, the line should approach a horizontal asymptote,
 # as all the top-ranked samples would perform approximately the same
