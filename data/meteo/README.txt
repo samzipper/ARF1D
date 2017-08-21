@@ -1,3 +1,7 @@
+**TFS-EDS_1988-2016_Daily.csv**
+Downloaded 8/21/2017 from https://toolik.alaska.edu/edc/abiotic_monitoring/data_query.php
+
+**Daily_1989-2015_TFS_GapFill.csv**
 Downloaded on 12/2/2016 from http://arc-lter.ecosystems.mbl.edu/1988currenttfsdaily
 
 Meteorological data from ARC LTER Toolik Field Station

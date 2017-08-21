@@ -1,0 +1,155 @@
+Start Date: 1988-06-01
+End Date: 2016-12-31
+
+Selected Fields     Field Label                   Time Step      Units     Dec. Places
+snow_depth          Snow Depth                    3-hour data    cm        2
+air_temp_1m         Air Temp 1m                   1-hour data    C         1
+air_temp_3m         Air Temp 3m                   1-hour data    C         1
+air_temp_5m         Air Temp 5m                   1-hour data    C         1
+barometer_mbar      Barometric Pressure           1-hour data    mbar      1
+lw_dn_avg           Longwave looking down (1hr)   1-hour data    W/m2      3
+lw_up_avg           Longwave looking up (1hr)     1-hour data    W/m2      3
+rain2               Rainfall - tipping bucket     1-hour data    mm        3
+rh_1m               Relative Humidity 1m          1-hour data    %         0
+rh_3m               Relative Humidity 3m          1-hour data    %         0
+rh_5m               Relative Humidity 5m          1-hour data    %         0
+sw_dn_avg           Shortwave looking down (1hr)  1-hour data    W/m2      3
+sw_up_avg           Shortwave looking up (1hr)    1-hour data    W/m2      3
+pyranometer         Solar Radiation               1-hour data    kW/m2     3
+vapor_pres_5m       Vapor Pressure                1-hour data    mbar      1
+wind_sp_1m          Wind Speed 1m                 1-hour data    m/s       3
+wind_sp_5m          Wind Speed 5m                 1-hour data    m/s       3
+rain                Year-round Precipitation      1-hour data    mm        3
+
+Timestamp: 2017-08-21 21:46:02 UTC
+Data obtained from Toolik Field Station Weather Station Data Query (http://toolik.alaska.edu/edc/abiotic_monitoring/data_query.php)
+Additional metadata available from Arctic LTER (http://ecosystems.mbl.edu/arc/weather/tl/index.shtml)
+
+CITING DATA
+If you use data from the EDC, please cite the data according to following format:
+Environmental Data Center Team. Year of data retrieval. Meteorological monitoring program at Toolik, Alaska.
+Toolik Field Station, Institute of Arctic Biology, University of Alaska Fairbanks, Fairbanks, AK 99775.
+http://toolik.alaska.edu/edc/abiotic_monitoring/data_query.php
+
+INSTRUMENTATION METADATA (Instrumentation histories are accurate to the best of our knowledge, but not necessarily complete.)
+** Precipitation **
+Current:
+
+* OTT Pluvio 2 measures "year round precipitation" (http://www.ott.com/en-us/products/meteorological-sensors/ott-pluvio2-l-weighing-rain-gauge/). Surrounded by a double fence Wyoming wind shield.
+performed guided accuracy test: 8/23/16
+not working: to 6/8/16-8/23/16. Our summer tipping bucket was able to cover that outage, however two snow events occurred during the outage of the year-round gauge, the timing and volume of these events were likely not measured accurately by the tipping bucket.
+Installed: 08/18/10 
+
+* TE525WS measures "rainfall- tipping bucket" (https://www.campbellsci.com/te525ws-l). Surrounded by a single alter shield&nbsp; 
+2016: Snow events occurred on June 5th, 8th, and 21st. The exact timing and volume of these events were not measured accurately. 
+Calibrated: 06/09/16
+
+Past:
+
+* OTT Pluvio 250 mm with ring heater removed 
+09/22/12 - 05/04/13(this date could be wrong): reinstalled
+08/18/10: removed
+
+** Air Temperature and RH **
+Current:
+
+*  Vaisala HMP155A measures air temperature and relative humidity (https://www.campbellsci.com/hmp155a). With a 41005-5 14 plate radiation shield (https://www.campbellsci.com/h41005-5)
+Height: 3 and 5 m
+05/01/17: swapped with calibrated sensors
+06/08/16: swapped with calibrated sensors 
+08/28/14.Installed: 3m and 5m 
+
+Past:
+
+* Vaisala HMP45C measured air temperature and relative humidity (https://www.campbellsci.com/hmp45c-l).
+Height: 5m
+08/28/15 swapped with calibrates sensor
+05/2013: swapped with calibrated sensor
+08/08/11: swapped with calibrated sensor 
+08/28/09: swapped with calibrated sensor
+08/19/08: Installed 
+
+* R.M. Young 41382VC measured air temperature and relative humidity (http://www.youngusa.com/products/2/15.html)
+Height 3m
+04/18/12: Swapped with calibrated sensor&nbsp; (measures in Celsius)
+08/08/11: Swapped 3m with calibrated sensor (measures in Fahrenheit- converted to C in logger program) 
+08/19/08: Installed
+
+* CS500 measured air temperature and relative humidity (https://www.campbellsci.com/cs500-l)
+Height 5m
+08/19/08: removed
+
+* 1m Temp/RH removed 08/19/08
+
+** Pressure **
+Pressure reported here is uncorrected for sea level. Add 85 millibar to correct for sea level. 
+Current:
+
+* CS106 Vaisala PTB110 measures Barometric Pressue (https://www.campbellsci.com/cs106)
+06/09/16: Installed. 
+
+Past:
+
+* CS100 Serta 278 measures Barometric Pressure (https://www.campbellsci.com/cs100)
+06/09/16: removed
+
+* CS105 Vaisala PTB101B measures Barometric Pressure (https://www.campbellsci.com/cs105)
+
+** Other Radiation **
+Current:
+
+* Kipp &amp; Zonen CMP6 measures "solar radiation" (http://www.kippzonen.com/Product/12/CMP6-Pyranometer#.VvxyPnrAbMs). With CVP2 power adapter (?).&nbsp; 
+08/19/08: Installed
+
+* Kipp &amp; Zonen CNR4 measures longwave and shortwave looking up and looking down (http://www.kippzonen.com/Product/85/CNR-4-Net-Radiometer#.Vv27LXrAaio)
+06/09/16: swapped with calibrated sensor 
+05/13/13: Installed
+
+Past:
+
+* LICOR Pyranometer LI-200SA measures "Solar Radiation" (https://www.licor.com/env/pdf/light/200.pdf)
+08/19/08: removed
+04/30/07: installed 
+
+** Precipitation **
+Current:
+
+* OTT Pluvio 2 measures "year round precipitation" (http://www.ott.com/en-us/products/meteorological-sensors/ott-pluvio2-l-weighing-rain-gauge/). Surrounded by a double fence Wyoming wind shield.
+performed guided accuracy test: 8/23/16
+not working: to 6/8/16-8/23/16. Our summer tipping bucket was able to cover that outage, however two snow events occurred during the outage of the year-round gauge, the timing and volume of these events were likely not measured accurately by the tipping bucket.
+Installed: 08/18/10 
+
+* TE525WS measures "rainfall- tipping bucket" (https://www.campbellsci.com/te525ws-l). Surrounded by a single alter shield&nbsp; 
+2016: Snow events occurred on June 5th, 8th, and 21st. The exact timing and volume of these events were not measured accurately. 
+Calibrated: 06/09/16
+
+Past:
+
+* OTT Pluvio 250 mm with ring heater removed 
+09/22/12 - 05/04/13(this date could be wrong): reinstalled
+08/18/10: removed
+
+** Wind **
+Current:
+
+* R.M. Young 5106 measures wind speed and direction. (http://www.youngusa.com/products/7/8.html)
+Note: During winter the sensors are affected by rime ice that prohibits the propellers from spinning at low wind speeds.&nbsp; Rime can only build up when there is very little wind, so it is difficult to know if they are reporting low or zero wind speeds due to ice or actual conditions.&nbsp; However, a best attempt was made to replace steady zero values with NAN. 
+Height: 5 m
+2016 data comes from the R.M. Young 5103 because it provides a more complete data-set. Readings from the instruments are nearly identical.&nbsp; 
+06/08/16: swapped new 5108-45 for the 5106. crossarm was out of level, now level and more secure 
+Installed: 06/02/15 new.&nbsp; (an R.M. Young 5103 was installed at the same time also at 5 m. Its data is available upon request but for 2015 is not output through this website)
+
+Past:
+
+* Met One 024A measures wind direction and Met One 014A measures wind speed (http://www.metone.com/meteorology.php)
+Height: 5m
+06/02/2015: both removed
+08/28/14: WS and direction sensors swapped with calibrated sensors 
+08/28/13: WS and direction swapped with calibrated sensors
+07/23/13: moved WS and direction sensors to new tower
+05/2013: WS and direction sensor swapped with calibrated sensors
+08/08/11: WS and direction sensors swapped with calibrated sensors 
+08/19/08: WS and direction sensors swapped with calibrated sensors 
+
+* 1m WS removed 08/19/08
+

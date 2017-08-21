@@ -15,12 +15,17 @@ require(ggplot2)
 # paths to daily files
 path.NRCS <- paste0(git.dir, "data/NRCS/Toolik_AllYears.csv")
 path.NARR <- paste0(git.dir, "data/meteo/Raw/NARR_Daily_1979-2015.csv")
-path.TFS <- paste0(git.dir, "data/meteo/Daily_1989-2015_TFS_GapFill.csv")
+path.TFS <- paste0(git.dir, "data/meteo/TFS-EDC_1988-2016_Daily.csv")
 
 # load files
 df.NRCS <- read.csv(path.NRCS, stringsAsFactors=F, skip=3)
 df.NARR <- read.csv(path.NARR, stringsAsFactors=F)
 df.TFS <- read.csv(path.TFS, stringsAsFactors=F)
+
+# get DOY
+df.TFS$date <- ymd(df.TFS$date)
+df.TFS$Year <- year(df.TFS$date)
+df.TFS$DOY <- yday(df.TFS$date)
 
 # trim to only date and precip
 df.NRCS <- df.NRCS[,c("year", "DOY", "precip.in")]

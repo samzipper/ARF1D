@@ -8,7 +8,7 @@
 rm(list=ls())
 
 # git directory for relative paths
-git.dir <- "C:/Users/Sam/WorkGits/Permafrost/ARF1D/"
+git.dir <- "C:/Users/Sam/WorkGits/ARF1D/"
 
 require(lubridate)
 require(ggplot2)
@@ -49,4 +49,4 @@ df.1hr.d <- summarize(group_by(df.1hr, date),
                       rad.W_m2 = mean(pyranometer*1000)) # conver to W/m2
 
 # save as CSV
-write.csv(df.1hr.d, "TFS-EDC_1988-2015_Daily.csv", row.names=F)
+write.csv(df.1hr.d, "TFS-EDC_1988-2016_Daily.csv", row.names=F)

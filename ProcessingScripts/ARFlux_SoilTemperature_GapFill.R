@@ -33,6 +33,9 @@ df.email$Depth <- NULL
 # make date column
 df.email$date <- mdy(df.email$date)
 
+# get rid of 2017 data
+df.email <- subset(df.email, year(date) != 2017)
+
 # check for missing/duplicated dates
 FindMissingDates(df.email$date)
 df.email$date[duplicated(df.email$date)]
